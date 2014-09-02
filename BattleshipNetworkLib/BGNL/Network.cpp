@@ -4,8 +4,6 @@
 
 #include "Network.h"
 
-const int Network::NAME_LEN = 16;
-const int Network::MAP_SIZE = 8 * 8;
 
 Network::Network()
 :m_Connected(false)
@@ -108,6 +106,14 @@ Network::NetworkResult Network::GetPacketType(PacketType* const type)
 	return Recive((void*)type, sizeof(type));
 }
 
+Network::NetworkResult Network::GetErrorType(ErrorType* const error)
+{
+	_ASSERT(error);
+	if (!error || !m_Connected) return NETWORK_ERROR;
+
+	return Recive((void*)error, sizeof(error));
+}
+
 Network::NetworkResult Network::GetAttackResult(AttackResultPacket* const data)
 {
 	_ASSERT(data);
@@ -124,7 +130,7 @@ Network::NetworkResult Network::GetGameResult(GameResultPacket* const data)
 	return Recive((void*)data, sizeof(data));
 }
 
-Network::NetworkResult Network::GetFinalResult(GetFinalResultPacket* const data)
+Network::NetworkResult Network::GetFinalResult(FinalResultPacket* const data)
 {
 	_ASSERT(data);
 	if (!data && !m_Connected) return NETWORK_ERROR;
@@ -170,6 +176,10 @@ Network::NetworkResult Network::Recive(void* const out_data, const unsigned int 
 		if (result == SOCKET_ERROR)
 		{
 			return NETWORK_ERROR;
+		}
+		else if (recv == 0)
+		{
+			return NETWORK_CLOSED;
 		}
 		else
 			recivedSize += result;
