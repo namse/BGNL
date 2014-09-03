@@ -79,7 +79,7 @@ public:
 	struct FinalResultPacket
 	{
 		int winCount;
-		int avgTurns;
+		float avgTurns;
 	};
 
 

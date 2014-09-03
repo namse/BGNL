@@ -152,7 +152,7 @@ void main()
 			Network::FinalResultPacket finalResult;
 			network.GetFinalResult(&finalResult);
 			puts("¸ðµÎ Á¾·á");
-			printf_s("½Â¸® È½¼ö: %d, Æò±Õ ÅÏ ¼ö: %d", finalResult.winCount, finalResult.avgTurns);
+			printf_s("½Â¸® È½¼ö: %d, Æò±Õ ÅÏ ¼ö: %.1f", finalResult.winCount, finalResult.avgTurns);
 
 			allOver = true;
 		}
