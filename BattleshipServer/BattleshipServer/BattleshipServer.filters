@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="data.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="RingBuffer.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Feel.h">
+      <Filter>Data\Object\Feel</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Data\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Work.h">
+      <Filter>Data\Object\Work</Filter>
+    </ClInclude>
+    <ClInclude Include="Relationship.h">
+      <Filter>Data\Relationship</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Word.h">
+      <Filter>Components\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Components\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="MainTitle.h">
+      <Filter>ShowItems\LeftSide\MainTitle</Filter>
+    </ClInclude>
+    <ClInclude Include="pugiconfig.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSprite.h">
+      <Filter>ShowItems\RightSide\WordSprite</Filter>
+    </ClInclude>
+    <ClInclude Include="RightSide.h">
+      <Filter>ShowItems\RightSide</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSpriteCollection.h">
+      <Filter>ShowItems\RightSide\WordSpriteCollection</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>Components\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="d2dPointOperator.h">
+      <Filter>Components\Operator</Filter>
+    </ClInclude>
+    <ClInclude Include="d2dColorOperator.h">
+      <Filter>Components\Operator</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientManager.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSession.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="EasyServer.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ProducerConsumerQueue.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="SPSCQueue.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularBuffer.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketType.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="EventListener.h">
+      <Filter>EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="EventParameter.h">
+      <Filter>EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="LineCollection.h">
+      <Filter>ShowItems\RightSide\LineCollection</Filter>
+    </ClInclude>
+    <ClInclude Include="TotalCount.h">
+      <Filter>ShowItems\LeftSide\TotalCount</Filter>
+    </ClInclude>
+    <ClInclude Include="LeftSide.h">
+      <Filter>ShowItems\LeftSide</Filter>
+    </ClInclude>
+    <ClInclude Include="LightBall.h">
+      <Filter>Components\LightBall</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLBackup.h">
+      <Filter>Data\XMLBackup</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipServer.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="Feel.cpp">
+      <Filter>Data\Object\Feel</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Data\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Work.cpp">
+      <Filter>Data\Object\Work</Filter>
+    </ClCompile>
+    <ClCompile Include="Relationship.cpp">
+      <Filter>Data\Relationship</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Word.cpp">
+      <Filter>Components\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Components\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="MainTitle.cpp">
+      <Filter>ShowItems\LeftSide\MainTitle</Filter>
+    </ClCompile>
+    <ClCompile Include="pugixml.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="WordSprite.cpp">
+      <Filter>ShowItems\RightSide\WordSprite</Filter>
+    </ClCompile>
+    <ClCompile Include="RightSide.cpp">
+      <Filter>ShowItems\RightSide</Filter>
+    </ClCompile>
+    <ClCompile Include="WordSpriteCollection.cpp">
+      <Filter>ShowItems\RightSide\WordSpriteCollection</Filter>
+    </ClCompile>
+    <ClCompile Include="d2dPointoperator.cpp">
+      <Filter>Components\Operator</Filter>
+    </ClCompile>
+    <ClCompile Include="d2dColorOperator.cpp">
+      <Filter>Components\Operator</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientManager.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSession.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyServer.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularBuffer.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="EventListener.cpp">
+      <Filter>EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="LineCollection.cpp">
+      <Filter>ShowItems\RightSide\LineCollection</Filter>
+    </ClCompile>
+    <ClCompile Include="TotalCount.cpp">
+      <Filter>ShowItems\LeftSide\TotalCount</Filter>
+    </ClCompile>
+    <ClCompile Include="LeftSide.cpp">
+      <Filter>ShowItems\LeftSide</Filter>
+    </ClCompile>
+    <ClCompile Include="LightBall.cpp">
+      <Filter>Components\LightBall</Filter>
+    </ClCompile>
+    <ClCompile Include="XMLBackup.cpp">
+      <Filter>Data\XMLBackup</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleshipServer.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{2d25a7b1-b71e-44c5-82b9-8dc25eadb899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{24b1ed08-bcbe-4d9d-a15a-c35c281904ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{f2253c71-1a51-4f62-98c6-2abbf0be8885}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{1791f390-019c-4a12-a14e-63761fa624b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Relationship">
+      <UniqueIdentifier>{4d582a80-b5db-4e42-bdf7-384f26d6d559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Object">
+      <UniqueIdentifier>{5da31c4c-42b2-4176-9853-ca6409f46937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Object\Feel">
+      <UniqueIdentifier>{8e495983-1c89-4bad-9cad-b1d3b42f3131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Object\Work">
+      <UniqueIdentifier>{efd0e682-1ef9-42b9-9324-b1a7a83a3ebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShowItems">
+      <UniqueIdentifier>{65c52c34-9180-41d9-aed1-42048a5f5c75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShowItems\RightSide">
+      <UniqueIdentifier>{1570c85b-95c3-455c-a2cb-bcc494e0a891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShowItems\LeftSide">
+      <UniqueIdentifier>{839a5673-a752-4cb8-903e-571bc915bfe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShowItems\LeftSide\MainTitle">
+      <UniqueIdentifier>{f43e0031-bb4a-4d38-afb1-4876a457b66a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShowItems\LeftSide\TotalCount">
+      <UniqueIdentifier>{728de836-aa30-4f00-a0e8-a3a7508ab881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{d766a8fc-8424-48dc-97de-bab427bf3d00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Line">
+      <UniqueIdentifier>{b967709f-46db-4731-9934-9f1792bf2409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Word">
+      <UniqueIdentifier>{25bb8b72-d316-4ea7-a871-7cd5785f4b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShowItems\RightSide\WordSprite">
+      <UniqueIdentifier>{b2e8f584-63c3-411c-a608-d196d09421e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShowItems\RightSide\WordSpriteCollection">
+      <UniqueIdentifier>{493a0571-f984-4cca-a7e2-2a618e22e496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Animation">
+      <UniqueIdentifier>{b92a262a-6765-46bb-bb43-4d1408c2f95b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Operator">
+      <UniqueIdentifier>{7087e8c5-a71f-4ef5-b442-6bb8939a2cf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{cfec662a-b44a-40d2-ba4f-f875aa67d463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EventManager">
+      <UniqueIdentifier>{392019bb-807e-45f5-b86f-15adc8dd6ce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShowItems\RightSide\LineCollection">
+      <UniqueIdentifier>{8f204bcd-ba64-4623-a185-ef00aa1ba6af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\LightBall">
+      <UniqueIdentifier>{2f54087c-4a4c-4a35-8033-020fd60d6ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\XMLBackup">
+      <UniqueIdentifier>{8171cc06-91db-46ef-b0b7-c7c3c1265528}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="positionInfo.xml" />
+  </ItemGroup>
+</Project>

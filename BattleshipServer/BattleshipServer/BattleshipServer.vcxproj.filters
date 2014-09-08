@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularBuffer.cpp">
+      <Filter>ServerPart</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>DisplayPart\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="d2dPointOperator.cpp">
+      <Filter>DisplayPart\Operator</Filter>
+    </ClCompile>
+    <ClCompile Include="d2dColorOperator.cpp">
+      <Filter>DisplayPart\Operator</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientManager.cpp">
+      <Filter>ServerPart</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSession.cpp">
+      <Filter>ServerPart</Filter>
+    </ClCompile>
+    <ClCompile Include="EasyServer.cpp">
+      <Filter>ServerPart</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleshipServer.cpp">
+      <Filter>Application\main</Filter>
+    </ClCompile>
+    <ClCompile Include="EventListener.cpp">
+      <Filter>Utils\EventHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Utils\EventHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="pugixml.cpp">
+      <Filter>Utils\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularBuffer.h">
+      <Filter>ServerPart</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>DisplayPart\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="d2dPointOperator.h">
+      <Filter>DisplayPart\Operator</Filter>
+    </ClInclude>
+    <ClInclude Include="d2dColorOperator.h">
+      <Filter>DisplayPart\Operator</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientManager.h">
+      <Filter>ServerPart</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSession.h">
+      <Filter>ServerPart</Filter>
+    </ClInclude>
+    <ClInclude Include="EasyServer.h">
+      <Filter>ServerPart</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipServer.h">
+      <Filter>Application\main</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Utils\EventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="EventListener.h">
+      <Filter>Utils\EventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Utils\EventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="EventParameter.h">
+      <Filter>Utils\EventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>DisplayPart\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="pugiconfig.hpp">
+      <Filter>Utils\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml.hpp">
+      <Filter>Utils\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="ProducerConsumerQueue.h">
+      <Filter>ServerPart</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketType.h">
+      <Filter>ServerPart</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="NewFilter5">
+      <UniqueIdentifier>{c1ee248c-3fae-4f43-a045-cf932b5c6500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{1b1d8c04-3730-4254-9416-6b569320bb6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerPart">
+      <UniqueIdentifier>{4d84595c-f360-4c93-b63f-e28ad88c5d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart">
+      <UniqueIdentifier>{63de41b1-9246-409b-a3ef-9e090d162b67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\Components">
+      <UniqueIdentifier>{aa3c5b42-8644-4ce1-801f-335114596cae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\Operator">
+      <UniqueIdentifier>{fb5e1f49-9a6e-4587-b9c1-3214ea28d77b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\main">
+      <UniqueIdentifier>{b252b3b3-169d-43cd-82cf-6e436b2b5dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{7959a091-8650-4669-b3d8-bfc6bcdba63e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\EventHandler">
+      <UniqueIdentifier>{2b300307-d4b9-4086-ac2f-e08d5814c8fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\Animation">
+      <UniqueIdentifier>{a99aca45-1c01-4fb6-8b5a-56fce42f0467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\XML">
+      <UniqueIdentifier>{e2db961c-6f91-4bf9-804b-450dfaffeb6a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
