@@ -95,6 +95,7 @@
     <ClInclude Include="EventListener.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="EventParameter.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="PacketType.h" />
     <ClInclude Include="ProducerConsumerQueue.h" />
     <ClInclude Include="pugiconfig.hpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="EasyServer.cpp" />
     <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="pugixml.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -195,6 +195,38 @@ extern ID2D1LinearGradientBrush *m_pLGBrush;
 
 extern IWICImagingFactory* g_pWICFactory;
 
+//////////////////////////////////////////////////////////////////////////
+// FOR DEFINE
+//////////////////////////////////////////////////////////////////////////
+
+// for logic
+#define MAP_WIDTH 8
+#define MAP_HEIGHT 8
+
+enum MAP_INFO
+{		
+	EMPTY = 0,
+	AIRCRAFT = 1,
+	BATTLESHIP = 2,
+	CRUSIER = 3,
+	DESTORYER_1 = 4,
+	DESTORYER_2 = 5,
+};
+
+enum ATTACK_RESULT
+{
+	NONE = 0,
+	MISS = 1,
+	HIT = 2,
+	DESTORY_AIRCRAFT = 3,
+	DESTORY_BATTLESHIP = 4,
+	DESTORY_CRUSIER = 5,
+	DESTORY_DESTORYER = 6,
+};
+
+
+
+
 //for server
 /// accepting list
 typedef ProducerConsumerQueue<SOCKET, 100> PendingAcceptList;
