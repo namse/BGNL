@@ -11,18 +11,18 @@ public:
 
 	bool IsGameEnd();
 
-	void SetEnemy(Player* enemy)
+
+	void SetMap(MAP_INFO info[MAP_WIDTH][MAP_HEIGHT])
 	{
-		enemy_ = enemy;
+		memcpy(info_, info, sizeof(info_));
+		memset(didAttacked_, false, sizeof(didAttacked_));
 	}
 
-	void Notify(EventHeader* event);
 private:
 	bool IsShipDestoryed(MAP_INFO shipType);
 private:
 	MAP_INFO info_[MAP_WIDTH][MAP_HEIGHT];
 	bool didAttacked_[MAP_WIDTH][MAP_HEIGHT];
-	Player* enemy_;
 	std::wstring name_;
 	PlayerNumber player_number_;
 };
