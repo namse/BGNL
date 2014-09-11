@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Player.h"
+#include "EventListener.h"
 class PlayerManager : public  EventListener
 {
 	static PlayerManager* GetInstance()

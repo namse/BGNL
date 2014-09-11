@@ -206,7 +206,7 @@ extern IWICImagingFactory* g_pWICFactory;
 
 
 typedef int PlayerNumber;
-
+typedef int GameNumber;
 
 
 //for server

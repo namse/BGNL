@@ -56,9 +56,6 @@ int WINAPI WinMain(
 void DevConsoleCreate(){
 
 	CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
-	int consoleHandleR, consoleHandleW;
-	long stdioHandle;
-	FILE *fptr;
 
 	AllocConsole();
 	std::wstring strW = L"Dev Console";

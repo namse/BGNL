@@ -46,6 +46,12 @@
     <ClCompile Include="PlayerManager.cpp">
       <Filter>LogicPart\PlayerManager</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>LogicPart\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>LogicPart\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -117,6 +123,12 @@
     <ClInclude Include="..\..\PacketType.h">
       <Filter>ServerPart</Filter>
     </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>LogicPart\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>LogicPart\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -157,6 +169,12 @@
     </Filter>
     <Filter Include="LogicPart\PlayerManager">
       <UniqueIdentifier>{c6763a3d-4b2e-4bb8-a8df-81ab9fb36396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LogicPart\Game">
+      <UniqueIdentifier>{96e76e81-6632-489a-90ae-2095633ede6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LogicPart\GameManager">
+      <UniqueIdentifier>{7a6d18be-d9fb-469e-bc07-a38ec4f1b9bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

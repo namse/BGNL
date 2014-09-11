@@ -2,18 +2,22 @@
 #include <memory>
 enum EventTypes
 {
-	EVT_ERROR = -1,
-	EVT_NONE = 0,
-	EVT_OK = 1,
-	EVT_SUBMIT_NAME = 2,
-	EVT_GAME_START = 3,
-	EVT_SUBMIT_MAP = 4,
-	EVT_MY_TURN = 5,
-	EVT_SUBMIT_ATTACK = 6,
-	EVT_ATTACK_RESULT = 7,
-	EVT_GAME_OVER = 8,
-	EVT_NEXT_GAME = 9,
-	EVT_ALL_OVER = 10,
+	EVT_ERROR,
+	EVT_NONE,
+	EVT_OK,
+	EVT_SUBMIT_NAME,
+	EVT_SUBMIT_MAP,
+	EVT_MY_TURN,
+	EVT_SUBMIT_ATTACK,
+	EVT_ATTACK_RESULT,
+
+	EVT_NEW_GAME,
+	EVT_ADD_PLYAER_1_IN_GAME,
+	EVT_ADD_PLAYER_2_IN_GAME,
+	EVT_GAME_START,
+	EVT_GAME_OVER,
+	EVT_NEXT_GAME,
+	EVT_ALL_OVER,
 } ;
 
 struct EventHeader
@@ -131,9 +135,20 @@ namespace Event
 			event_type_ = EVT_ALL_OVER;
 			win_count_ = -1;
 			average_truns_ = NAN;
+			game_number_ = -1;
 		}
 		int win_count_;
 		float average_truns_;
+		GameNumber game_number_;
 	};
+	
+	struct NewGameEvent : public EventHeader
+	{
+		NewGameEvent()
+		{
+			event_type_ = EVT_NEW_GAME;
+		}
+	};
+	
 
 }
