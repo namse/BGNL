@@ -1,19 +1,19 @@
 #include "stdafx.h"
-#include "Map.h"
+#include "Player.h"
 
 
-Map::Map()
+Player::Player()
 {
 	memset(info_, MAP_INFO::EMPTY, sizeof(info_));
 	memset(didAttacked_, false, sizeof(didAttacked_));
 }
 
 
-Map::~Map()
+Player::~Player()
 {
 }
 
-ATTACK_RESULT Map::AttackAndGetResult(int x, int y)
+ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
 {
 	if (x < 0 || x > MAP_WIDTH
 		|| y < 0 || y > MAP_HEIGHT)
@@ -61,7 +61,7 @@ ATTACK_RESULT Map::AttackAndGetResult(int x, int y)
 	}
 }
 
-bool Map::IsShipDestoryed(MAP_INFO shipType)
+bool Player::IsShipDestoryed(MAP_INFO shipType)
 {
 	if (shipType == MAP_INFO::EMPTY)
 		return false;

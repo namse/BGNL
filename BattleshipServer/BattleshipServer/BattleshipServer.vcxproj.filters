@@ -40,8 +40,8 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>LogicPart\Map</Filter>
+    <ClCompile Include="Player.cpp">
+      <Filter>LogicPart\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,8 +108,8 @@
     <ClInclude Include="PacketType.h">
       <Filter>ServerPart</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>LogicPart\Map</Filter>
+    <ClInclude Include="Player.h">
+      <Filter>LogicPart\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,9 +150,6 @@
       <UniqueIdentifier>{ee3f83a1-a322-4cfa-95f4-311cd2c6d23f}</UniqueIdentifier>
     </Filter>
     <Filter Include="LogicPart\Player">
-      <UniqueIdentifier>{8902fc81-8595-47f9-86ee-f499237c54c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="LogicPart\Map">
       <UniqueIdentifier>{44dae606-afc3-4d52-8dac-026436cdb099}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
