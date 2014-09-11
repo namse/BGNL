@@ -210,9 +210,9 @@ typedef int GameNumber;
 
 enum PlayerState
 {
-	WAIT,
-	READY,
-	ON_GAME,
+	PS_WAIT,
+	PS_READY,
+	PS_ON_GAME,
 };
 
 

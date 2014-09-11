@@ -12,7 +12,7 @@ enum EventTypes
 	EVT_ATTACK_RESULT,
 
 	EVT_NEW_GAME,
-	EVT_ADD_PLYAER_1_IN_GAME,
+	EVT_ADD_PLAYER_1_IN_GAME,
 	EVT_ADD_PLAYER_2_IN_GAME,
 	EVT_GAME_START,
 	EVT_GAME_OVER,
@@ -66,7 +66,9 @@ namespace Event
 		GameStartEvent()
 		{
 			event_type_ = EVT_GAME_START;
+			game_number_ = -1;
 		}
+		GameNumber game_number_;
 	};
 
 	struct SubmitMapEvent : public EventHeader
@@ -115,9 +117,11 @@ namespace Event
 			event_type_ = EVT_GAME_OVER;
 			turns_ = -1;
 			is_winner_ = false;
+			game_number_ = -1;
 		}
 		bool is_winner_;
 		int turns_;
+		GameNumber game_number_;
 	};
 
 	struct NextGameEvent : public EventHeader
@@ -125,7 +129,9 @@ namespace Event
 		NextGameEvent()
 		{
 			event_type_ = EVT_NEXT_GAME;
+			game_number_ = -1;
 		}
+		GameNumber game_number_;
 	};
 
 	struct AllOverEvent : public EventHeader
@@ -150,5 +156,29 @@ namespace Event
 		}
 	};
 	
+	struct AddPlayer1InGameEvent : public EventHeader
+	{
+		AddPlayer1InGameEvent()
+		{
+			event_type_ = EVT_ADD_PLAYER_1_IN_GAME;
+			player_number_ = -1;
+			game_number_ = -1;
+		}
+		GameNumber game_number_;
+		PlayerNumber player_number_;
+	};
 
+
+	struct AddPlayer2InGameEvent : public EventHeader
+	{
+		AddPlayer2InGameEvent()
+		{
+			event_type_ = EVT_ADD_PLAYER_2_IN_GAME;
+			player_number_ = -1;
+			game_number_ = -1;
+		}
+		GameNumber game_number_;
+		PlayerNumber player_number_;
+	};
+	
 }

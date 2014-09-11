@@ -3,7 +3,7 @@
 
 
 Player::Player(std::wstring name, PlayerNumber player_number)
-	:name_(name), player_number_(player_number), player_state_(WAIT)
+	:name_(name), player_number_(player_number), player_state_(PS_WAIT)
 {
 	memset(info_, MI_EMPTY, sizeof(info_));
 	memset(didAttacked_, false, sizeof(didAttacked_));
@@ -88,15 +88,15 @@ void Player::SetState(PlayerState state)
 {
 	switch (state)
 	{
-	case WAIT:
+	case PS_WAIT:
 	{
 		player_state_ = state;
 	}break;
-	case READY:
+	case PS_READY:
 	{
 		player_state_ = state;
 	}break;
-	case ON_GAME:
+	case PS_ON_GAME:
 	{
 		player_state_ = state;
 	}break;
