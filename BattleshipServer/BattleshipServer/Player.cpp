@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "EventManager.h"
 
 
 Player::Player(std::wstring name, PlayerNumber player_number)
@@ -13,14 +12,8 @@ Player::Player(std::wstring name, PlayerNumber player_number)
 
 Player::~Player()
 {
-	EventManager::GetInstance()->RemoveEventListener(this);
 }
 
-
-void Player::Notify(EventHeader* event)
-{
-
-}
 
 ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
 {

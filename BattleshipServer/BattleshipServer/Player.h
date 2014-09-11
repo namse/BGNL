@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "EventListener.h"
-class Player : public EventListener
+class Player
 {
 public:
 	Player(std::wstring name, PlayerNumber player_number);
