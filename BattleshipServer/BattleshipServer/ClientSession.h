@@ -5,6 +5,7 @@
 #include "Config.h"
 #include "CircularBuffer.h"
 #include "ObjectPool.h"
+#include "EventListener.h"
 
 #define BUFSIZE	(128)
 
@@ -20,19 +21,13 @@ struct OverlappedIO : public OVERLAPPED
 	ClientSession* mObject ;
 } ;
 
-class ClientSession// : public ObjectPool<ClientSession>
+class ClientSession
+	: public ObjectPool<ClientSession>, 
+	public EventListener
 {
 public:
-	ClientSession(SOCKET sock)
-		: mConnected(false), mLogon(false), mSocket(sock), mPlayerId(sock), mOverlappedRequested(0)
-		, mPosX(0), mPosY(0), mPosZ(0), mDbUpdateCount(0), recvLength(0)
-	{
-		memset(&mClientAddr, 0, sizeof(SOCKADDR_IN)) ;
-		memset(mPlayerName, 0, sizeof(mPlayerName)) ;
-	}
-	~ClientSession()
-	{
-	}
+	ClientSession(SOCKET sock);
+	~ClientSession();
 
 
 	
@@ -58,6 +53,8 @@ public:
 	void	DecOverlappedRequest()		{ --mOverlappedRequested ; }
 	bool	DoingOverlappedOperation() const { return mOverlappedRequested > 0 ; }
 
+
+	void Notify(EventHeader* event);
 public:
 
 	void HandleSubmitNameRequest(Packet::SubmitNameRequest& inPacket);

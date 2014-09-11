@@ -1,4 +1,3 @@
-/*
 #pragma once
 #include "stdafx.h"
 
@@ -67,4 +66,3 @@ template <class TOBJECT, int ALLOC_COUNT>
 int ObjectPool<TOBJECT, ALLOC_COUNT>::mCurrentUseCount = 0 ;
 
 
-*/

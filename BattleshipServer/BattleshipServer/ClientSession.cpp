@@ -40,7 +40,26 @@ struct RegisterHandler
 
 //@}
 
+ClientSession::ClientSession(SOCKET sock)
+	: mConnected(false), mLogon(false), mSocket(sock), mPlayerId(sock), mOverlappedRequested(0)
+	, mPosX(0), mPosY(0), mPosZ(0), mDbUpdateCount(0), recvLength(0)
+{
+	memset(&mClientAddr, 0, sizeof(SOCKADDR_IN));
+	memset(mPlayerName, 0, sizeof(mPlayerName));
+	EventManager::GetInstance()->AddEventListener(EVT_ERROR, this);
+	EventManager::GetInstance()->AddEventListener(EVT_OK, this);
+	EventManager::GetInstance()->AddEventListener(EVT_GAME_START, this);
+	EventManager::GetInstance()->AddEventListener(EVT_MY_TURN, this);
+	EventManager::GetInstance()->AddEventListener(EVT_ATTACK_RESULT, this);
+	EventManager::GetInstance()->AddEventListener(EVT_GAME_OVER, this);
+	EventManager::GetInstance()->AddEventListener(EVT_NEXT_GAME, this);
+	EventManager::GetInstance()->AddEventListener(EVT_ALL_OVER, this);
+}
 
+ClientSession::~ClientSession()
+{
+	EventManager::GetInstance()->RemoveEventListener(this);
+}
 
 bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 {
@@ -227,6 +246,73 @@ void ClientSession::OnTick()
 }
 
 
+void ClientSession::Notify(EventHeader* event)
+{
+	if (event->player_number_ == mPlayerId)
+	{
+		switch (event->event_type_)
+		{
+		case EVT_ERROR:
+		{
+			Event::ErrorEvent* recvEvent = (Event::ErrorEvent*)event;
+			Packet::ErrorResult outPacket;
+			outPacket.mErrorType = recvEvent->event_type_;
+			SendRequest(&outPacket);
+
+		}break;
+		case EVT_OK:
+		{
+			Packet::OKResult outPacket;
+			SendRequest(&outPacket);
+		}break;
+		case EVT_GAME_START:
+		{
+			Packet::GameStartResult outPacket;
+			SendRequest(&outPacket);
+		}break;
+		case EVT_MY_TURN:
+		{
+			Packet::MyTurnResult outPacket;
+			SendRequest(&outPacket);
+		}break;
+		case EVT_ATTACK_RESULT:
+		{
+			Event::AttackEvent* recvEvent = (Event::AttackEvent*)event;
+
+			Packet::AttackResult outPacket;
+			outPacket.x = recvEvent->x;
+			outPacket.y = recvEvent->y;
+			outPacket.mAttackResult = recvEvent->event_type_;
+			SendRequest(&outPacket);
+		}break;
+		case EVT_GAME_OVER:
+		{
+			Event::GameOverEvent* recvEvent = (Event::GameOverEvent*)event;
+
+			Packet::GameOverResult outPacket;
+			outPacket.mIsWinner = recvEvent->is_winner_;
+			outPacket.mTurns = recvEvent->turns_;
+			SendRequest(&outPacket);
+		}break;
+		case EVT_NEXT_GAME:
+		{
+			Packet::NextGameResult outPacket;
+			SendRequest(&outPacket);
+		}break;
+		case EVT_ALL_OVER:
+		{
+			Event::AllOverEvent* recvEvent = (Event::AllOverEvent*)event;
+
+			Packet::AllOverResult outPacket;
+			outPacket.mAverageTruns = recvEvent->average_truns_;
+			outPacket.mWinCount = recvEvent->win_count_;
+			SendRequest(&outPacket);
+		}break;
+		default:
+			break;
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////
 

@@ -30,9 +30,9 @@ namespace Event
 		ErrorEvent()
 		{
 			event_type_ = EVT_ERROR;
-			mErrorType = EVT_NONE;
+			error_type_ = EVT_NONE;
 		}
-		int mErrorType;
+		int error_type_;
 	};
 
 	struct OKEvent : public EventHeader
@@ -93,16 +93,27 @@ namespace Event
 		int x, y;
 	};
 
+	struct AttackEvent : public EventHeader
+	{
+		AttackEvent()
+		{
+			event_type_ = EVT_ATTACK_RESULT;
+			x = y = -1;
+			attack_result_ = AR_NONE;
+		}
+		int x, y;
+		ATTACK_RESULT attack_result_;
+	};
 	struct GameOverEvent : public EventHeader
 	{
 		GameOverEvent()
 		{
 			event_type_ = EVT_GAME_OVER;
-			mTurns = -1;
-			mIsWinner = false;
+			turns_ = -1;
+			is_winner_ = false;
 		}
-		bool mIsWinner;
-		int mTurns;
+		bool is_winner_;
+		int turns_;
 	};
 
 	struct NextGameEvent : public EventHeader
@@ -118,11 +129,11 @@ namespace Event
 		AllOverEvent()
 		{
 			event_type_ = EVT_ALL_OVER;
-			mWinCount = -1;
-			mAverageTruns = NAN;
+			win_count_ = -1;
+			average_truns_ = NAN;
 		}
-		int mWinCount;
-		float mAverageTruns;
+		int win_count_;
+		float average_truns_;
 	};
 
 }
