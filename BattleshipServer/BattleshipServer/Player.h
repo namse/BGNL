@@ -11,14 +11,24 @@ public:
 	bool IsGameEnd();
 
 
-	void SetMap(MAP_INFO info[MAP_WIDTH][MAP_HEIGHT])
+	void SetMap(char info[MAP_WIDTH][MAP_HEIGHT])
 	{
-		memcpy(info_, info, sizeof(info_));
+		for (int x = 0; x < MAP_WIDTH; x++)
+		{
+			for (int y = 0; y < MAP_HEIGHT; y++)
+			{
+				info_[x][y] = (MAP_INFO)info[x][y];
+			}
+		}
 		memset(didAttacked_, false, sizeof(didAttacked_));
 	}
 
 	void SetState(PlayerState state);
-
+	void SetEnemy(PlayerNumber enemyNumber)
+	{
+		enemy_number_ = enemyNumber;
+	}
+	PlayerState GetState() { return player_state_; }
 private:
 	bool IsShipDestoryed(MAP_INFO shipType);
 private:
@@ -27,5 +37,6 @@ private:
 	std::wstring name_;
 	PlayerNumber player_number_;
 	PlayerState player_state_;
+	PlayerNumber enemy_number_;
 };
 

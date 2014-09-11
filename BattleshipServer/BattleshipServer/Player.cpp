@@ -3,7 +3,7 @@
 
 
 Player::Player(std::wstring name, PlayerNumber player_number)
-	:name_(name), player_number_(player_number), player_state_(PS_WAIT)
+	:name_(name), player_number_(player_number), player_state_(PS_WAIT), enemy_number_(-1)
 {
 	memset(info_, MI_EMPTY, sizeof(info_));
 	memset(didAttacked_, false, sizeof(didAttacked_));
@@ -96,6 +96,10 @@ void Player::SetState(PlayerState state)
 	{
 		player_state_ = state;
 	}break;
+	case PS_WAIT_MAP:
+	{
+		player_state_ = state;
+	}break;
 	case PS_ON_GAME:
 	{
 		player_state_ = state;
@@ -103,4 +107,14 @@ void Player::SetState(PlayerState state)
 	default:
 		break;
 	}
+}
+
+
+bool Player::IsGameEnd()
+{
+	return IsShipDestoryed(MAP_INFO::MI_AIRCRAFT)
+		&& IsShipDestoryed(MAP_INFO::MI_BATTLESHIP)
+		&& IsShipDestoryed(MAP_INFO::MI_CRUSIER)
+		&& IsShipDestoryed(MAP_INFO::MI_DESTORYER_1)
+		&& IsShipDestoryed(MAP_INFO::MI_DESTORYER_2);
 }

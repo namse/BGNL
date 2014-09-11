@@ -202,7 +202,7 @@ extern IWICImagingFactory* g_pWICFactory;
 // for logic
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
-
+#define MAX_GAME_COUNT 10
 
 
 typedef int PlayerNumber;
@@ -212,6 +212,7 @@ enum PlayerState
 {
 	PS_WAIT,
 	PS_READY,
+	PS_WAIT_MAP,
 	PS_ON_GAME,
 };
 

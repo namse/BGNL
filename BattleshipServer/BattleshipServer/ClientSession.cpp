@@ -290,7 +290,7 @@ void ClientSession::Notify(EventHeader* event)
 			Event::GameOverEvent* recvEvent = (Event::GameOverEvent*)event;
 
 			Packet::GameOverResult outPacket;
-			outPacket.mIsWinner = recvEvent->is_winner_;
+			outPacket.mIsWinner = (recvEvent->winner_ == mPlayerId);
 			outPacket.mTurns = recvEvent->turns_;
 			SendRequest(&outPacket);
 		}break;

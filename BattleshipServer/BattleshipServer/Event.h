@@ -116,10 +116,10 @@ namespace Event
 		{
 			event_type_ = EVT_GAME_OVER;
 			turns_ = -1;
-			is_winner_ = false;
+			winner_ = -1;
 			game_number_ = -1;
 		}
-		bool is_winner_;
+		PlayerNumber winner_;
 		int turns_;
 		GameNumber game_number_;
 	};

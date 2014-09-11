@@ -22,7 +22,6 @@ void GameManager::Notify(EventHeader* event)
 	{
 	case EVT_NEW_GAME:
 	{
-		Game* game = new Game();
 		GameNumber gameNumber = 0;
 
 		while (true)
@@ -32,6 +31,7 @@ void GameManager::Notify(EventHeader* event)
 			gameNumber++;
 		}
 
+		Game* game = new Game(gameNumber);
 		gameList_.insert(GameList::value_type(gameNumber, game));
 	}break;
 	case EVT_ALL_OVER:
