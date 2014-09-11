@@ -289,6 +289,7 @@ REGISTER_HANDLER(PKT_CS_SUBMIT_NAME)
 void ClientSession::HandleSubmitNameRequest(Packet::SubmitNameRequest& inPacket)
 {
 	Event::SubmitNameEvent event;
+	event.player_number_ = mPlayerId;
 	EventManager::GetInstance()->Notify(&event);
 }
 
@@ -300,6 +301,7 @@ REGISTER_HANDLER(PKT_CS_SUBMIT_MAP)
 void ClientSession::HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket)
 {
 	Event::SubmitMapEvent event;
+	event.player_number_ = mPlayerId;
 	EventManager::GetInstance()->Notify(&event);
 }
 
@@ -311,5 +313,6 @@ REGISTER_HANDLER(PKT_CS_SUBMIT_ATTACK)
 void ClientSession::HandleSubmitAttackRequest(Packet::SubmitAttackRequest& inPacket)
 {
 	Event::SubmitAttackEvent event;
+	event.player_number_ = mPlayerId;
 	EventManager::GetInstance()->Notify(&event);
 }

@@ -24,7 +24,7 @@ class ClientSession// : public ObjectPool<ClientSession>
 {
 public:
 	ClientSession(SOCKET sock)
-		: mConnected(false), mLogon(false), mSocket(sock), mPlayerId(-1), mOverlappedRequested(0)
+		: mConnected(false), mLogon(false), mSocket(sock), mPlayerId(sock), mOverlappedRequested(0)
 		, mPosX(0), mPosY(0), mPosZ(0), mDbUpdateCount(0), recvLength(0)
 	{
 		memset(&mClientAddr, 0, sizeof(SOCKADDR_IN)) ;
@@ -86,7 +86,7 @@ private:
 	bool			mLogon ;
 	SOCKET			mSocket ;
 
-	int				mPlayerId ;
+	PlayerNumber		mPlayerId ; // is Same with socket number.
 	SOCKADDR_IN		mClientAddr ;
 
 

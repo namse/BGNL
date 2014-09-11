@@ -31,7 +31,8 @@ private:
 private:
 	static PlayerManager* instance_;
 
-	std::map<PlayerNumber, Player*> playerList_;
+	typedef std::map<PlayerNumber, Player*> PlayerList;
+	PlayerList playerList_;
 	
 };
 

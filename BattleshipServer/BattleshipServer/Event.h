@@ -19,6 +19,7 @@ enum EventTypes
 struct EventHeader
 {
 	EventTypes event_type_;
+	PlayerNumber player_number_;
 };
 
 namespace Event
@@ -47,13 +48,13 @@ namespace Event
 		SubmitNameEvent()
 		{
 			event_type_ = EVT_SUBMIT_NAME;
-			memset(mName, 0, sizeof(mName));
+			memset(name_, 0, sizeof(name_));
 		}
 		void SetName(wchar_t* name, int length)
 		{
-			memcpy(mName, name, sizeof(wchar_t) * min(MAX_NAME_LEN, length));
+			memcpy(name_, name, sizeof(wchar_t) * min(MAX_NAME_LEN, length));
 		}
-		wchar_t mName[MAX_NAME_LEN];
+		wchar_t name_[MAX_NAME_LEN];
 	};
 
 	struct GameStartEvent : public EventHeader

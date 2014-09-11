@@ -2,7 +2,8 @@
 #include "Player.h"
 
 
-Player::Player()
+Player::Player(std::wstring name, PlayerNumber player_number)
+	:name_(name), player_number_(player_number)
 {
 	memset(info_, MI_EMPTY, sizeof(info_));
 	memset(didAttacked_, false, sizeof(didAttacked_));
@@ -11,6 +12,12 @@ Player::Player()
 
 Player::~Player()
 {
+}
+
+
+void Player::Notify(EventHeader* event)
+{
+
 }
 
 ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
