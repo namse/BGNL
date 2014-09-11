@@ -31,5 +31,8 @@ private:
 	int total_turns_;
 	int win_count_1_;
 	int win_count_2_;
+
+	bool isGameStart;
+
 };
 

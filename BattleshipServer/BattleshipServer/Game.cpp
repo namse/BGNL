@@ -6,7 +6,7 @@
 
 Game::Game(GameNumber game_number)
 	: player1_(-1), player2_(-2), game_number_(game_number), turns_(-1), try_count_(0), total_turns_(0)
-	, win_count_1_(0), win_count_2_(0)
+	, win_count_1_(0), win_count_2_(0), isGameStart(false)
 {
 	EventManager::GetInstance()->AddEventListener(EVT_ADD_PLAYER_1_IN_GAME, this);
 	EventManager::GetInstance()->AddEventListener(EVT_ADD_PLAYER_2_IN_GAME, this);
@@ -29,6 +29,8 @@ void Game::Notify(EventHeader* event)
 {
 	switch (event->event_type_)
 	{
+		if (isGameStart == false)
+		{
 	case EVT_ADD_PLAYER_1_IN_GAME:
 	{
 		Event::AddPlayer1InGameEvent* recvEvent = (Event::AddPlayer1InGameEvent*) event;
@@ -66,6 +68,7 @@ void Game::Notify(EventHeader* event)
 			player->SetState(PS_READY);
 		}
 	}break;
+		}
 	
 	if (event->player_number_ == player1_
 		|| event->player_number_ == player2_)
@@ -192,6 +195,7 @@ void Game::Notify(EventHeader* event)
 
 	case EVT_GAME_START:
 	{
+		isGameStart = true;
 		try_count_++;
 		turns_ = 0;
 		auto player1 = PlayerManager::GetInstance()->GetPlayer(player1_);
