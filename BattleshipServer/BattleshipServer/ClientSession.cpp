@@ -281,15 +281,35 @@ void CALLBACK SendCompletion(DWORD dwError, DWORD cbTransferred, LPWSAOVERLAPPED
 
 //////////////////////////////////////////////////////////////////
 
-//ex)
-/*
-REGISTER_HANDLER(PKT_FIRST_CLICK)
+REGISTER_HANDLER(PKT_CS_SUBMIT_NAME)
 {
-	Packet::FirstClickRequest inPacket = static_cast<Packet::FirstClickRequest&>(pktBase);
-	session->HandleFirstClickRequest(inPacket);
+	Packet::SubmitNameRequest inPacket = static_cast<Packet::SubmitNameRequest&>(pktBase);
+	session->HandleSubmitNameRequest(inPacket);
 }
-void ClientSession::HandleFirstClickRequest(Packet::FirstClickRequest& inPacket)
+void ClientSession::HandleSubmitNameRequest(Packet::SubmitNameRequest& inPacket)
 {
-	Event::FirstClickEvent event;
+	Event::SubmitNameEvent event;
 	EventManager::GetInstance()->Notify(&event);
-}*/
+}
+
+REGISTER_HANDLER(PKT_CS_SUBMIT_MAP)
+{
+	Packet::SubmitMapRequest inPacket = static_cast<Packet::SubmitMapRequest&>(pktBase);
+	session->HandleSubmitMapRequest(inPacket);
+}
+void ClientSession::HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket)
+{
+	Event::SubmitMapEvent event;
+	EventManager::GetInstance()->Notify(&event);
+}
+
+REGISTER_HANDLER(PKT_CS_SUBMIT_ATTACK)
+{
+	Packet::SubmitAttackRequest inPacket = static_cast<Packet::SubmitAttackRequest&>(pktBase);
+	session->HandleSubmitAttackRequest(inPacket);
+}
+void ClientSession::HandleSubmitAttackRequest(Packet::SubmitAttackRequest& inPacket)
+{
+	Event::SubmitAttackEvent event;
+	EventManager::GetInstance()->Notify(&event);
+}

@@ -59,6 +59,10 @@ public:
 	bool	DoingOverlappedOperation() const { return mOverlappedRequested > 0 ; }
 
 public:
+
+	void HandleSubmitNameRequest(Packet::SubmitNameRequest& inPacket);
+	void HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket);
+	void HandleSubmitAttackRequest(Packet::SubmitAttackRequest& inPacket);
 /*
 	void	HandleLoginRequest(LoginRequest& inPacket);
 	void	HandleChatRequest(ChatBroadcastRequest& inPacket);*/
