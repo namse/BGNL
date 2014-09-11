@@ -3,7 +3,7 @@
 
 
 Player::Player(std::wstring name, PlayerNumber player_number)
-	:name_(name), player_number_(player_number)
+	:name_(name), player_number_(player_number), player_state_(WAIT)
 {
 	memset(info_, MI_EMPTY, sizeof(info_));
 	memset(didAttacked_, false, sizeof(didAttacked_));
@@ -13,7 +13,6 @@ Player::Player(std::wstring name, PlayerNumber player_number)
 Player::~Player()
 {
 }
-
 
 ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
 {
@@ -82,4 +81,26 @@ bool Player::IsShipDestoryed(MAP_INFO shipType)
 	}
 
 	return true;
+}
+
+
+void Player::SetState(PlayerState state)
+{
+	switch (state)
+	{
+	case WAIT:
+	{
+		player_state_ = state;
+	}break;
+	case READY:
+	{
+		player_state_ = state;
+	}break;
+	case ON_GAME:
+	{
+		player_state_ = state;
+	}break;
+	default:
+		break;
+	}
 }

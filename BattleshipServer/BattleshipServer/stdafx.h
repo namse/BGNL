@@ -208,6 +208,13 @@ extern IWICImagingFactory* g_pWICFactory;
 typedef int PlayerNumber;
 typedef int GameNumber;
 
+enum PlayerState
+{
+	WAIT,
+	READY,
+	ON_GAME,
+};
+
 
 //for server
 /// accepting list

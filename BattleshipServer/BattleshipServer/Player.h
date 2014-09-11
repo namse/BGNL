@@ -17,6 +17,8 @@ public:
 		memset(didAttacked_, false, sizeof(didAttacked_));
 	}
 
+	void SetState(PlayerState state);
+
 private:
 	bool IsShipDestoryed(MAP_INFO shipType);
 private:
@@ -24,5 +26,6 @@ private:
 	bool didAttacked_[MAP_WIDTH][MAP_HEIGHT];
 	std::wstring name_;
 	PlayerNumber player_number_;
+	PlayerState player_state_;
 };
 
