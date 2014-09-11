@@ -149,8 +149,10 @@ namespace Packet
 			mType = PKT_SC_ATTACK_RESULT;
 			x = y = -1;
 			mAttackResult = AR_NONE;
+			mIsMine = false;
 		}
 		int x, y, mAttackResult;
+		bool mIsMine;
 	};
 
 	struct GameOverResult : public PacketHeader
