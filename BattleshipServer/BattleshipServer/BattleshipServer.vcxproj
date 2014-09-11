@@ -97,6 +97,7 @@
     <ClInclude Include="EventParameter.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PacketType.h" />
+    <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="ProducerConsumerQueue.h" />
     <ClInclude Include="pugiconfig.hpp" />
     <ClInclude Include="pugixml.hpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="pugixml.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

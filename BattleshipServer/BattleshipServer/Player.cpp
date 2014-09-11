@@ -4,7 +4,7 @@
 
 Player::Player()
 {
-	memset(info_, MAP_INFO::EMPTY, sizeof(info_));
+	memset(info_, MI_EMPTY, sizeof(info_));
 	memset(didAttacked_, false, sizeof(didAttacked_));
 }
 
@@ -20,15 +20,15 @@ ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
 	{
 		//OH;;
 		std::cout << "ERROR : Attack Range is over, X = " << x << ", Y = " << y << std::endl;
-		return ATTACK_RESULT::NONE;
+		return AR_NONE;
 	}
 	didAttacked_[x][y] = true;
 
 	MAP_INFO shipType = info_[x][y];
 
-	if (shipType == MAP_INFO::EMPTY)
+	if (shipType == MI_EMPTY)
 	{
-		return ATTACK_RESULT::MISS;
+		return AR_MISS;
 	}
 	else
 	{
@@ -36,34 +36,34 @@ ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
 		{
 			switch (shipType)
 			{
-			case AIRCRAFT:
-				return ATTACK_RESULT::DESTORY_AIRCRAFT;
+			case MI_AIRCRAFT:
+				return AR_DESTORY_AIRCRAFT;
 				break;
-			case BATTLESHIP:
-				return ATTACK_RESULT::DESTORY_BATTLESHIP;
+			case MI_BATTLESHIP:
+				return AR_DESTORY_BATTLESHIP;
 				break;
-			case CRUSIER:
-				return ATTACK_RESULT::DESTORY_CRUSIER;
+			case MI_CRUSIER:
+				return AR_DESTORY_CRUSIER;
 				break;
-			case DESTORYER_1:
-			case DESTORYER_2:
-				return ATTACK_RESULT::DESTORY_DESTORYER;
+			case MI_DESTORYER_1:
+			case MI_DESTORYER_2:
+				return AR_DESTORY_DESTORYER;
 				break;
 			default:
-				return ATTACK_RESULT::NONE;
+				return AR_NONE;
 				break;
 			}
 		}
 		else
 		{
-			return ATTACK_RESULT::HIT;
+			return AR_HIT;
 		}
 	}
 }
 
 bool Player::IsShipDestoryed(MAP_INFO shipType)
 {
-	if (shipType == MAP_INFO::EMPTY)
+	if (shipType == MI_EMPTY)
 		return false;
 
 	for (int x = 0; x < MAP_WIDTH; x++)

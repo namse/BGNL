@@ -43,6 +43,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>LogicPart\Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerManager.cpp">
+      <Filter>LogicPart\PlayerManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -111,11 +114,11 @@
     <ClInclude Include="Player.h">
       <Filter>LogicPart\Player</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerManager.h">
+      <Filter>LogicPart\PlayerManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="NewFilter5">
-      <UniqueIdentifier>{c1ee248c-3fae-4f43-a045-cf932b5c6500}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application">
       <UniqueIdentifier>{1b1d8c04-3730-4254-9416-6b569320bb6d}</UniqueIdentifier>
     </Filter>
@@ -151,6 +154,9 @@
     </Filter>
     <Filter Include="LogicPart\Player">
       <UniqueIdentifier>{44dae606-afc3-4d52-8dac-026436cdb099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LogicPart\PlayerManager">
+      <UniqueIdentifier>{c6763a3d-4b2e-4bb8-a8df-81ab9fb36396}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
