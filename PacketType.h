@@ -142,6 +142,18 @@ namespace Packet
 		int x, y;
 	};
 
+	struct AttackResult : public PacketHeader
+	{
+		AttackResult()
+		{
+			mSize = sizeof(AttackResult);
+			mType = PKT_SC_ATTACK_RESULT;
+			x = y = -1;
+			mAttackResult = AR_NONE;
+		}
+		int x, y, mAttackResult;
+	};
+
 	struct GameOverResult : public PacketHeader
 	{
 		GameOverResult()

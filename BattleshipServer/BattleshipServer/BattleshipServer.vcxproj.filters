@@ -108,14 +108,14 @@
     <ClInclude Include="targetver.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="PacketType.h">
-      <Filter>ServerPart</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>LogicPart\Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerManager.h">
       <Filter>LogicPart\PlayerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PacketType.h">
+      <Filter>ServerPart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

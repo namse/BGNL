@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\PacketType.h" />
     <ClInclude Include="animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="CircularBuffer.h" />
@@ -96,7 +97,6 @@
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="EventParameter.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="PacketType.h" />
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="ProducerConsumerQueue.h" />
     <ClInclude Include="pugiconfig.hpp" />
