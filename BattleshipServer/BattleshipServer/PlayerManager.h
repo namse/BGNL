@@ -4,6 +4,7 @@
 #include "EventListener.h"
 class PlayerManager : public  EventListener
 {
+public:
 	static PlayerManager* GetInstance()
 	{
 		if (instance_ == nullptr)
@@ -24,7 +25,14 @@ class PlayerManager : public  EventListener
 
 	void Notify(EventHeader* event);
 
+	std::list<PlayerNumber> GetWaitingPlayer();
 
+	Player* GetPlayer(PlayerNumber playerNumber)
+	{
+		if (playerList_.find(playerNumber) != playerList_.end())
+			return playerList_[playerNumber];
+		return nullptr;
+	}
 private:
 	PlayerManager();
 	~PlayerManager();
@@ -34,6 +42,5 @@ private:
 
 	typedef std::map<PlayerNumber, Player*> PlayerList;
 	PlayerList playerList_;
-	
 };
 

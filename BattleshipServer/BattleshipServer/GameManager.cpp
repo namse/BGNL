@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include "EventManager.h"
 
+GameManager* GameManager::pInstance_ = nullptr;
 
 GameManager::GameManager()
 {
@@ -23,10 +24,10 @@ void GameManager::Notify(EventHeader* event)
 	{
 		Game* game = new Game();
 		GameNumber gameNumber = 0;
-		
-		while ( true )
+
+		while (true)
 		{
-			if (gameList_.find(gameNumber) != gameList_.end() )
+			if (gameList_.find(gameNumber) != gameList_.end())
 				break;
 			gameNumber++;
 		}

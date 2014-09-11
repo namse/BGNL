@@ -2,6 +2,9 @@
 #include "PlayerManager.h"
 #include "EventManager.h"
 
+
+PlayerManager* PlayerManager::instance_ = nullptr;
+
 PlayerManager::PlayerManager()
 {
 	playerList_.clear();
