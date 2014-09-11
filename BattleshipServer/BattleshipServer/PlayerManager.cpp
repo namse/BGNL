@@ -11,6 +11,7 @@ PlayerManager::PlayerManager()
 
 PlayerManager::~PlayerManager()
 {
+	EventManager::GetInstance()->RemoveEventListener(this);
 }
 
 
