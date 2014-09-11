@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 
 #define MAX_NAME_LEN	32
 enum PacketTypes
