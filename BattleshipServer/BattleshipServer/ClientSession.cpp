@@ -1,6 +1,5 @@
 ﻿#include "stdafx.h"
 #include "ClientSession.h"
-#include "PacketType.h"
 #include "ClientManager.h"
 #include "EventManager.h"
 #include "Event.h"

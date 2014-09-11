@@ -2,7 +2,6 @@
 #include "EasyServer.h"
 
 #include "Config.h"
-#include "PacketType.h"
 
 #include "ClientSession.h"
 #include "ClientManager.h"

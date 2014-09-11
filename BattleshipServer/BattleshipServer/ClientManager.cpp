@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "EasyServer.h"
-#include "PacketType.h"
 #include "ClientSession.h"
 #include "ClientManager.h"
 
