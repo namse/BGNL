@@ -1,5 +1,5 @@
 #pragma once
-
+#include <math.h>
 #define MAX_NAME_LEN	32
 enum PacketTypes
 {
