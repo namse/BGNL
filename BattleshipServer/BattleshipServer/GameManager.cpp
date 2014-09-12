@@ -26,7 +26,7 @@ void GameManager::Notify(EventHeader* event)
 
 		while (true)
 		{
-			if (gameList_.find(gameNumber) != gameList_.end())
+			if (gameList_.find(gameNumber) == gameList_.end())
 				break;
 			gameNumber++;
 		}
