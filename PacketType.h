@@ -1,5 +1,7 @@
 #pragma once
 #include <math.h>
+#include <memory.h>
+#define min(a,b) (((a)<(b))?(a):(b))
 #define MAX_NAME_LEN	16
 
 enum PacketTypes
