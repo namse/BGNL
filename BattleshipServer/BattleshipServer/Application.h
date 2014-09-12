@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Component.h"
+#include "AutoMatcher.h"
 /******************************************************************
 *                                                                 *
 *  Application                                                  *
@@ -84,5 +85,7 @@ private:
 
 
 	bool ShowText;
+
+	AutoMatcher autoMatcher_;
 };
 

@@ -23,6 +23,30 @@ Game::~Game()
 	EventManager::GetInstance()->RemoveEventListener(this);
 }
 
+bool Game::IsFull()
+{
+	DropDisconnectedPlayer();
+	return PlayerManager::GetInstance()->GetPlayer(player1_) != nullptr
+		&& PlayerManager::GetInstance()->GetPlayer(player1_) != nullptr;
+}
+void Game::DropPlayer(bool isPlayer1)
+{
+	if (isPlayer1)
+	{
+		auto player = PlayerManager::GetInstance()->GetPlayer(player2_);
+		if (player != nullptr)
+			player->SetState(PS_WAIT);
+		player1_ = -1;
+	}
+	else
+	{
+		auto player = PlayerManager::GetInstance()->GetPlayer(player2_);
+		if (player != nullptr)
+			player->SetState(PS_WAIT);
+		player2_ = -1;
+
+	}
+}
 
 
 void Game::Notify(EventHeader* event)
@@ -69,10 +93,10 @@ void Game::Notify(EventHeader* event)
 		}
 	}break;
 		}
-	
-	if (event->player_number_ == player1_
-		|| event->player_number_ == player2_)
-	{
+
+		if (event->player_number_ == player1_
+			|| event->player_number_ == player2_)
+		{
 
 
 	case EVT_SUBMIT_ATTACK:
@@ -118,7 +142,7 @@ void Game::Notify(EventHeader* event)
 			if (player1_ == player_number)
 				win_count_1_++;
 			else
-				win_count_2_ ++;
+				win_count_2_++;
 		}
 	}break;
 
@@ -200,7 +224,7 @@ void Game::Notify(EventHeader* event)
 		turns_ = 0;
 		auto player1 = PlayerManager::GetInstance()->GetPlayer(player1_);
 		auto player2 = PlayerManager::GetInstance()->GetPlayer(player2_);
-		
+
 		if (player1 == nullptr ||
 			player2 == nullptr)
 		{
@@ -212,7 +236,7 @@ void Game::Notify(EventHeader* event)
 		player1->SetState(PlayerState::PS_WAIT_MAP);
 		player2->SetState(PlayerState::PS_WAIT_MAP);
 	}break;
-	}
+		}
 	default:
 		break;
 	}

@@ -37,3 +37,16 @@ void PlayerManager::Notify(EventHeader* event)
 		break;
 	}
 }
+
+std::list<PlayerNumber> PlayerManager::GetWaitingPlayers()
+{
+	std::list<PlayerNumber> ret;
+	for (auto& player : playerList_)
+	{
+		if (player.second->GetState() == PS_WAIT)
+		{
+			ret.push_back(player.first);
+		}
+	}
+	return ret;
+}

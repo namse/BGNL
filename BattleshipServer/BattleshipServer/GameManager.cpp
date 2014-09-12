@@ -50,3 +50,28 @@ void GameManager::Notify(EventHeader* event)
 		break;
 	}
 }
+
+
+
+std::list<GameNumber> GameManager::GetWaitingGames(bool wannaNonFull)
+{
+	std::list<GameNumber> ret;
+	for (auto& game : gameList_)
+	{
+		if (game.second->IsGameStart() == false)
+		{
+			if (wannaNonFull == true)
+			{
+				if (game.second->IsFull() == false)
+				{
+					ret.push_back(game.first);
+				}
+			}
+			else
+			{
+				ret.push_back(game.first);
+			}
+		}
+	}
+	return ret;
+}

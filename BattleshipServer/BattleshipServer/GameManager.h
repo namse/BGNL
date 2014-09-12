@@ -2,6 +2,9 @@
 #include "stdafx.h"
 #include "EventListener.h"
 #include "Game.h"
+
+typedef std::map<GameNumber, Game*> GameList;
+
 class GameManager :
 	public EventListener
 {
@@ -23,7 +26,9 @@ public:
 		}
 	}
 
-		void Notify(EventHeader* event);
+	void Notify(EventHeader* event);
+
+	std::list<GameNumber> GetWaitingGames(bool wannaNonFull = true);
 
 	private:
 		GameManager();
@@ -31,7 +36,6 @@ public:
 
 
 		static GameManager* pInstance_;
-	typedef std::map<GameNumber, Game*> GameList;
 	GameList gameList_;
 };
 

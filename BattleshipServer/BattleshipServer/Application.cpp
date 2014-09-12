@@ -70,7 +70,7 @@ m_logZoom(sc_loupeDefaultLogZoom*WHEEL_DELTA)
 	m_pDWriteFactory = NULL;
 	m_pTextFormat = NULL;
 
-
+	AddChild(&autoMatcher_);
 }
 
 /******************************************************************

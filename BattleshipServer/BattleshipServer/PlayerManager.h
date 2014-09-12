@@ -25,7 +25,7 @@ public:
 
 	void Notify(EventHeader* event);
 
-	std::list<PlayerNumber> GetWaitingPlayer();
+	std::list<PlayerNumber> GetWaitingPlayers();
 
 	Player* GetPlayer(PlayerNumber playerNumber)
 	{

@@ -10,8 +10,24 @@ public:
 
 	void Notify(EventHeader* event);
 	
+	bool IsGameStart()
+	{
+		return isGameStart;
+	}
+
+	bool IsFull();
+
+
 	
 private:
+
+	void DropPlayer(bool isPlayer1);
+
+	void DropDisconnectedPlayer()
+	{
+		DropPlayer(true);
+		DropPlayer(false);
+	}
 
 	PlayerNumber GetOpponent(PlayerNumber playerNumber)
 	{

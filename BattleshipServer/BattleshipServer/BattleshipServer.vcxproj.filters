@@ -52,6 +52,9 @@
     <ClCompile Include="Game.cpp">
       <Filter>LogicPart\Game</Filter>
     </ClCompile>
+    <ClCompile Include="AutoMatcher.cpp">
+      <Filter>Interface\AutoMatcher</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -129,6 +132,9 @@
     <ClInclude Include="Game.h">
       <Filter>LogicPart\Game</Filter>
     </ClInclude>
+    <ClInclude Include="AutoMatcher.h">
+      <Filter>Interface\AutoMatcher</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -175,6 +181,12 @@
     </Filter>
     <Filter Include="LogicPart\GameManager">
       <UniqueIdentifier>{7a6d18be-d9fb-469e-bc07-a38ec4f1b9bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{f593e6ec-7d77-499e-b1fc-df7821c6d8b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\AutoMatcher">
+      <UniqueIdentifier>{390277a4-d84c-4e14-acf7-e0472607c0bb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
