@@ -1,6 +1,7 @@
 #pragma once
 #include <math.h>
-#define MAX_NAME_LEN	32
+#define MAX_NAME_LEN	16
+
 enum PacketTypes
 {
 	// SC : Server -> Client

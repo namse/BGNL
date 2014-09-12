@@ -6,12 +6,10 @@
 
 
 Network::Network()
-:m_Connected(false)
+:m_Socket(INVALID_SOCKET), m_Connected(false)
 {
 	ZeroMemory(&m_WSAData, sizeof(m_WSAData));
-	ZeroMemory(&m_Socket, sizeof(m_Socket));
 	ZeroMemory(&m_ServerAddr, sizeof(m_ServerAddr));
-
 }
 
 
@@ -77,7 +75,10 @@ Network::NetworkResult Network::SubmitName(const wchar_t* const name)
 	_ASSERT(name);
 	if (!name || !m_Connected) return NETWORK_ERROR;
 
-	return Send((void*)name, sizeof(wchar_t) * NAME_LEN);
+	Packet::SubmitNameRequest packet;
+	wcscpy_s(packet.mName, name);
+
+	return Send(&packet, sizeof(packet));
 }
 
 Network::NetworkResult Network::SubmitMap(const char* const mapData)
@@ -85,7 +86,10 @@ Network::NetworkResult Network::SubmitMap(const char* const mapData)
 	_ASSERT(mapData);
 	if (!mapData || !m_Connected) return NETWORK_ERROR;
 
-	return Send((void*)mapData, sizeof(char)* MAP_SIZE);
+	Packet::SubmitMapRequest packet;
+	memcpy_s(packet.mMap, MAP_SIZE, mapData, MAP_SIZE);
+
+	return Send(&packet, sizeof(packet));
 }
 
 Network::NetworkResult Network::SubmitAttack(const int x, const int y)
@@ -93,49 +97,81 @@ Network::NetworkResult Network::SubmitAttack(const int x, const int y)
 	if (!m_Connected) return NETWORK_ERROR;
 	int pos[2] = { x, y };
 
-	return Send((void*)pos, sizeof(pos));
+	Packet::SubmitAttackRequest packet;
+	packet.x = x;
+	packet.y = y;
+
+	return Send(&packet, sizeof(packet));
 }
 
 
 // Recive °è¿­
-Network::NetworkResult Network::GetPacketType(PacketType* const type)
+Network::NetworkResult Network::GetPacketType(short* const type)
 {
 	_ASSERT(type);
 	if (!type || !m_Connected) return NETWORK_ERROR;
+	
+	PacketHeader header;
+	NetworkResult result;
 
-	return Recive((void*)type, sizeof(type));
+	result = Recive(&header, sizeof(PacketHeader));
+	*type = header.mType;
+	
+	return result;
 }
 
-Network::NetworkResult Network::GetErrorType(ErrorType* const error)
+Network::NetworkResult Network::GetErrorType(short* const error)
 {
 	_ASSERT(error);
 	if (!error || !m_Connected) return NETWORK_ERROR;
-
-	return Recive((void*)error, sizeof(error));
+	return Recive(error, sizeof(short));
 }
 
-Network::NetworkResult Network::GetAttackResult(AttackResultPacket* const data)
+Network::NetworkResult Network::GetAttackResult(AttackResult* const data)
 {
 	_ASSERT(data);
 	if (!data || !m_Connected) return NETWORK_ERROR;
 
-	return Recive((void*)data, sizeof(data));
+	Packet::AttackResult packet;
+	NetworkResult result;
+
+	result = Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
+	data->attackResult = packet.mAttackResult;
+	data->x = packet.x;
+	data->y = packet.y;
+	data->isMine = packet.mIsMine;
+
+	return result;
 }
 
-Network::NetworkResult Network::GetGameResult(GameResultPacket* const data)
+Network::NetworkResult Network::GetGameResult(GameResult* const data)
 {
 	_ASSERT(data);
 	if (!data || !m_Connected) return NETWORK_ERROR;
 
-	return Recive((void*)data, sizeof(data));
+	Packet::GameOverResult packet;
+	NetworkResult result;
+
+	result = Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
+	data->isWinner = packet.mIsWinner;
+	data->turns = packet.mTurns;
+
+	return result;
 }
 
-Network::NetworkResult Network::GetFinalResult(FinalResultPacket* const data)
+Network::NetworkResult Network::GetFinalResult(FinalResult* const data)
 {
 	_ASSERT(data);
 	if (!data && !m_Connected) return NETWORK_ERROR;
 
-	return Recive((void*)data, sizeof(data));
+	Packet::AllOverResult packet;
+	NetworkResult result;
+
+	result = Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
+	data->winCount = packet.mWinCount;
+	data->avgTurns = packet.mAverageTruns;
+
+	return result;
 }
 
 
