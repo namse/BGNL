@@ -86,6 +86,8 @@ private:
 	PlayerNumber		mPlayerId ; // is Same with socket number.
 	SOCKADDR_IN		mClientAddr ;
 
+	CircularBuffer	mSendBuffer;
+	CircularBuffer	mRecvBuffer;
 
 	OverlappedIO	mOverlappedSend ;
 	OverlappedIO	mOverlappedRecv ;
@@ -95,8 +97,6 @@ private:
 
 	friend class ClientManager ;
 
-	char buf[BUFSIZE];
-	int recvLength;
 } ;
 
 
