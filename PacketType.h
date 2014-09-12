@@ -159,7 +159,7 @@ namespace Packet
 			mType = PKT_CS_SUBMIT_MAP;
 			memset(mCoords, 0, sizeof(mCoords));
 		}
-		char mCoords[SHNIPS_TOTAL_LENGTH];
+		Coord mCoords[SHNIPS_TOTAL_LENGTH];
 	};
 
 	struct MyTurnResult : public PacketHeader
