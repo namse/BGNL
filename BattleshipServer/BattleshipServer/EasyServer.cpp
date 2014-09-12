@@ -60,7 +60,7 @@ bool EasyServer::Run()
 
 	/// APC Queue에 쌓인 작업들 처리
 	SleepEx(1, TRUE);
-
+	GClientManager->FlushClientSend();
 	GClientManager->OnPeriodWork();
 	return true;
 }

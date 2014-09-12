@@ -43,8 +43,8 @@ AttackResult Player::AttackAndGetResult(int x, int y)
 			case MI_BATTLESHIP:
 				return AR_DESTORY_BATTLESHIP;
 				break;
-			case MI_CRUSIER:
-				return AR_DESTORY_CRUSIER;
+			case MI_CRUISER:
+				return AR_DESTORY_CRUISER;
 				break;
 			case MI_DESTORYER_1:
 			case MI_DESTORYER_2:
@@ -114,7 +114,7 @@ bool Player::IsGameEnd()
 {
 	return IsShipDestoryed(MapInfo::MI_AIRCRAFT)
 		&& IsShipDestoryed(MapInfo::MI_BATTLESHIP)
-		&& IsShipDestoryed(MapInfo::MI_CRUSIER)
+		&& IsShipDestoryed(MapInfo::MI_CRUISER)
 		&& IsShipDestoryed(MapInfo::MI_DESTORYER_1)
 		&& IsShipDestoryed(MapInfo::MI_DESTORYER_2);
 }

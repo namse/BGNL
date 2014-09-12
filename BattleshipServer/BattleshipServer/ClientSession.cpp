@@ -254,6 +254,7 @@ void ClientSession::Notify(EventHeader* event)
 		case EVT_OK:
 		{
 			Packet::OKResult outPacket;
+
 			SendRequest(&outPacket);
 		}break;
 		case EVT_GAME_START:
@@ -384,8 +385,51 @@ void ClientSession::HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket)
 
 	Event::SubmitMapEvent event;
 	event.player_number_ = mPlayerId;
+
+	int count = 0;
+	MapInfo shipType = MI_AIRCRAFT;
+	for (Coord coord : inPacket.mCoords)
+	{
+		event.mMap[coord.mX][coord.mY] = shipType;
+		count++;
+		switch (shipType)
+		{
+		case MI_AIRCRAFT:
+			if (count >= AIRCRAFT_LENGTH)
+			{
+				shipType = MI_BATTLESHIP;
+				count = 0;
+			}break;
+		case MI_BATTLESHIP:
+			if (count >= BATTLESHIP_LENGTH)
+			{
+				shipType = MI_CRUISER;
+				count = 0;
+			}break;
+		case MI_CRUISER:
+			if (count >= CRUISER_LENGTH)
+			{
+				shipType = MI_DESTORYER_1;
+				count = 0;
+			}break;
+		case MI_DESTORYER_1:
+			if (count >= DESTROYER_LENGTH)
+			{
+				shipType = MI_DESTORYER_2;
+				count = 0;
+			}break;
+		case MI_DESTORYER_2:
+			if (count >= DESTROYER_LENGTH)
+			{
+				shipType = MI_EMPTY;
+				count = 0;
+			}break;
+		default:
+			break;
+		}
+	}
 	EventManager::GetInstance()->Notify(&event);
-}
+}	
 
 REGISTER_HANDLER(PKT_CS_SUBMIT_ATTACK)
 {

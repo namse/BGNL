@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <shellapi.h>
+#include "GameManager.h"
+#include "PlayerManager.h"
 
 /******************************************************************
 *                                                                 *
@@ -33,6 +35,10 @@ int WINAPI WinMain(
 	EasyServer::GetInstance();
 	DevConsoleCreate();
 	
+	GameManager::GetInstance();
+	PlayerManager::GetInstance();
+
+
 	std::srand(unsigned(std::time(0)));
 	// Ignoring the return value because we want to continue running even in the
 	// unlikely event that HeapSetInformation fails.
