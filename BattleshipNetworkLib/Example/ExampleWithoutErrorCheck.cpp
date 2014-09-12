@@ -1,7 +1,7 @@
 /*
-Name: ExampleWithErrorCheck
-Desc: BGNL 사용 예시 코드입니다. 대다수의 에러 체크를 제거한 코드입니다.
-	  이 코드에서는 흐름만 참고하고, 실제로 사용할 때는 에러를 체크해야합니다.
+	Name: ExampleWithErrorCheck
+	Desc: BGNL 사용 예시 코드입니다. 대다수의 에러 체크를 제거한 코드입니다.
+		  이 코드에서는 흐름만 참고하고, 실제로 사용할 때는 에러를 체크해야합니다.
 */
 #include <stdio.h>
 
@@ -39,11 +39,11 @@ const char* const ATTACK_RESULT_STR[] = {
 void main()
 {
 	Network network;
-	Network::PacketType type;
+	PacketType type;
 
 	/*
-	** 서버에 연결
-	서버의 IP와 포트는 당일날 공지된다.
+		** 서버에 연결
+		서버의 IP와 포트는 당일날 공지된다.
 	*/
 	const char* ip = "127.0.0.1";
 	const unsigned short port = 10000;
@@ -51,35 +51,36 @@ void main()
 	network.Connect(ip, port);
 
 	/*
-	** 이름 전송
-	최대 길이는 NAME_LEN-1 == 15글자.
-	성공시 PT_OK가 온다.
-	이미 있는 이름을 쓰면 PT_ERROR와 함께 ERROR_DUPLICATED_NAME이 온다.
+		** 이름 전송
+		최대 길이는 MAX_NAME_LEN-1 == 15글자.
 	*/
-	const wchar_t name[NAME_LEN] = L"와츄고나두";
+	const wchar_t name[MAX_NAME_LEN] = L"와츄고나두";
 
 	network.SubmitName(name);
 	network.GetPacketType(&type);
 
 	/*
-	** 게임 시작 대기
-	PT_START_GAME 패킷을 기다린다.
+		** 게임 시작 대기
+		PKT_SC_GAME_START 패킷을 기다린다.
 	*/
 	network.GetPacketType(&type);
 
 	/*
-	** 게임 시작
-	맵 제출부터 게임 종료까지 n회 반복한다.
-	모든 게임이 끝나면 PT_ALL_OVER 패킷이 들어온다.
+		** 게임 시작
+		맵 제출부터 게임 종료까지 n회 반복한다.
+		모든 게임이 끝나면 PKT_SC_ALL_OVER 패킷이 들어온다.
 	*/
 	bool allOver = false;
 	while (!allOver)
 	{
 		/*
-		** 맵 제출
-		자신이 배치한 맵 데이터를 서버로 전송한다.
-		맵 데이터는 char형 64크기 배열이다.
-		맵 데이터에 들어가는 값은 MapData 열거형에 들어있다.
+			** 맵 제출
+			자신이 배치한 맵 데이터를 서버로 전송한다.
+			맵 데이터는 char형 32크기 배열이다.
+			맵 데이터에는 배들의 좌표가 순서대로 들어간다.
+			좌표는 0~7인 정수 2개이며,
+			Aircraft 5개, Battleship 4개, Cruiser 3개, Destroyer 2개의 좌표를 가진다.
+			총 좌표는 16개이며 이는 곧 32개의 정수가 된다.
 		*/
 		char mapData[MAP_SIZE] = { 0, };
 
@@ -88,10 +89,10 @@ void main()
 		network.GetPacketType(&type);
 
 		/*
-		** 게임 루프
-		내 차례라면 공격 위치를 전송한다.
-		차례가 끝나면 공격자와 공격 위치, 공격 결과를 받는다.
-		한 게임이 끝나면 PT_GAME_OVER 패킷이 들어온다.
+			** 게임 루프
+			내 차례라면 공격 위치를 전송한다.
+			차례가 끝나면 공격자와 공격 위치, 공격 결과를 받는다.
+			한 게임이 끝나면 PKT_SC_GAME_OVER 패킷이 들어온다.
 		*/
 		bool gameOver = false;
 		while (!gameOver)
@@ -101,22 +102,22 @@ void main()
 			switch (type)
 			{
 				// 내 차례
-			case Network::PT_MY_TURN:
+			case PKT_SC_MY_TURN:
 			{
 				/*
-				** 공격 위치 전송
-				x, y는 0~7 사이의 정수이다.
+					** 공격 위치 전송
+					x, y는 0~7 사이의 정수이다.
 				*/
 				int x, y;
 				MakeAttackPos(&x, &y);
 				network.SubmitAttack(x, y);
-				network.GetPacketType(&type);
+				network.GetPacketType(&type);	// OK를 기다리는 부분
 				break;
 			}
 				// 공격 결과
-			case Network::PT_ATTACK_RESULT:
+			case PKT_SC_ATTACK_RESULT:
 			{
-				Network::AttackResultPacket attackResult;
+				Network::AttackResult attackResult;
 				network.GetAttackResult(&attackResult);
 				if (attackResult.isMine)
 					puts("공격 결과:");
@@ -127,9 +128,9 @@ void main()
 				break;
 			}
 				// 게임 종료
-			case Network::PT_GAME_OVER:
+			case PKT_SC_GAME_OVER:
 			{
-				Network::GameResultPacket gameResult;
+				Network::GameResult gameResult;
 				network.GetGameResult(&gameResult);
 				if (gameResult.isWinner)
 					puts("승리!!!");
@@ -143,13 +144,13 @@ void main()
 		}
 
 		network.GetPacketType(&type);
-		if (type == Network::PT_NEXT_GAME)
+		if (type == PKT_SC_NEXT_GAME)
 		{
 			puts("다음 게임을 준비해주세요.");
 		}
-		else if (type == Network::PT_ALL_OVER)
+		else if (type == PKT_SC_ALL_OVER)
 		{
-			Network::FinalResultPacket finalResult;
+			Network::FinalResult finalResult;
 			network.GetFinalResult(&finalResult);
 			puts("모두 종료");
 			printf_s("승리 횟수: %d, 평균 턴 수: %.1f", finalResult.winCount, finalResult.avgTurns);

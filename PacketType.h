@@ -1,8 +1,13 @@
 #pragma once
 #include <math.h>
 #include <memory.h>
+
+#ifndef min
 #define min(a,b) (((a)<(b))?(a):(b))
+#endif
+
 #define MAX_NAME_LEN	16
+#define MAP_SIZE		32
 
 enum PacketTypes
 {
@@ -24,16 +29,17 @@ enum PacketTypes
 	PKT_MAX = 1024
 };
 
-enum ERROR_TYPE
+enum ErrorTypes
 {
-	ET_NONE = 0,
-	ET_OPPOSITION_DISCONNECTED = 1,
-	ET_DUPLICATED_NAME = 2,
-	ET_INVALID_MAP = 3,
-	ET_INVALID_ATTACK = 4,
+	ET_UNKNOWN,
+	ET_OK,
+	ET_OPPOSITION_DISCONNECTED,
+	ET_DUPLICATED_NAME,
+	ET_INVALID_MAP,
+	ET_INVALID_ATTACK,
 };
 
-enum MAP_INFO
+enum MapInfo
 {
 	MI_EMPTY = 0,
 	MI_AIRCRAFT = 1,
@@ -43,7 +49,7 @@ enum MAP_INFO
 	MI_DESTORYER_2 = 5,
 };
 
-enum ATTACK_RESULT
+enum AttackResult
 {
 	AR_NONE = 0,
 	AR_MISS = 1,
@@ -75,9 +81,9 @@ namespace Packet
 		{
 			mSize = sizeof(ErrorResult);
 			mType = PKT_SC_ERROR;
-			mErrorType = ET_NONE;
+			mErrorType = ET_UNKNOWN;
 		}
-		int mErrorType;
+		short mErrorType;
 	};
 
 	struct OKResult : public PacketHeader
@@ -154,7 +160,8 @@ namespace Packet
 			mAttackResult = AR_NONE;
 			mIsMine = false;
 		}
-		int x, y, mAttackResult;
+		int x, y;
+		short mAttackResult;
 		bool mIsMine;
 	};
 

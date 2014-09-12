@@ -1,17 +1,19 @@
 #pragma once
+#include <WinSock2.h>
 #include "PacketType.h"
 
-#define NAME_LEN 16
-#define MAP_SIZE 32	// 16 * 2
+typedef short PacketType;
+typedef short ErrorType;
 
 class Network
 {
 public:
-	enum NetworkResult
+	enum Exception
 	{
-		NETWORK_ERROR	= -1,
-		NETWORK_OK		= 0,
-		NETWORK_CLOSED			// Recive 계열 함수에서만 반환된다.
+		NETWORK_ERROR,			// 범용 Error
+		SERVER_CLOSED,
+		PARAMETER_ERROR,
+		UNEXPECTED_PACKET,		// WaitSpecPacket함수만 발생하는 예외
 	};
 
 public:
@@ -40,24 +42,24 @@ public:
 	Network();
 	~Network();
 
-	NetworkResult	Connect(const char* const ip, const unsigned short port);
-	void			Disconnect();
+	void	Connect(const char* const ip, const unsigned short port);
+	void	Disconnect();
 
 	// Send 계열
-	NetworkResult	SubmitName(const wchar_t* const name);
-	NetworkResult	SubmitMap(const char* const mapData);
-	NetworkResult	SubmitAttack(const int x, const int y);
+	ErrorType	SubmitName(const wchar_t* const name);
+	ErrorType	SubmitMap(const char* const mapData);
+	ErrorType	SubmitAttack(const int x, const int y);
 
 	// Recive 계열
-	NetworkResult	GetPacketType(short* const type);
-	NetworkResult	GetErrorType(short* const error);
-	NetworkResult	GetAttackResult(AttackResult* const data);
-	NetworkResult	GetGameResult(GameResult* const data);
-	NetworkResult	GetFinalResult(FinalResult* const data);
+	ErrorType	GetPacketType(PacketType* const type);
+	ErrorType	WaitSpecPacket(const PacketType type);
+	void	GetAttackResult(AttackResult* const data);
+	void	GetGameResult(GameResult* const data);
+	void	GetFinalResult(FinalResult* const data);
 
 	// 범용
-	NetworkResult	Send(const void* const data, const unsigned int size);
-	NetworkResult	Recive(void* const out_data, const unsigned int size);
+	void	Send(const void* const data, const unsigned int size);
+	void	Recive(void* const out_data, const unsigned int size);
 
 
 private:

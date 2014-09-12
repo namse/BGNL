@@ -1,4 +1,4 @@
-#include <WinSock2.h>
+#include <WS2tcpip.h>
 #include <Windows.h>
 #include <crtdbg.h>
 
@@ -21,14 +21,14 @@ Network::~Network()
 
 
 
-Network::NetworkResult Network::Connect(const char* const ip, const unsigned short port)
+void Network::Connect(const char* const ip, const unsigned short port)
 {
 	_ASSERT(ip);
-	if (!ip) return NETWORK_ERROR;
+	if (!ip) throw PARAMETER_ERROR;
 
 	if (WSAStartup(MAKEWORD(2, 2), &m_WSAData))
 	{
-		return NETWORK_ERROR;
+		throw NETWORK_ERROR;
 	}
 
 	ZeroMemory(&m_Socket, sizeof(m_Socket));
@@ -39,22 +39,23 @@ Network::NetworkResult Network::Connect(const char* const ip, const unsigned sho
 	m_Socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (m_Socket == INVALID_SOCKET)
 	{
-		return NETWORK_ERROR;
+		throw NETWORK_ERROR;
 	}
 
 	m_ServerAddr.sin_family = AF_INET;
-	m_ServerAddr.sin_addr.s_addr = inet_addr(ip);
+//	m_ServerAddr.sin_addr.s_addr = inet_addr(ip);
+	InetPton(AF_INET, ip, &m_ServerAddr.sin_addr.s_addr);
 	m_ServerAddr.sin_port = htons(port);
 	
 	result = connect(m_Socket, (sockaddr*)&m_ServerAddr, sizeof(m_ServerAddr));
 	if (result == SOCKET_ERROR)
 	{
-		return NETWORK_ERROR;
+		throw NETWORK_ERROR;
 	}
 
 	m_Connected = true;
 
-	return NETWORK_OK;
+	
 }
 
 void Network::Disconnect()
@@ -70,116 +71,129 @@ void Network::Disconnect()
 
 
 // Send 계열
-Network::NetworkResult Network::SubmitName(const wchar_t* const name)
+ErrorType Network::SubmitName(const wchar_t* const name)
 {
 	_ASSERT(name);
-	if (!name || !m_Connected) return NETWORK_ERROR;
+	if (!name) throw PARAMETER_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::SubmitNameRequest packet;
 	wcscpy_s(packet.mName, name);
 
-	return Send(&packet, sizeof(packet));
+	Send(&packet, sizeof(packet));
+
+	return WaitSpecPacket(PKT_SC_OK);
 }
 
-Network::NetworkResult Network::SubmitMap(const char* const mapData)
+ErrorType Network::SubmitMap(const char* const mapData)
 {
 	_ASSERT(mapData);
-	if (!mapData || !m_Connected) return NETWORK_ERROR;
+	if (!mapData) throw PARAMETER_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::SubmitMapRequest packet;
 	memcpy_s(packet.mMap, MAP_SIZE, mapData, MAP_SIZE);
 
-	return Send(&packet, sizeof(packet));
+	Send(&packet, sizeof(packet));
+
+	return WaitSpecPacket(PKT_SC_OK);
 }
 
-Network::NetworkResult Network::SubmitAttack(const int x, const int y)
+ErrorType Network::SubmitAttack(const int x, const int y)
 {
-	if (!m_Connected) return NETWORK_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 	int pos[2] = { x, y };
 
 	Packet::SubmitAttackRequest packet;
 	packet.x = x;
 	packet.y = y;
 
-	return Send(&packet, sizeof(packet));
+	Send(&packet, sizeof(packet));
+
+	return WaitSpecPacket(PKT_SC_OK);
 }
 
 
 // Recive 계열
-Network::NetworkResult Network::GetPacketType(short* const type)
+ErrorType Network::GetPacketType(PacketType* const type)
 {
-	_ASSERT(type);
-	if (!type || !m_Connected) return NETWORK_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 	
 	PacketHeader header;
-	NetworkResult result;
+	Recive(&header, sizeof(PacketHeader));
 
-	result = Recive(&header, sizeof(PacketHeader));
 	*type = header.mType;
-	
-	return result;
+	if (*type == PKT_SC_ERROR)
+	{
+		ErrorType error;
+		Recive(&error, sizeof(ErrorType));
+		return error;
+	}
+	else
+		return ET_OK;
 }
 
-Network::NetworkResult Network::GetErrorType(short* const error)
+ErrorType Network::WaitSpecPacket(const PacketType type)
 {
-	_ASSERT(error);
-	if (!error || !m_Connected) return NETWORK_ERROR;
-	return Recive(error, sizeof(short));
+	if (!m_Connected) throw NETWORK_ERROR;
+
+	PacketType responce;
+	ErrorType error;
+	error = GetPacketType(&responce);
+
+	if (responce == type)
+		return ET_OK;
+	else if (responce == PKT_SC_ERROR)
+		return error;
+	else
+		throw UNEXPECTED_PACKET;
 }
 
-Network::NetworkResult Network::GetAttackResult(AttackResult* const data)
+void Network::GetAttackResult(AttackResult* const data)
 {
 	_ASSERT(data);
-	if (!data || !m_Connected) return NETWORK_ERROR;
+	if (!data) throw PARAMETER_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::AttackResult packet;
-	NetworkResult result;
-
-	result = Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
+	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
 	data->attackResult = packet.mAttackResult;
 	data->x = packet.x;
 	data->y = packet.y;
 	data->isMine = packet.mIsMine;
-
-	return result;
 }
 
-Network::NetworkResult Network::GetGameResult(GameResult* const data)
+void Network::GetGameResult(GameResult* const data)
 {
 	_ASSERT(data);
-	if (!data || !m_Connected) return NETWORK_ERROR;
+	if (!data) throw PARAMETER_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::GameOverResult packet;
-	NetworkResult result;
-
-	result = Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
+	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
 	data->isWinner = packet.mIsWinner;
 	data->turns = packet.mTurns;
-
-	return result;
 }
 
-Network::NetworkResult Network::GetFinalResult(FinalResult* const data)
+void Network::GetFinalResult(FinalResult* const data)
 {
 	_ASSERT(data);
-	if (!data && !m_Connected) return NETWORK_ERROR;
+	if (!data) throw PARAMETER_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::AllOverResult packet;
-	NetworkResult result;
-
-	result = Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
+	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
 	data->winCount = packet.mWinCount;
 	data->avgTurns = packet.mAverageTruns;
-
-	return result;
 }
 
 
 
-Network::NetworkResult Network::Send(const void* const data, const unsigned int size)
+void Network::Send(const void* const data, const unsigned int size)
 {
 	_ASSERT(data);
-	if (!data || !m_Connected) return NETWORK_ERROR;
+	if (!data) throw PARAMETER_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 
 	unsigned int sentSize = 0;
 	int result;
@@ -189,19 +203,18 @@ Network::NetworkResult Network::Send(const void* const data, const unsigned int 
 		result = send(m_Socket, (char*)data + sentSize, size - sentSize, 0);
 		if (result == SOCKET_ERROR)
 		{
-			return NETWORK_ERROR;
+			throw NETWORK_ERROR;
 		}
 		else
 			sentSize += result;
 	}
-
-	return NETWORK_OK;
 }
 
-Network::NetworkResult Network::Recive(void* const out_data, const unsigned int size)
+void Network::Recive(void* const out_data, const unsigned int size)
 {
 	_ASSERT(out_data);
-	if (!out_data || !m_Connected) return NETWORK_ERROR;
+	if (!out_data) throw PARAMETER_ERROR;
+	if (!m_Connected) throw NETWORK_ERROR;
 
 	unsigned int recivedSize = 0;
 	int result;
@@ -211,15 +224,13 @@ Network::NetworkResult Network::Recive(void* const out_data, const unsigned int 
 		result = recv(m_Socket, (char*)out_data + recivedSize, size - recivedSize, 0);
 		if (result == SOCKET_ERROR)
 		{
-			return NETWORK_ERROR;
+			throw NETWORK_ERROR;
 		}
 		else if (recv == 0)
 		{
-			return NETWORK_CLOSED;
+			throw SERVER_CLOSED;
 		}
 		else
 			recivedSize += result;
 	}
-
-	return NETWORK_OK;
 }
