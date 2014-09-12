@@ -20,7 +20,7 @@
 #include <Network.h>
 
 // Dummy Functions
-void MakeMapData(char* const mapData){}
+void MakeMapData(void* const mapData){}
 void MakeAttackPos(int* const x, int* const y){}
 void HandleMyAttackResult(const int attackResult, const int x, const int y){}
 void HandleOpositionAttackResult(const int attackResult, const int x, const int y){}
@@ -107,13 +107,13 @@ void main()
 				맵 데이터는 char형 32크기 배열이다.
 				Aircraft부터 순서대로 배의 좌표들을 넣는다.
 			*/
-			char mapData[MAP_SIZE] = { 0, };
+			Network::MapData mapData;
 
 			while (true)
 			{
-				MakeMapData(mapData);
+				MakeMapData(&mapData);
 
-				error = network.SubmitMap(mapData);
+				error = network.SubmitMap(&mapData);
 				if (error == ET_INVALID_MAP)
 					puts("유효하지 않은 맵 데이터입니다.");
 				else

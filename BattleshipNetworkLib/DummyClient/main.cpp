@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <wchar.h>
-#include <Windows.h>
 #include <process.h>
 #include <time.h>
 
@@ -10,6 +9,7 @@
 #pragma comment(lib, "BGNL.lib")
 #endif
 #include "Network.h"
+#include <Windows.h>
 
 #define CLIENT_NUM 16
 
@@ -122,10 +122,10 @@ unsigned int _stdcall ClientThread(void* param)
 		{
 			network.Connect(ipNport->ip, ipNport->port);
 		}
-		catch (Network::Exception ex)
+		catch (Network::Exception)
 		{
 			Log("연결 실패");
-			return;
+			return 0;
 		}
 
 		Log("연결됨");
@@ -135,7 +135,7 @@ unsigned int _stdcall ClientThread(void* param)
 			if (network.SubmitName(name) == ET_DUPLICATED_NAME)
 			{
 				Log("이름 중복");
-				return;
+				return 0;
 			}
 
 			network.WaitSpecPacket(PKT_SC_GAME_START);
@@ -150,15 +150,17 @@ unsigned int _stdcall ClientThread(void* param)
 				if (network.SubmitMap(shipPosList) == ET_INVALID_MAP)
 				{
 					Log("맵 생성에 문제 있음");
-					return;
+					return 0;
 				}
 			}
 		}
-		catch (Network::Exception ex)
+		catch (Network::Exception)
 		{
 			Log("에러");
-			return;
+			return 0;
 		}
 
 	}
+
+	return 0;
 }
