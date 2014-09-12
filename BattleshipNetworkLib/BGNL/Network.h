@@ -1,7 +1,8 @@
 #pragma once
+#include "PacketType.h"
 
 #define NAME_LEN 16
-#define MAP_SIZE 64
+#define MAP_SIZE 32	// 16 * 2
 
 class Network
 {
@@ -13,70 +14,22 @@ public:
 		NETWORK_CLOSED			// Recive 계열 함수에서만 반환된다.
 	};
 
-	enum PacketType
-	{
-		PT_ERROR		= -1,
-		PT_NONE			= 0,
-		PT_OK,
-		PT_SUBMIT_NAME,
-		PT_GAME_START,
-		PT_SUBMIT_MAP,
-		PT_MY_TURN,
-		PT_SUBMIT_ATTACK,
-		PT_ATTACK_RESULT,
-		PT_GAME_OVER,
-		PT_NEXT_GAME,
-		PT_ALL_OVER,
-	};
-
-	enum ErrorType
-	{
-		ERROR_NONE,
-		ERROR_OPPOSITION_DISCONNECTED,
-		ERROR_DUPLICATED_NAME,
-		ERROR_INVALID_MAP,
-		ERROR_INVALID_ATTACK,
-	};
-
-	enum AttackResult
-	{
-		RESULT_NONE,
-		RESULT_MISS,
-		RESULT_HIT,
-		RESULT_DESTROY_A,
-		RESULT_DESTROY_B,
-		RESULT_DESTROY_C,
-		RESULT_DESTROY_D,
-	};
-
-	enum MapData
-	{
-		MAP_NONE,
-		MAP_SHIP_A,
-		MAP_SHIP_B,
-		MAP_SHIP_C,
-		MAP_SHIP_D1,
-		MAP_SHIP_D2
-	};
-
-
 public:
-
-	struct AttackResultPacket
+	struct AttackResult
 	{
 		int x;
 		int y;
-		AttackResult attackResult;
+		short attackResult;
 		bool isMine;
 	};
 
-	struct GameResultPacket
+	struct GameResult
 	{
 		bool isWinner;
 		int turns;
 	};
 
-	struct FinalResultPacket
+	struct FinalResult
 	{
 		int winCount;
 		float avgTurns;
@@ -96,11 +49,11 @@ public:
 	NetworkResult	SubmitAttack(const int x, const int y);
 
 	// Recive 계열
-	NetworkResult	GetPacketType(PacketType* const type);
-	NetworkResult	GetErrorType(ErrorType* const error);
-	NetworkResult	GetAttackResult(AttackResultPacket* const data);
-	NetworkResult	GetGameResult(GameResultPacket* const data);
-	NetworkResult	GetFinalResult(FinalResultPacket* const data);
+	NetworkResult	GetPacketType(short* const type);
+	NetworkResult	GetErrorType(short* const error);
+	NetworkResult	GetAttackResult(AttackResult* const data);
+	NetworkResult	GetGameResult(GameResult* const data);
+	NetworkResult	GetFinalResult(FinalResult* const data);
 
 	// 범용
 	NetworkResult	Send(const void* const data, const unsigned int size);
