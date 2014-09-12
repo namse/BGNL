@@ -7,7 +7,39 @@
 #endif
 
 #define MAX_NAME_LEN	16
-#define MAP_SIZE		32
+
+#define AIRCRAFT_LENGTH 5
+#define BATTLESHIP_LENGTH 4
+#define CRUISER_LENGTH 3
+#define DESTROYER_LENGTH 2
+
+struct Coord
+{
+	Coord()
+	{
+		mX = mY = -1;
+	}
+	Coord(int x, int y)
+	{
+		mX = x, mY = y;
+	}
+	Coord(char x, char y)
+	{
+		if (x >= 'A' && x <= 'z')
+		{
+			x = toupper(x);
+			x -= 'A';
+		}
+		if (y >= '0' && y <= '9')
+		{
+			y -= '0';
+		}
+		mX = x, mY = y;
+	}
+	char mX, mY;
+};
+
+#define SHNIPS_TOTAL_LENGTH (AIRCRAFT_LENGTH + BATTLESHIP_LENGTH + CRUISER_LENGTH + DESTROYER_LENGTH)
 
 enum PacketTypes
 {
@@ -44,7 +76,7 @@ enum MapInfo
 	MI_EMPTY = 0,
 	MI_AIRCRAFT = 1,
 	MI_BATTLESHIP = 2,
-	MI_CRUSIER = 3,
+	MI_CRUISER = 3,
 	MI_DESTORYER_1 = 4,
 	MI_DESTORYER_2 = 5,
 };
@@ -56,7 +88,7 @@ enum AttackResult
 	AR_HIT = 2,
 	AR_DESTORY_AIRCRAFT = 3,
 	AR_DESTORY_BATTLESHIP = 4,
-	AR_DESTORY_CRUSIER = 5,
+	AR_DESTORY_CRUISER = 5,
 	AR_DESTORY_DESTORYER = 6,
 };
 
@@ -125,9 +157,9 @@ namespace Packet
 		{
 			mSize = sizeof(SubmitMapRequest);
 			mType = PKT_CS_SUBMIT_MAP;
-			memset(mMap, MI_EMPTY, sizeof(mMap));
+			memset(mCoords, 0, sizeof(mCoords));
 		}
-		char mMap[8][8];
+		char mCoords[SHNIPS_TOTAL_LENGTH];
 	};
 
 	struct MyTurnResult : public PacketHeader
