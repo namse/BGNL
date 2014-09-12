@@ -6,7 +6,7 @@ public:
 	Player(std::wstring name, PlayerNumber player_number);
 	~Player();
 
-	ATTACK_RESULT AttackAndGetResult(int x, int y);
+	AttackResult AttackAndGetResult(int x, int y);
 
 	bool IsGameEnd();
 
@@ -17,7 +17,7 @@ public:
 		{
 			for (int y = 0; y < MAP_HEIGHT; y++)
 			{
-				info_[x][y] = (MAP_INFO)info[x][y];
+				info_[x][y] = (MapInfo)info[x][y];
 			}
 		}
 		memset(didAttacked_, false, sizeof(didAttacked_));
@@ -30,9 +30,9 @@ public:
 	}
 	PlayerState GetState() { return player_state_; }
 private:
-	bool IsShipDestoryed(MAP_INFO shipType);
+	bool IsShipDestoryed(MapInfo shipType);
 private:
-	MAP_INFO info_[MAP_WIDTH][MAP_HEIGHT];
+	MapInfo info_[MAP_WIDTH][MAP_HEIGHT];
 	bool didAttacked_[MAP_WIDTH][MAP_HEIGHT];
 	std::wstring name_;
 	PlayerNumber player_number_;

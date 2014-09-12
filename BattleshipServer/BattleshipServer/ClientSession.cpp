@@ -50,7 +50,7 @@ ClientSession::ClientSession(SOCKET sock)
 	EventManager::GetInstance()->AddEventListener(EVT_OK, this);
 	EventManager::GetInstance()->AddEventListener(EVT_GAME_START, this);
 	EventManager::GetInstance()->AddEventListener(EVT_MY_TURN, this);
-	EventManager::GetInstance()->AddEventListener(EVT_ATTACK_RESULT, this);
+	EventManager::GetInstance()->AddEventListener(EVT_AttackResult, this);
 	EventManager::GetInstance()->AddEventListener(EVT_GAME_OVER, this);
 	EventManager::GetInstance()->AddEventListener(EVT_NEXT_GAME, this);
 	EventManager::GetInstance()->AddEventListener(EVT_ALL_OVER, this);
@@ -266,7 +266,7 @@ void ClientSession::Notify(EventHeader* event)
 			Packet::MyTurnResult outPacket;
 			SendRequest(&outPacket);
 		}break;
-		case EVT_ATTACK_RESULT:
+		case EVT_AttackResult:
 		{
 			Event::AttackEvent* recvEvent = (Event::AttackEvent*)event;
 

@@ -119,7 +119,7 @@ void Game::Notify(EventHeader* event)
 		// 1. send result
 		{
 			Event::AttackEvent outEvent;
-			outEvent.attack_result_ = result;
+			outEvent.AttackResult_ = result;
 			outEvent.player_number_ = player_number;
 			outEvent.x = x;
 			outEvent.y = y;

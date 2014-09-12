@@ -9,7 +9,7 @@ enum EventTypes
 	EVT_SUBMIT_MAP,
 	EVT_MY_TURN,
 	EVT_SUBMIT_ATTACK,
-	EVT_ATTACK_RESULT,
+	EVT_AttackResult,
 
 	EVT_NEW_GAME,
 	EVT_ADD_PLAYER_1_IN_GAME,
@@ -103,12 +103,12 @@ namespace Event
 	{
 		AttackEvent()
 		{
-			event_type_ = EVT_ATTACK_RESULT;
+			event_type_ = EVT_AttackResult;
 			x = y = -1;
-			attack_result_ = AR_NONE;
+			AttackResult_ = AR_NONE;
 		}
 		int x, y;
-		ATTACK_RESULT attack_result_;
+		AttackResult AttackResult_;
 	};
 	struct GameOverEvent : public EventHeader
 	{

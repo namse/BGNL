@@ -14,7 +14,7 @@ Player::~Player()
 {
 }
 
-ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
+AttackResult Player::AttackAndGetResult(int x, int y)
 {
 	if (x < 0 || x > MAP_WIDTH
 		|| y < 0 || y > MAP_HEIGHT)
@@ -25,7 +25,7 @@ ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
 	}
 	didAttacked_[x][y] = true;
 
-	MAP_INFO shipType = info_[x][y];
+	MapInfo shipType = info_[x][y];
 
 	if (shipType == MI_EMPTY)
 	{
@@ -62,7 +62,7 @@ ATTACK_RESULT Player::AttackAndGetResult(int x, int y)
 	}
 }
 
-bool Player::IsShipDestoryed(MAP_INFO shipType)
+bool Player::IsShipDestoryed(MapInfo shipType)
 {
 	if (shipType == MI_EMPTY)
 		return false;
@@ -112,9 +112,9 @@ void Player::SetState(PlayerState state)
 
 bool Player::IsGameEnd()
 {
-	return IsShipDestoryed(MAP_INFO::MI_AIRCRAFT)
-		&& IsShipDestoryed(MAP_INFO::MI_BATTLESHIP)
-		&& IsShipDestoryed(MAP_INFO::MI_CRUSIER)
-		&& IsShipDestoryed(MAP_INFO::MI_DESTORYER_1)
-		&& IsShipDestoryed(MAP_INFO::MI_DESTORYER_2);
+	return IsShipDestoryed(MapInfo::MI_AIRCRAFT)
+		&& IsShipDestoryed(MapInfo::MI_BATTLESHIP)
+		&& IsShipDestoryed(MapInfo::MI_CRUSIER)
+		&& IsShipDestoryed(MapInfo::MI_DESTORYER_1)
+		&& IsShipDestoryed(MapInfo::MI_DESTORYER_2);
 }
