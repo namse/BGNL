@@ -365,6 +365,9 @@ REGISTER_HANDLER(PKT_CS_SUBMIT_NAME)
 }
 void ClientSession::HandleSubmitNameRequest(Packet::SubmitNameRequest& inPacket)
 {
+	mRecvBuffer.Read((char*)&inPacket, inPacket.mSize);
+
+
 	Event::SubmitNameEvent event;
 	event.player_number_ = mPlayerId;
 	EventManager::GetInstance()->Notify(&event);
@@ -377,6 +380,8 @@ REGISTER_HANDLER(PKT_CS_SUBMIT_MAP)
 }
 void ClientSession::HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket)
 {
+	mRecvBuffer.Read((char*)&inPacket, inPacket.mSize);
+
 	Event::SubmitMapEvent event;
 	event.player_number_ = mPlayerId;
 	EventManager::GetInstance()->Notify(&event);
@@ -389,6 +394,8 @@ REGISTER_HANDLER(PKT_CS_SUBMIT_ATTACK)
 }
 void ClientSession::HandleSubmitAttackRequest(Packet::SubmitAttackRequest& inPacket)
 {
+	mRecvBuffer.Read((char*)&inPacket, inPacket.mSize);
+
 	Event::SubmitAttackEvent event;
 	event.player_number_ = mPlayerId;
 	EventManager::GetInstance()->Notify(&event);
