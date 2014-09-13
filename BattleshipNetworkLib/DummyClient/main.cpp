@@ -1,3 +1,11 @@
+/*
+	Name: Dummy Client
+	Desc: 더미 클라이언트. AI는 그냥 랜덤 배치 랜덤 공격.
+		한 번에 여러 클라이언트를 생성한다. CLIENT_NUM 만큼 클라이언트를 만든다.
+		사용법은 DummyClient <IP> <PORT>
+*/
+
+
 #include <stdio.h>
 #include <wchar.h>
 #include <process.h>
@@ -24,10 +32,19 @@ CRITICAL_SECTION cs;
 
 unsigned int _stdcall ClientThread(void* param);
 
-void main()
+void main(const int argc, const char* const * const argv)
 {
 	HANDLE hThread[CLIENT_NUM] = { 0, };
 	IPAndPort ipNport = { 0, };
+
+	if (argc != 3)
+	{
+		printf_s("USAGE: %s <IP> <PORT>\n", argv[1]);
+		return;
+	}
+
+	strcpy_s(ipNport.ip, argv[1]);
+	ipNport.port = atoi(argv[2]);
 
 	Network::Initialize();
 
