@@ -271,7 +271,7 @@ void ClientSession::Notify(EventHeader* event)
 		{
 			Event::AttackEvent* recvEvent = (Event::AttackEvent*)event;
 
-			Packet::AttackResult outPacket;
+			Packet::AttackResult outPacket;	
 			outPacket.x = recvEvent->x;
 			outPacket.y = recvEvent->y;
 			outPacket.mIsMine = recvEvent->isMine;
@@ -443,5 +443,7 @@ void ClientSession::HandleSubmitAttackRequest(Packet::SubmitAttackRequest& inPac
 
 	Event::SubmitAttackEvent event;
 	event.player_number_ = mPlayerId;
+	event.x = inPacket.x;
+	event.y = inPacket.y;
 	EventManager::GetInstance()->Notify(&event);
 }
