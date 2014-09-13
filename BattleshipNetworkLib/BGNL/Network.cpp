@@ -3,6 +3,7 @@
 #include <crtdbg.h>
 
 #include "Network.h"
+#include <stdio.h>
 
 
 Network::Network()
@@ -154,7 +155,10 @@ ErrorType Network::WaitSpecPacket(const PacketType type)
 	else if (responce == PKT_SC_ERROR)
 		return error;
 	else
+	{
+		printf("Error : Packet Type %d received", responce);
 		throw UNEXPECTED_PACKET;
+	}
 }
 
 void Network::GetAttackResult(AttackResult* const data)

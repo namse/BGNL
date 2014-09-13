@@ -20,7 +20,7 @@
 #include "Network.h"
 #include <Windows.h>
 
-#define CLIENT_NUM 1
+#define CLIENT_NUM 10
 
 struct IPAndPort
 {
@@ -190,6 +190,7 @@ unsigned int _stdcall ClientThread(void* param)
 				ErrorType error;
 
 				Log("게임 준비");
+				memset(enemyMap, false, sizeof(enemyMap));
 				PlaceShip(shipPosList);
 				if (network.SubmitMap(shipPosList) == ET_INVALID_MAP)
 				{
@@ -218,6 +219,7 @@ unsigned int _stdcall ClientThread(void* param)
 						{
 							int x, y;
 							MakeAttackPos(enemyMap, &x, &y);
+							printf("%d , %d 공격 시도\n", x, y);
 							error = network.SubmitAttack(x, y);
 							if (error == ET_INVALID_ATTACK)
 								Log("유효하지 않은 공격");
@@ -231,8 +233,14 @@ unsigned int _stdcall ClientThread(void* param)
 					{
 						Network::AttackResult attackResult;
 						network.GetAttackResult(&attackResult);
+						
 						if (attackResult.isMine)
+						{
+							printf("%d , %d 내 공격의 공격 결과 = %d\n", attackResult.x, attackResult.y, attackResult.attackResult);
 							HandleOpositionAttackResult(enemyMap, attackResult.attackResult, attackResult.x, attackResult.y);
+						}
+						else
+							printf("%d , %d 적 공격의 공격 결과 = %d\n", attackResult.x, attackResult.y, attackResult.attackResult);
 						break;
 					}
 
@@ -240,11 +248,13 @@ unsigned int _stdcall ClientThread(void* param)
 					{
 						Network::GameResult gameResult;
 						network.GetGameResult(&gameResult);
+						printf("게임 끝남, 결과 : 내가 이김? : %s , 총 턴수 : %d\n", gameResult.isWinner ? "true" : "false", gameResult.turns);
 						gameOver = true;
 						break;
 					}
 
 					default:
+						printf("Error : Packet Type %d received", type);
 						throw Network::UNEXPECTED_PACKET;
 						break;
 					}
@@ -256,10 +266,21 @@ unsigned int _stdcall ClientThread(void* param)
 				{
 					Network::FinalResult finalResult;
 					network.GetFinalResult(&finalResult);
+					printf("게임 전부 끝남, 결과 : 이긴 횟수 : %d , 평균 턴수 : %f", finalResult.winCount, finalResult.avgTurns);
+
 					allOver = true;
 				}
+				else if (type == PKT_SC_NEXT_GAME)
+				{
+					//OK
+					continue;
+				}
 				else
+				{
+					printf("Error : Packet Type %d received", type);
 					throw Network::UNEXPECTED_PACKET;
+					break;
+				}
 			}
 		}
 		catch (Network::Exception)
