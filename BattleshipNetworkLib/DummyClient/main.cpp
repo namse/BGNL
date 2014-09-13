@@ -128,7 +128,7 @@ void MakeAttackPos(const char* const enemyMap, int* const x, int* const y)
 	{
 		*x = rand() % 8;
 		*y = rand() % 8;
-	} while (!enemyMap[*x + (*y) * 8]);
+	} while (enemyMap[*x + (*y) * 8]);
 }
 
 void HandleOpositionAttackResult(char* const enemyMap, const short result, const int x, const int y)
