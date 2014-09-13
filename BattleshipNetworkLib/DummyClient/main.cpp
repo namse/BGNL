@@ -73,14 +73,14 @@ void main(const int argc, const char* const * const argv)
 
 void PlaceShip(char* const shipPosList)
 {
-	static const int shipSizeArr[] = { 5, 4, 3, 2, 2 };
+	static const int shipSizeArr[] = { AIRCRAFT_LENGTH, BATTLESHIP_LENGTH, CRUISER_LENGTH, DESTROYER_LENGTH, DESTROYER_LENGTH };
 
 	char map[64] = { 0, };
 	int size, sx, sy, dir, listIdx = 0;
 	bool placeable;
 	ZeroMemory(map, 8 * 8);
 
-	for (int k = 1; k <= 5; ++k)
+	for (int k = 0; k < sizeof(shipSizeArr); ++k)
 	{
 		while (true)
 		{
