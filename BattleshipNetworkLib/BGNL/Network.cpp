@@ -100,7 +100,7 @@ ErrorType Network::SubmitMap(const void* const mapData)
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::SubmitMapRequest packet;
-	memcpy_s(packet.mCoords, SHNIPS_TOTAL_LENGTH, mapData, SHNIPS_TOTAL_LENGTH);
+	memcpy_s(packet.mCoords, SHNIPS_TOTAL_LENGTH * sizeof(Coord), mapData, SHNIPS_TOTAL_LENGTH);
 
 	Send(&packet, sizeof(packet));
 
