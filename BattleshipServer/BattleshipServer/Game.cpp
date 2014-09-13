@@ -5,7 +5,7 @@
 
 
 Game::Game(GameNumber game_number)
-	: player1_(-1), player2_(-2), game_number_(game_number), isGameStart(false)
+	: player1_(-1), player2_(-2), game_number_(game_number), isGameStart(false), try_count_(0), isGameAllOver_(false)
 {
 	EventManager::GetInstance()->AddEventListener(EVT_ADD_PLAYER_1_IN_GAME, this);
 	EventManager::GetInstance()->AddEventListener(EVT_ADD_PLAYER_2_IN_GAME, this);
@@ -110,8 +110,8 @@ void Game::Notify(EventHeader* event)
 	case EVT_SUBMIT_ATTACK:
 	{
 		Event::SubmitAttackEvent* recvEvent = (Event::SubmitAttackEvent*)event;
-		if (event->player_number_ == player1_
-			|| event->player_number_ == player2_)
+		if (recvEvent->player_number_ == player1_
+			|| recvEvent->player_number_ == player2_)
 		{
 			auto player_number = recvEvent->player_number_;
 			auto oppo_number = GetOpponent(player_number);
@@ -131,7 +131,7 @@ void Game::Notify(EventHeader* event)
 			// 0, send OK
 			{
 				Event::OKEvent outEvent;
-				outEvent.player_number_ = event->player_number_;
+				outEvent.player_number_ = recvEvent->player_number_;
 				EventManager::GetInstance()->Notify(&outEvent);
 			}
 			auto result = opponent_player->AttackAndGetResult(x, y);
@@ -151,41 +151,41 @@ void Game::Notify(EventHeader* event)
 
 					outEvent.player_number_ = oppo_number;
 					outEvent.isMine = false;
-					EventManager::GetInstance()->Notify(&outEvent);
-				}
-				{
-					Event::MyTurnEvent outEvent;
-
-					outEvent.player_number_ = GetNextTurn();
-					EventManager::GetInstance()->Notify(&outEvent);
+					EventManager::GetInstance()->Notify(&outEvent);	
 				}
 			}
 			// 2. check is game over
 
 			if (opponent_player->IsGameEnd() == true)
 			{
+				player->AddWinCount();
+				player->AddWinTotalTurns();
+
 				Event::GameOverEvent outEvent;
 				outEvent.game_number_ = game_number_;
 				outEvent.winner_ = player_number;
 				outEvent.turns_ = player->GetTurns();
-				outEvent.player_number_ = player_number;
 				EventManager::GetInstance()->Notify(&outEvent);
 
-				outEvent.player_number_ = oppo_number;
-				EventManager::GetInstance()->Notify(&outEvent);
+			}
 
-				player->AddWinCount();
-				player->AddWinTotalTurns();
+			// 3. or Next Turn
+			else 
+			{
+				Event::MyTurnEvent outEvent;
+
+				outEvent.player_number_ = GetNextTurn();
+				EventManager::GetInstance()->Notify(&outEvent);
 			}
 		}
 	}break;
 
 	case EVT_SUBMIT_MAP:
 	{
-		if (event->player_number_ == player1_
-			|| event->player_number_ == player2_)
+		Event::SubmitMapEvent * recvEvent = (Event::SubmitMapEvent *)event;
+		if (recvEvent->player_number_ == player1_
+			|| recvEvent->player_number_ == player2_)
 		{
-			Event::SubmitMapEvent * recvEvent = (Event::SubmitMapEvent *)event;
 			auto player = PlayerManager::GetInstance()->GetPlayer(recvEvent->player_number_);
 			auto oppo_player = PlayerManager::GetInstance()->GetPlayer(GetOpponent(recvEvent->player_number_));
 			if (player == nullptr || oppo_player == nullptr)
@@ -199,7 +199,7 @@ void Game::Notify(EventHeader* event)
 			player->SetState(PS_ON_GAME);
 			{
 				Event::OKEvent outEvent;
-				outEvent.player_number_ = event->player_number_;
+				outEvent.player_number_ = recvEvent->player_number_;
 				EventManager::GetInstance()->Notify(&outEvent);
 			}
 			if (player->GetState() == PS_ON_GAME
@@ -216,33 +216,22 @@ void Game::Notify(EventHeader* event)
 	case EVT_GAME_OVER:
 	{
 		Event::GameOverEvent* recvEvent = (Event::GameOverEvent*)event;
-		if (event->player_number_ == player1_
-			|| event->player_number_ == player2_)
+		if (recvEvent->game_number_ == game_number_)
 		{
 
 			if (try_count_ >= MAX_GAME_COUNT)
 			{
 				Event::AllOverEvent outEvent;
 				outEvent.game_number_ = game_number_;
-				outEvent.average_truns_ = PlayerManager::GetInstance()->GetPlayer(player1_)->GetAverageTurns();
-				outEvent.win_count_ = PlayerManager::GetInstance()->GetPlayer(player1_)->GetWinCount();
-				outEvent.player_number_ = player1_;
 				EventManager::GetInstance()->Notify(&outEvent);
+				isGameAllOver_ = true;
 
-				outEvent.average_truns_ = PlayerManager::GetInstance()->GetPlayer(player2_)->GetAverageTurns();
-				outEvent.win_count_ = PlayerManager::GetInstance()->GetPlayer(player2_)->GetWinCount();
-				outEvent.player_number_ = player2_;
-				EventManager::GetInstance()->Notify(&outEvent);
 			}
 
 			else
 			{
 				Event::NextGameEvent outEvent;
 				outEvent.game_number_ = game_number_;
-				outEvent.player_number_ = player1_;
-				EventManager::GetInstance()->Notify(&outEvent);
-
-				outEvent.player_number_ = player2_;
 				EventManager::GetInstance()->Notify(&outEvent);
 			}
 		}
@@ -250,23 +239,32 @@ void Game::Notify(EventHeader* event)
 
 	case EVT_NEXT_GAME:
 	{
-		if (event->player_number_ == player1_
-			|| event->player_number_ == player2_)
+		Event::NextGameEvent * recvEvent = (Event::NextGameEvent*)event;
+		if (recvEvent->game_number_ == game_number_)
 		{
-			Event::GameStartEvent outEvent;
-			outEvent.game_number_ = game_number_;
-			outEvent.player_number_ = player1_;
-			EventManager::GetInstance()->Notify(&outEvent);
+			try_count_++;
+			auto player1 = PlayerManager::GetInstance()->GetPlayer(player1_);
+			auto player2 = PlayerManager::GetInstance()->GetPlayer(player2_);
 
-			outEvent.player_number_ = player2_;
-			EventManager::GetInstance()->Notify(&outEvent);
+			if (player1 == nullptr ||
+				player2 == nullptr)
+			{
+				//TODO
+
+				break;
+			}
+			player1->InitTurns();
+			player2->InitTurns();
+
+			player1->SetState(PlayerState::PS_WAIT_MAP);
+			player2->SetState(PlayerState::PS_WAIT_MAP);
 		}
 	}break;
 
 	case EVT_GAME_START:
 	{
-		if (event->player_number_ == player1_
-			|| event->player_number_ == player2_)
+		Event::GameStartEvent * recvEvent = (Event::GameStartEvent*)event;
+		if (recvEvent->game_number_ == game_number_)
 		{
 			isGameStart = true;
 			try_count_++;

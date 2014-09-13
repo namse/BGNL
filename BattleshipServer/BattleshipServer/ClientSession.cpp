@@ -3,10 +3,12 @@
 #include "ClientManager.h"
 #include "EventManager.h"
 #include "Event.h"
+#include "GameManager.h"
+#include "PlayerManager.h"
 
 //@{ Handler Helper
 
-typedef void (*HandlerFunc)(ClientSession* session, PacketHeader& pktBase) ;
+typedef void(*HandlerFunc)(ClientSession* session, PacketHeader& pktBase);
 
 static HandlerFunc HandlerTable[PKT_MAX];
 
@@ -187,7 +189,7 @@ bool ClientSession::SendFlush()
 	if (mSendBuffer.GetContiguiousBytes() == 0)
 		return true;
 
-		DWORD sendbytes = 0;
+	DWORD sendbytes = 0;
 	DWORD flags = 0;
 
 	WSABUF buf;
@@ -219,15 +221,15 @@ void ClientSession::OnWriteComplete(size_t len)
 
 bool ClientSession::Broadcast(PacketHeader* pkt)
 {
-	if ( !SendRequest(pkt) )
-		return false ;
+	if (!SendRequest(pkt))
+		return false;
 
-	if ( !IsConnected() )
-		return false ;
+	if (!IsConnected())
+		return false;
 
-	GClientManager->BroadcastPacket(this, pkt) ;
+	GClientManager->BroadcastPacket(this, pkt);
 
-	return true ;
+	return true;
 }
 
 void ClientSession::OnTick()
@@ -239,71 +241,105 @@ void ClientSession::OnTick()
 
 void ClientSession::Notify(EventHeader* event)
 {
-	if (event->player_number_ == mPlayerId)
+
+	switch (event->event_type_)
 	{
-		switch (event->event_type_)
+	case EVT_ERROR:
+	{
+		Event::ErrorEvent* recvEvent = (Event::ErrorEvent*)event;
+		if (recvEvent->player_number_ == mPlayerId)
 		{
-		case EVT_ERROR:
-		{
-			Event::ErrorEvent* recvEvent = (Event::ErrorEvent*)event;
 			Packet::ErrorResult outPacket;
 			outPacket.mErrorType = recvEvent->event_type_;
 			SendRequest(&outPacket);
+		}
 
-		}break;
-		case EVT_OK:
+	}break;
+	case EVT_OK:
+	{
+		Event::OKEvent* recvEvent = (Event::OKEvent*)event;
+		if (recvEvent->player_number_ == mPlayerId)
 		{
 			Packet::OKResult outPacket;
 
 			SendRequest(&outPacket);
-		}break;
-		case EVT_GAME_START:
+		}
+	}break;
+	case EVT_GAME_START:
+	{
+		Event::GameStartEvent* recvEvent = (Event::GameStartEvent*)event;
+		auto game = GameManager::GetInstance()->GetGame(recvEvent->game_number_);
+		if (game != nullptr && game->IsPlayerInHere(mPlayerId))
 		{
 			Packet::GameStartResult outPacket;
 			SendRequest(&outPacket);
-		}break;
-		case EVT_MY_TURN:
+		}
+	}break;
+	case EVT_MY_TURN:
+	{
+		Event::MyTurnEvent* recvEvent = (Event::MyTurnEvent*)event;
+		if (recvEvent->player_number_ == mPlayerId)
 		{
 			Packet::MyTurnResult outPacket;
 			SendRequest(&outPacket);
-		}break;
-		case EVT_AttackResult:
+		}
+	}break;
+	case EVT_AttackResult:
+	{
+		Event::AttackEvent* recvEvent = (Event::AttackEvent*)event;
+		if (recvEvent->player_number_ == mPlayerId)
 		{
-			Event::AttackEvent* recvEvent = (Event::AttackEvent*)event;
-
-			Packet::AttackResult outPacket;	
+			Packet::AttackResult outPacket;
 			outPacket.x = recvEvent->x;
 			outPacket.y = recvEvent->y;
 			outPacket.mIsMine = recvEvent->isMine;
 			outPacket.mAttackResult = recvEvent->AttackResult_;
 			SendRequest(&outPacket);
-		}break;
-		case EVT_GAME_OVER:
+		}
+	}break;
+	case EVT_GAME_OVER:
+	{
+		Event::GameOverEvent* recvEvent = (Event::GameOverEvent*)event;
+		auto game = GameManager::GetInstance()->GetGame(recvEvent->game_number_);
+		if (game != nullptr && game->IsPlayerInHere(mPlayerId))
 		{
-			Event::GameOverEvent* recvEvent = (Event::GameOverEvent*)event;
-
 			Packet::GameOverResult outPacket;
 			outPacket.mIsWinner = (recvEvent->winner_ == mPlayerId);
 			outPacket.mTurns = recvEvent->turns_;
 			SendRequest(&outPacket);
-		}break;
-		case EVT_NEXT_GAME:
+		}
+	}break;
+	case EVT_NEXT_GAME:
+	{
+		Event::NextGameEvent* recvEvent = (Event::NextGameEvent*)event;
+		auto game = GameManager::GetInstance()->GetGame(recvEvent->game_number_);
+		if (game != nullptr && game->IsPlayerInHere(mPlayerId))
 		{
 			Packet::NextGameResult outPacket;
 			SendRequest(&outPacket);
-		}break;
-		case EVT_ALL_OVER:
-		{
-			Event::AllOverEvent* recvEvent = (Event::AllOverEvent*)event;
-
-			Packet::AllOverResult outPacket;
-			outPacket.mAverageTruns = recvEvent->average_truns_;
-			outPacket.mWinCount = recvEvent->win_count_;
-			SendRequest(&outPacket);
-		}break;
-		default:
-			break;
 		}
+	}break;
+	case EVT_ALL_OVER:
+	{
+		Event::AllOverEvent* recvEvent = (Event::AllOverEvent*)event;
+		auto game = GameManager::GetInstance()->GetGame(recvEvent->game_number_);
+		if (game != nullptr && game->IsPlayerInHere(mPlayerId))
+		{
+			Packet::AllOverResult outPacket;
+			auto player = PlayerManager::GetInstance()->GetPlayer(mPlayerId);
+			if (player == nullptr)
+			{
+				//TODO
+
+				break;
+			}
+			outPacket.mAverageTruns = player->GetAverageTurns();
+			outPacket.mWinCount = player->GetWinCount();
+			SendRequest(&outPacket);
+		}
+	}break;
+	default:
+		break;
 	}
 }
 
@@ -311,49 +347,49 @@ void ClientSession::Notify(EventHeader* event)
 
 void CALLBACK RecvCompletion(DWORD dwError, DWORD cbTransferred, LPWSAOVERLAPPED lpOverlapped, DWORD dwFlags)
 {
-	ClientSession* fromClient = static_cast<OverlappedIO*>(lpOverlapped)->mObject ;
-	
-	fromClient->DecOverlappedRequest() ;
+	ClientSession* fromClient = static_cast<OverlappedIO*>(lpOverlapped)->mObject;
 
-	if ( !fromClient->IsConnected() )
-		return ;
+	fromClient->DecOverlappedRequest();
+
+	if (!fromClient->IsConnected())
+		return;
 
 	/// 에러 발생시 해당 세션 종료
-	if ( dwError || cbTransferred == 0 )
+	if (dwError || cbTransferred == 0)
 	{
-		fromClient->Disconnect() ;
-		return ;
+		fromClient->Disconnect();
+		return;
 	}
 
 	/// 받은 데이터 처리
-	fromClient->OnRead(cbTransferred) ;
+	fromClient->OnRead(cbTransferred);
 
 	/// 다시 받기
-	if ( false == fromClient->PostRecv() )
+	if (false == fromClient->PostRecv())
 	{
-		fromClient->Disconnect() ;
-		return ;
+		fromClient->Disconnect();
+		return;
 	}
 }
 
 
 void CALLBACK SendCompletion(DWORD dwError, DWORD cbTransferred, LPWSAOVERLAPPED lpOverlapped, DWORD dwFlags)
 {
-	ClientSession* fromClient = static_cast<OverlappedIO*>(lpOverlapped)->mObject ;
+	ClientSession* fromClient = static_cast<OverlappedIO*>(lpOverlapped)->mObject;
 
-	fromClient->DecOverlappedRequest() ;
+	fromClient->DecOverlappedRequest();
 
-	if ( !fromClient->IsConnected() )
-		return ;
+	if (!fromClient->IsConnected())
+		return;
 
 	/// 에러 발생시 해당 세션 종료
-	if ( dwError || cbTransferred == 0 )
+	if (dwError || cbTransferred == 0)
 	{
-		fromClient->Disconnect() ;
-		return ;
+		fromClient->Disconnect();
+		return;
 	}
 
-	fromClient->OnWriteComplete(cbTransferred) ;
+	fromClient->OnWriteComplete(cbTransferred);
 
 }
 
@@ -430,7 +466,7 @@ void ClientSession::HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket)
 		}
 	}
 	EventManager::GetInstance()->Notify(&event);
-}	
+}
 
 REGISTER_HANDLER(PKT_CS_SUBMIT_ATTACK)
 {

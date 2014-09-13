@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "EasyServer.h"
 #include "EventManager.h"
-
+#include "GameManager.h"
 
 static const UINT sc_msaaSampleCount = 4;
 
@@ -578,7 +578,7 @@ void Application::RunMessageLoop()
 			{
 
 				EasyServer::GetInstance()->Run();
-
+				GameManager::GetInstance()->RemoveOverGames();
 
 				DWORD nowTime = timeGetTime();
 				float dTime;

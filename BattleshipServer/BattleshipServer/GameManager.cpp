@@ -7,7 +7,6 @@ GameManager* GameManager::pInstance_ = nullptr;
 GameManager::GameManager()
 {
 	EventManager::GetInstance()->AddEventListener(EVT_NEW_GAME, this);
-	EventManager::GetInstance()->AddEventListener(EVT_ALL_OVER, this);
 }
 
 
@@ -15,7 +14,19 @@ GameManager::~GameManager()
 {
 	EventManager::GetInstance()->RemoveEventListener(this);
 }
-
+void GameManager::RemoveOverGames()
+{
+	for (auto gameIt = gameList_.begin(); gameIt != gameList_.end();)
+	{
+		if (gameIt->second->IsGameAllOver())
+		{
+			delete gameIt->second;
+			gameIt = gameList_.erase(gameIt);
+		}
+		else
+			gameIt++;
+	}
+}
 void GameManager::Notify(EventHeader* event)
 {
 	switch (event->event_type_)
@@ -33,18 +44,6 @@ void GameManager::Notify(EventHeader* event)
 
 		Game* game = new Game(gameNumber);
 		gameList_.insert(GameList::value_type(gameNumber, game));
-	}break;
-	case EVT_ALL_OVER:
-	{
-		Event::AllOverEvent* recvEvent = (Event::AllOverEvent*)event;
-
-		auto gameIt = gameList_.find(recvEvent->game_number_);
-		if (gameIt != gameList_.end())
-		{
-			delete gameIt->second;
-			gameList_.erase(gameIt);
-		}
-
 	}break;
 	default:
 		break;

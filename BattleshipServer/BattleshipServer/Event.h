@@ -23,7 +23,6 @@ enum EventTypes
 struct EventHeader
 {
 	EventTypes event_type_;
-	PlayerNumber player_number_;
 };
 
 namespace Event
@@ -37,6 +36,7 @@ namespace Event
 			error_type_ = EVT_NONE;
 		}
 		int error_type_;
+		PlayerNumber player_number_;
 	};
 
 	struct OKEvent : public EventHeader
@@ -45,6 +45,7 @@ namespace Event
 		{
 			event_type_ = EVT_OK;
 		}
+		PlayerNumber player_number_;
 	};
 
 	struct SubmitNameEvent : public EventHeader
@@ -58,6 +59,7 @@ namespace Event
 		{
 			memcpy(name_, name, sizeof(wchar_t) * min(MAX_NAME_LEN, length));
 		}
+		PlayerNumber player_number_;
 		wchar_t name_[MAX_NAME_LEN];
 	};
 
@@ -78,6 +80,7 @@ namespace Event
 			event_type_ = EVT_SUBMIT_MAP;
 			memset(mMap, MI_EMPTY, sizeof(mMap));
 		}
+		PlayerNumber player_number_;
 		char mMap[8][8];
 	};
 
@@ -87,6 +90,7 @@ namespace Event
 		{
 			event_type_ = EVT_MY_TURN;
 		}
+		PlayerNumber player_number_;
 	};
 
 	struct SubmitAttackEvent : public EventHeader
@@ -96,6 +100,7 @@ namespace Event
 			event_type_ = EVT_SUBMIT_ATTACK;
 			x = y = -1;
 		}
+		PlayerNumber player_number_;
 		int x, y;
 	};
 
@@ -108,6 +113,7 @@ namespace Event
 			AttackResult_ = AR_NONE;
 			isMine = false;
 		}
+		PlayerNumber player_number_;
 		int x, y;
 		bool isMine;
 		AttackResult AttackResult_;
@@ -141,12 +147,8 @@ namespace Event
 		AllOverEvent()
 		{
 			event_type_ = EVT_ALL_OVER;
-			win_count_ = -1;
-			average_truns_ = NAN;
 			game_number_ = -1;
 		}
-		int win_count_;
-		float average_truns_;
 		GameNumber game_number_;
 	};
 	
@@ -156,6 +158,7 @@ namespace Event
 		{
 			event_type_ = EVT_NEW_GAME;
 		}
+		GameNumber game_number_;
 	};
 	
 	struct AddPlayer1InGameEvent : public EventHeader

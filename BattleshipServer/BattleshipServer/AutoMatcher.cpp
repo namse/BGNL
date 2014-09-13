@@ -53,10 +53,6 @@ void AutoMatcher::Update(float dTime)
 		{
 			Event::GameStartEvent outEvent;
 			outEvent.game_number_ = gameNumber;
-			outEvent.player_number_ = player2;
-			EventManager::GetInstance()->Notify(&outEvent);
-
-			outEvent.player_number_ = player1;
 			EventManager::GetInstance()->Notify(&outEvent);
 		}
 	}
