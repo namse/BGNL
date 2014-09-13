@@ -57,12 +57,8 @@ private:
 	GameNumber game_number_;
 	PlayerNumber player1_;
 	PlayerNumber player2_;
-	int turns_;
-	int try_count_;
-	int total_turns_;
-	int win_count_1_;
-	int win_count_2_;
 
+	int try_count_;
 	int prev_trun_;
 
 	bool isGameStart;

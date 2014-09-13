@@ -4,6 +4,7 @@
 
 Player::Player(std::wstring name, PlayerNumber player_number)
 	:name_(name), player_number_(player_number), player_state_(PS_WAIT), enemy_number_(-1)
+	, turns_(-1), win_total_turns_(0), win_count_(0)
 {
 	memset(info_, MI_EMPTY, sizeof(info_));
 	memset(didAttacked_, false, sizeof(didAttacked_));

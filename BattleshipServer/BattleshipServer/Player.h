@@ -29,6 +29,33 @@ public:
 		enemy_number_ = enemyNumber;
 	}
 	PlayerState GetState() { return player_state_; }
+
+	void InitTurns()
+	{
+		turns_ = 0;
+	}
+	void CheckTurn()
+	{
+		turns_++;
+	}
+	void AddWinTotalTurns()
+	{
+		win_total_turns_ += turns_;
+	}
+	void AddWinCount()
+	{
+		win_count_++;
+	}
+	int GetAverageTurns()
+	{
+		if (win_count_ == 0)
+			return 0;
+		else
+			return win_total_turns_ / win_count_;
+	}
+
+	int GetTurns() { return turns_; }
+	int GetWinCount() { return win_count_; }
 private:
 	bool IsShipDestoryed(MapInfo shipType);
 private:
@@ -38,5 +65,9 @@ private:
 	PlayerNumber player_number_;
 	PlayerState player_state_;
 	PlayerNumber enemy_number_;
+
+	int turns_;
+	int win_total_turns_;
+	int win_count_;
 };
 
