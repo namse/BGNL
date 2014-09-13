@@ -51,3 +51,4 @@ void EventManager::Notify(EventHeader* event)
 		it->second->Notify(event);
 	}
 }
+		

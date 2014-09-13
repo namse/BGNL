@@ -275,7 +275,7 @@ void ClientSession::Notify(EventHeader* event)
 			outPacket.x = recvEvent->x;
 			outPacket.y = recvEvent->y;
 			outPacket.mIsMine = recvEvent->isMine;
-			outPacket.mAttackResult = recvEvent->event_type_;
+			outPacket.mAttackResult = recvEvent->AttackResult_;
 			SendRequest(&outPacket);
 		}break;
 		case EVT_GAME_OVER:
