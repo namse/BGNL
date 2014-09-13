@@ -17,8 +17,15 @@ public:
 
 	bool IsFull();
 
-
+	bool IsPlayerInHere(PlayerNumber playerNumber)
+	{
+		return (playerNumber == player1_ || playerNumber == player2_);
+	}
 	
+	bool IsGameAllOver()
+	{
+		return isGameAllOver_;
+	}
 private:
 
 	void DropPlayer(bool isPlayer1);
@@ -62,6 +69,7 @@ private:
 	int prev_trun_;
 
 	bool isGameStart;
+	bool isGameAllOver_;
 
 };
 

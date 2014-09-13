@@ -202,7 +202,7 @@ extern IWICImagingFactory* g_pWICFactory;
 // for logic
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
-#define MAX_GAME_COUNT 10
+#define MAX_GAME_COUNT 3
 
 
 typedef int PlayerNumber;

@@ -46,12 +46,12 @@ public:
 	{
 		win_count_++;
 	}
-	int GetAverageTurns()
+	float GetAverageTurns()
 	{
 		if (win_count_ == 0)
 			return 0;
 		else
-			return win_total_turns_ / win_count_;
+			return (float)win_total_turns_ / (float)win_count_;
 	}
 
 	int GetTurns() { return turns_; }

@@ -28,8 +28,15 @@ public:
 
 	void Notify(EventHeader* event);
 
+	void RemoveOverGames();
 	std::list<GameNumber> GetWaitingGames(bool wannaNonFull = true);
 
+	Game* GetGame(GameNumber gameNumber){
+		if (gameList_.find(gameNumber) != gameList_.end())
+			return gameList_[gameNumber];
+		else
+			return nullptr;
+	}
 	private:
 		GameManager();
 		~GameManager();
