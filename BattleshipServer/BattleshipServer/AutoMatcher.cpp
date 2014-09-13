@@ -26,7 +26,7 @@ void AutoMatcher::Update(float dTime)
 
 	while (waitingPlayers.size() >= 2)
 	{
-		auto player1 = waitingPlayers.front();
+			auto player1 = waitingPlayers.front();
 		waitingPlayers.pop_front();
 		auto player2 = waitingPlayers.front();
 		waitingPlayers.pop_front();

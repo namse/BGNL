@@ -125,6 +125,13 @@ void Game::Notify(EventHeader* event)
 
 				break;
 			}
+
+			// 0, send OK
+			{
+				Event::OKEvent outEvent;
+				outEvent.player_number_ = event->player_number_;
+				EventManager::GetInstance()->Notify(&outEvent);
+			}
 			auto result = opponent_player->AttackAndGetResult(x, y);
 
 			// 1. send result
@@ -182,7 +189,12 @@ void Game::Notify(EventHeader* event)
 			}
 
 			player->SetMap(recvEvent->mMap);
-			player->SetState(PS_ON_GAME);	
+			player->SetState(PS_ON_GAME);
+			{
+				Event::OKEvent outEvent;
+				outEvent.player_number_ = event->player_number_;
+				EventManager::GetInstance()->Notify(&outEvent);
+			}
 			if (player->GetState() == PS_ON_GAME
 				&& oppo_player->GetState() == PS_ON_GAME)
 			{
