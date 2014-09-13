@@ -38,6 +38,21 @@ private:
 		return -1;
 	}
 
+	int GetFirstTurn()
+	{
+		if (rand() % 2)
+			prev_trun_ = player1_;
+		prev_trun_ = player2_;
+		return prev_trun_;
+	}
+
+	int GetNextTurn()
+	{
+		prev_trun_ = GetOpponent(prev_trun_);
+		return prev_trun_;
+	}
+
+
 
 	GameNumber game_number_;
 	PlayerNumber player1_;
@@ -47,6 +62,8 @@ private:
 	int total_turns_;
 	int win_count_1_;
 	int win_count_2_;
+
+	int prev_trun_;
 
 	bool isGameStart;
 
