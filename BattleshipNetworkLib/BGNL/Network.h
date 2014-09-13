@@ -54,6 +54,7 @@ public:
 	Network();
 	~Network();
 
+	static void Initialize();
 	void	Connect(const char* const ip, const unsigned short port);
 	void	Disconnect();
 
@@ -73,9 +74,25 @@ public:
 	void	Send(const void* const data, const unsigned int size);
 	void	Recive(void* const out_data, const unsigned int size);
 
+private:
+	struct WinSockIntializer
+	{
+		WinSockIntializer()
+		{
+			WSADATA wsadata = { 0, };
+			if (WSAStartup(MAKEWORD(2, 2), &wsadata))
+			{
+				throw NETWORK_ERROR;
+			}
+		}
+		~WinSockIntializer()
+		{
+			WSACleanup();
+		}
+	};
 
 private:
-	WSADATA		m_WSAData;
+	// WSADATA		m_WSAData;
 	SOCKET		m_Socket;
 
 	bool		m_Connected;

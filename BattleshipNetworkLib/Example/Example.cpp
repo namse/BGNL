@@ -43,6 +43,19 @@ void main()
 	ErrorType error;
 
 	/*
+		** 네트워크 초기화
+	*/
+	try
+	{
+		Network::Initialize();
+	}
+	catch (Network::Exception)
+	{
+		puts("초기화 도중 문제가 발생했습니다.");
+		return;
+	}
+
+	/*
 		** 서버에 연결
 		서버의 IP와 포트는 당일날 공지된다.
 	*/
@@ -169,9 +182,11 @@ void main()
 					if (attackResult.isMine)
 						puts("공격 결과:");
 					else
+					{
 						puts("피격 결과:");
+						HandleOpositionAttackResult(attackResult.attackResult, attackResult.x, attackResult.y);
+					}
 					printf_s("X: %d , Y: %d , RESULT: %s\n", attackResult.x, attackResult.y, ATTACK_RESULT_STR[attackResult.attackResult]);
-					HandleOpositionAttackResult(attackResult.attackResult, attackResult.x, attackResult.y);
 					break;
 				}
 

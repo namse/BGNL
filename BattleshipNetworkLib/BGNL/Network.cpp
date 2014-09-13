@@ -8,7 +8,7 @@
 Network::Network()
 :m_Socket(INVALID_SOCKET), m_Connected(false)
 {
-	ZeroMemory(&m_WSAData, sizeof(m_WSAData));
+	// ZeroMemory(&m_WSAData, sizeof(m_WSAData));
 	ZeroMemory(&m_ServerAddr, sizeof(m_ServerAddr));
 }
 
@@ -20,16 +20,24 @@ Network::~Network()
 }
 
 
+void Network::Initialize()
+{
+	static WinSockIntializer winSockInit;
+}
+
+
 
 void Network::Connect(const char* const ip, const unsigned short port)
 {
 	_ASSERT(ip);
 	if (!ip) throw PARAMETER_ERROR;
 
+	/*
 	if (WSAStartup(MAKEWORD(2, 2), &m_WSAData))
 	{
 		throw NETWORK_ERROR;
 	}
+	*/
 
 	ZeroMemory(&m_Socket, sizeof(m_Socket));
 	ZeroMemory(&m_ServerAddr, sizeof(m_ServerAddr));
@@ -66,7 +74,7 @@ void Network::Disconnect()
 	closesocket(m_Socket);
 	m_Connected = false;
 
-	WSACleanup();
+	// WSACleanup();
 }
 
 

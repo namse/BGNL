@@ -2,6 +2,7 @@
 #include <wchar.h>
 #include <process.h>
 #include <time.h>
+#include <conio.h>
 
 #ifdef _DEBUG
 #pragma comment(lib, "BGNL_debug.lib")
@@ -28,6 +29,8 @@ void main()
 	HANDLE hThread[CLIENT_NUM] = { 0, };
 	IPAndPort ipNport = { 0, };
 
+	Network::Initialize();
+
 	InitializeCriticalSection(&cs);
 
 	for (int i = 0; i < CLIENT_NUM; ++i)
@@ -45,6 +48,9 @@ void main()
 	}
 
 	DeleteCriticalSection(&cs);
+
+	puts("끝");
+	_getch();
 }
 
 void PlaceShip(char* const shipPosList)
@@ -95,6 +101,20 @@ void PlaceShip(char* const shipPosList)
 	}
 }
 
+void MakeAttackPos(const char* const enemyMap, int* const x, int* const y)
+{
+	do
+	{
+		*x = rand() % 8;
+		*y = rand() % 8;
+	} while (!enemyMap[*x + (*y) * 8]);
+}
+
+void HandleOpositionAttackResult(char* const enemyMap, const short result, const int x, const int y)
+{
+	enemyMap[x + y * 8] = 1;
+}
+
 void Log(const char* const message)
 {
 	EnterCriticalSection(&cs);
@@ -111,7 +131,7 @@ unsigned int _stdcall ClientThread(void* param)
 
 	srand((unsigned)time(NULL) ^ GetCurrentThreadId()<< 2);
 
-	swprintf_s(name, L"NAME%d", rand()%100);
+	swprintf_s(name, L"NAME%d", GetCurrentThreadId());
 
 	Log("스레드 시작됨");
 
@@ -145,6 +165,9 @@ unsigned int _stdcall ClientThread(void* param)
 			bool allOver = false;
 			while (!allOver)
 			{
+				PacketType type;
+				ErrorType error;
+
 				Log("게임 준비");
 				PlaceShip(shipPosList);
 				if (network.SubmitMap(shipPosList) == ET_INVALID_MAP)
@@ -152,6 +175,70 @@ unsigned int _stdcall ClientThread(void* param)
 					Log("맵 생성에 문제 있음");
 					return 0;
 				}
+
+				bool gameOver = false;
+
+				while (!gameOver)
+				{
+					error = network.GetPacketType(&type);
+					switch (type)
+					{
+					case PKT_SC_ERROR:
+						Log("상대방 접속 종료");
+						return 0;
+
+					case PKT_SC_MY_TURN:
+					{
+						/*
+						** 공격 위치 전송
+						x, y는 0~7 사이의 정수이다.
+						*/
+						while (true)
+						{
+							int x, y;
+							MakeAttackPos(enemyMap, &x, &y);
+							error = network.SubmitAttack(x, y);
+							if (error == ET_INVALID_ATTACK)
+								Log("유효하지 않은 공격");
+							else
+								break;
+						}
+						break;
+					}
+
+					case PKT_SC_ATTACK_RESULT:
+					{
+						Network::AttackResult attackResult;
+						network.GetAttackResult(&attackResult);
+						if (attackResult.isMine)
+							HandleOpositionAttackResult(enemyMap, attackResult.attackResult, attackResult.x, attackResult.y);
+						break;
+					}
+
+					case PKT_SC_GAME_OVER:
+					{
+						Network::GameResult gameResult;
+						network.GetGameResult(&gameResult);
+						gameOver = true;
+						break;
+					}
+
+					default:
+						throw Network::UNEXPECTED_PACKET;
+						break;
+					}
+				}
+
+				network.GetPacketType(&type);
+
+				if (type == PKT_SC_ALL_OVER)
+				{
+					Network::FinalResult finalResult;
+					network.GetFinalResult(&finalResult);
+					allOver = true;
+				}
+				else
+					throw Network::UNEXPECTED_PACKET;
 			}
 		}
 		catch (Network::Exception)
@@ -159,6 +246,8 @@ unsigned int _stdcall ClientThread(void* param)
 			Log("에러");
 			return 0;
 		}
+
+		Log("게임종료");
 
 	}
 
