@@ -80,7 +80,7 @@ void PlaceShip(char* const shipPosList)
 	bool placeable;
 	ZeroMemory(map, 8 * 8);
 
-	for (int k = 0; k < sizeof(shipSizeArr); ++k)
+	for (int k = 0; k < sizeof(shipSizeArr) / sizeof(shipSizeArr[0]); ++k)
 	{
 		while (true)
 		{
@@ -115,7 +115,7 @@ void PlaceShip(char* const shipPosList)
 			int x, y;
 			if (dir == 0) { x = sx + i; y = sy; }
 			else  { x = sx; y = sy + i; }
-			map[x+y*8] = k;
+			map[x+y*8] = k+1;
 			shipPosList[listIdx++] = x;
 			shipPosList[listIdx++] = y;
 		}
