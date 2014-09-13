@@ -274,6 +274,7 @@ void ClientSession::Notify(EventHeader* event)
 			Packet::AttackResult outPacket;
 			outPacket.x = recvEvent->x;
 			outPacket.y = recvEvent->y;
+			outPacket.mIsMine = recvEvent->isMine;
 			outPacket.mAttackResult = recvEvent->event_type_;
 			SendRequest(&outPacket);
 		}break;

@@ -139,9 +139,16 @@ void Game::Notify(EventHeader* event)
 				{
 					Event::AttackEvent outEvent;
 					outEvent.AttackResult_ = result;
-					outEvent.player_number_ = player_number;
 					outEvent.x = x;
 					outEvent.y = y;
+
+					outEvent.player_number_ = player_number;
+					outEvent.isMine = true;
+					EventManager::GetInstance()->Notify(&outEvent);
+
+
+					outEvent.player_number_ = oppo_number;
+					outEvent.isMine = false;
 					EventManager::GetInstance()->Notify(&outEvent);
 				}
 				{

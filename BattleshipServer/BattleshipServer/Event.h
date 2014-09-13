@@ -106,8 +106,10 @@ namespace Event
 			event_type_ = EVT_AttackResult;
 			x = y = -1;
 			AttackResult_ = AR_NONE;
+			isMine = false;
 		}
 		int x, y;
+		bool isMine;
 		AttackResult AttackResult_;
 	};
 	struct GameOverEvent : public EventHeader
