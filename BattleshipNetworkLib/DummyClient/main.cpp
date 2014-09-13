@@ -20,7 +20,7 @@
 #include "Network.h"
 #include <Windows.h>
 
-#define CLIENT_NUM 16
+#define CLIENT_NUM 1
 
 struct IPAndPort
 {
@@ -39,13 +39,14 @@ void main(const int argc, const char* const * const argv)
 
 	if (argc != 3)
 	{
-		printf_s("USAGE: %s <IP> <PORT>\n", argv[1]);
-		return;
+		strcpy_s(ipNport.ip, "127.0.0.1");
+		ipNport.port = atoi("9001");
 	}
-
-	strcpy_s(ipNport.ip, argv[1]);
-	ipNport.port = atoi(argv[2]);
-
+	else
+	{
+		strcpy_s(ipNport.ip, argv[1]);
+		ipNport.port = atoi(argv[2]);
+	}
 	Network::Initialize();
 
 	InitializeCriticalSection(&cs);
@@ -81,30 +82,33 @@ void PlaceShip(char* const shipPosList)
 
 	for (int k = 1; k <= 5; ++k)
 	{
-		size = shipSizeArr[k];
-		placeable = true;
-		dir = rand() % 2;
-		if (dir == 0) // hori
+		while (true)
 		{
-			sx = rand() % (8 - size);
-			sy = rand() % 8;
-		}
-		else // vert
-		{
-			sx = rand() % 8;
-			sy = rand() % (8 - size);
-		}
+			size = shipSizeArr[k];
+			placeable = true;
+			dir = rand() % 2;
+			if (dir == 0) // hori
+			{
+				sx = rand() % (8 - size);
+				sy = rand() % 8;
+			}
+			else // vert
+			{
+				sx = rand() % 8;
+				sy = rand() % (8 - size);
+			}
 
-		for (int i = 0; i < size && placeable; ++i)
-		{
-			if (dir == 0 && map[sx + i + sy * 8])
-				placeable = false;
-			else if (dir == 1 && map[sx + (sy + i) * 8])
-				placeable = false;
-		}
+			for (int i = 0; i < size && placeable; ++i)
+			{
+				if (dir == 0 && map[sx + i + sy * 8])
+					placeable = false;
+				else if (dir == 1 && map[sx + (sy + i) * 8])
+					placeable = false;
+			}
 
-		if (!placeable)
-			continue;
+			if (placeable)
+				break;
+		}
 
 		for (int i = 0; i < size && placeable; ++i)
 		{
