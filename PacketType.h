@@ -12,6 +12,12 @@
 #define MAP_HEIGHT 8
 #define MAP_SIZE (MAP_WIDTH * MAP_HEIGHT)
 
+
+#define AIRCRAFT_LENGTH 5
+#define BATTLESHIP_LENGTH 4
+#define CRUISER_LENGTH 3
+#define DESTROYER_LENGTH 2
+
 struct Coord
 {
 	Coord()
