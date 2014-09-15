@@ -204,6 +204,8 @@ extern IWICImagingFactory* g_pWICFactory;
 #define MAP_HEIGHT 8
 #define MAX_GAME_COUNT 3
 
+// if you waana edit this const value, you should touch the Game class's player numbers.
+#define NUMBER_OF_PLAYER_ON_GAME 2
 
 typedef int PlayerNumber;
 typedef int GameNumber;
