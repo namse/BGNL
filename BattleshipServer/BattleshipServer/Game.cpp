@@ -115,8 +115,7 @@ void Game::Notify(EventHeader* event)
 		{
 			auto player_number = recvEvent->player_number_;
 			auto oppo_number = GetOpponent(player_number);
-			int x = recvEvent->x;
-			int y = recvEvent->y;
+			auto coord = recvEvent->coord_;
 			auto player = PlayerManager::GetInstance()->GetPlayer(player_number);
 			auto opponent_player = PlayerManager::GetInstance()->GetPlayer(oppo_number);
 			if (player == nullptr || opponent_player == nullptr)
@@ -134,15 +133,14 @@ void Game::Notify(EventHeader* event)
 				outEvent.player_number_ = recvEvent->player_number_;
 				EventManager::GetInstance()->Notify(&outEvent);
 			}
-			auto result = opponent_player->AttackAndGetResult(x, y);
+			auto result = opponent_player->AttackAndGetResult(coord);
 
 			// 1. send result
 			{
 				{
 					Event::AttackEvent outEvent;
 					outEvent.AttackResult_ = result;
-					outEvent.x = x;
-					outEvent.y = y;
+					outEvent.coord_ = coord;
 
 					outEvent.player_number_ = player_number;
 					outEvent.isMine = true;

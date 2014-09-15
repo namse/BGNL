@@ -15,18 +15,18 @@ Player::~Player()
 {
 }
 
-AttackResult Player::AttackAndGetResult(int x, int y)
+AttackResultTypes Player::AttackAndGetResult(Coord coord)
 {
-	if (x < 0 || x > MAP_WIDTH
-		|| y < 0 || y > MAP_HEIGHT)
+	if (coord.mX < 0 || coord.mX > MAP_WIDTH
+		|| coord.mY < 0 || coord.mY > MAP_HEIGHT)
 	{
 		//OH;;
-		std::cout << "ERROR : Attack Range is over, X = " << x << ", Y = " << y << std::endl;
+		std::cout << "ERROR : Attack Range is over, X = " << coord.mX << ", Y = " << coord.mY << std::endl;
 		return AR_NONE;
 	}
-	didAttacked_[x][y] = true;
+	didAttacked_[coord.mX][coord.mY] = true;
 
-	MapInfo shipType = info_[x][y];
+	MapInfo shipType = info_[coord.mX][coord.mY];
 
 	if (shipType == MI_EMPTY)
 	{
@@ -39,17 +39,17 @@ AttackResult Player::AttackAndGetResult(int x, int y)
 			switch (shipType)
 			{
 			case MI_AIRCRAFT:
-				return AR_DESTORY_AIRCRAFT;
+				return AR_DESTROY_AIRCRAFT;
 				break;
 			case MI_BATTLESHIP:
-				return AR_DESTORY_BATTLESHIP;
+				return AR_DESTROY_BATTLESHIP;
 				break;
 			case MI_CRUISER:
-				return AR_DESTORY_CRUISER;
+				return AR_DESTROY_CRUISER;
 				break;
-			case MI_DESTORYER_1:
-			case MI_DESTORYER_2:
-				return AR_DESTORY_DESTORYER;
+			case MI_DESTROYER_1:
+			case MI_DESTROYER_2:
+				return AR_DESTROY_DESTROYER;
 				break;
 			default:
 				return AR_NONE;
@@ -116,6 +116,6 @@ bool Player::IsGameEnd()
 	return IsShipDestoryed(MapInfo::MI_AIRCRAFT)
 		&& IsShipDestoryed(MapInfo::MI_BATTLESHIP)
 		&& IsShipDestoryed(MapInfo::MI_CRUISER)
-		&& IsShipDestoryed(MapInfo::MI_DESTORYER_1)
-		&& IsShipDestoryed(MapInfo::MI_DESTORYER_2);
+		&& IsShipDestoryed(MapInfo::MI_DESTROYER_1)
+		&& IsShipDestoryed(MapInfo::MI_DESTROYER_2);
 }

@@ -6,7 +6,7 @@ public:
 	Player(std::wstring name, PlayerNumber player_number);
 	~Player();
 
-	AttackResult AttackAndGetResult(int x, int y);
+	AttackResultTypes AttackAndGetResult(Coord coord);
 
 	bool IsGameEnd();
 
