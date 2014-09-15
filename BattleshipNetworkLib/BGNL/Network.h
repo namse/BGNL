@@ -60,7 +60,7 @@ public:
 
 	// Send 계열
 	ErrorType		SubmitName(const wchar_t* const name);
-	ErrorType		SubmitMap(const void* const mapData);
+	ErrorType		SubmitMap(const MapData* const mapData);
 	ErrorType		SubmitAttack(const Coord pos);
 
 	// Recive 계열

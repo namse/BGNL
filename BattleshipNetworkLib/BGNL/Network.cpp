@@ -94,7 +94,7 @@ ErrorType Network::SubmitName(const wchar_t* const name)
 	return WaitSpecPacket(PKT_SC_OK);
 }
 
-ErrorType Network::SubmitMap(const void* const mapData)
+ErrorType Network::SubmitMap(const MapData* const mapData)
 {
 	_ASSERT(mapData);
 	if (!mapData) throw PARAMETER_ERROR;
