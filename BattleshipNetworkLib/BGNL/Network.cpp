@@ -94,14 +94,14 @@ ErrorType Network::SubmitName(const wchar_t* const name)
 	return WaitSpecPacket(PKT_SC_OK);
 }
 
-ErrorType Network::SubmitMap(const MapData* const mapData)
+ErrorType Network::SubmitMap(const char* const mapData)
 {
 	_ASSERT(mapData);
 	if (!mapData) throw PARAMETER_ERROR;
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::SubmitMapRequest packet;
-	memcpy_s(packet.mCoords, SHNIPS_TOTAL_LENGTH * sizeof(Coord), mapData, SHNIPS_TOTAL_LENGTH * sizeof(Coord));
+	memcpy_s(packet.mMap, MAP_SIZE, mapData, MAP_SIZE);
 
 	Send(&packet, sizeof(packet));
 

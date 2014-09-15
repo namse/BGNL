@@ -8,10 +8,9 @@
 
 #define MAX_NAME_LEN	16
 
-#define AIRCRAFT_LENGTH 5
-#define BATTLESHIP_LENGTH 4
-#define CRUISER_LENGTH 3
-#define DESTROYER_LENGTH 2
+#define MAP_WIDTH 8
+#define MAP_HEIGHT 8
+#define MAP_SIZE (MAP_WIDTH * MAP_HEIGHT)
 
 struct Coord
 {
@@ -25,14 +24,17 @@ struct Coord
 	}
 	Coord(char x, char y)
 	{
-		if (x >= 'A' && x <= 'z')
+		if (x >= 'A' && x <= 'Z')
 		{
-			x = toupper(x);
 			x -= 'A';
+		}
+		if (x >= 'a' && x <= 'a')
+		{
+			x -= 'a';
 		}
 		if (y >= '0' && y <= '9')
 		{
-			y -= '0';
+			y -= '1';
 		}
 		mX = x, mY = y;
 	}
@@ -90,6 +92,16 @@ enum AttackResultTypes
 	AR_DESTROY_BATTLESHIP = 4,
 	AR_DESTROY_CRUISER = 5,
 	AR_DESTROY_DESTROYER = 6,
+};
+
+enum MapDataTypes
+{
+	MD_NONE,
+	MD_AIRCRAFT,
+	MD_BATTLESHIP,
+	MD_CRUISER,
+	MD_DESTROYER1,
+	MD_DESTROYER2,
 };
 
 
@@ -157,9 +169,9 @@ namespace Packet
 		{
 			mSize = sizeof(SubmitMapRequest);
 			mType = PKT_CS_SUBMIT_MAP;
-			memset(mCoords, 0, sizeof(mCoords));
+			memset(mMap, 0, sizeof(mMap));
 		}
-		Coord mCoords[SHNIPS_TOTAL_LENGTH];
+		char mMap[MAP_SIZE];
 	};
 
 	struct MyTurnResult : public PacketHeader

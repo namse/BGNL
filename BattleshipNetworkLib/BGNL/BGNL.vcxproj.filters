@@ -2,8 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Network.cpp" />
+    <ClCompile Include="ShipData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network.h" />
+    <ClInclude Include="ShipData.h" />
   </ItemGroup>
 </Project>

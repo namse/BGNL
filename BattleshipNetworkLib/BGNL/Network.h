@@ -40,16 +40,6 @@ public:
 		float avgTurns;
 	};
 
-	struct MapData
-	{
-		Coord aircraft[AIRCRAFT_LENGTH];
-		Coord battleship[BATTLESHIP_LENGTH];
-		Coord cruiser[CRUISER_LENGTH];
-		Coord destroyer1[DESTROYER_LENGTH];
-		Coord destroyer2[DESTROYER_LENGTH];
-	};
-
-
 public:
 	Network();
 	~Network();
@@ -61,7 +51,7 @@ public:
 
 	// Send 계열
 	ErrorType			SubmitName(const wchar_t* const name);
-	ErrorType			SubmitMap(const MapData* const mapData);
+	ErrorType			SubmitMap(const char* const mapData);
 	ErrorType			SubmitAttack(const Coord pos);
 
 	// Recive 계열
