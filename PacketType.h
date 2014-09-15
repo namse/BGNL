@@ -102,6 +102,7 @@ enum MapDataTypes
 	MD_CRUISER,
 	MD_DESTROYER1,
 	MD_DESTROYER2,
+	MD_END,
 };
 
 

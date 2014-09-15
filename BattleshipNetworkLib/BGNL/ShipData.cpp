@@ -47,7 +47,7 @@ void ShipData::SetShip(const ShipType shipType, const Coord startCoord, const Di
 void ShipData::ToMapData(char* const mapData)
 {
 	memset(mapData, 0, MAP_SIZE);
-	for (int type = MD_NONE + 1; type < MAX_SHIP_NUM; ++type)
+	for (int type = MD_NONE + 1; type < MD_END; ++type)
 	{
 		Coord* arr = ship[type];
 		for (int j = 0; j < SHIP_LEN[type]; ++j)
