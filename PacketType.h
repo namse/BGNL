@@ -177,9 +177,8 @@ namespace Packet
 		{
 			mSize = sizeof(SubmitAttackRequest);
 			mType = PKT_CS_SUBMIT_ATTACK;
-			x = y = -1;
 		}
-		int x, y;
+		Coord mCoord;
 	};
 
 	struct AttackResult : public PacketHeader
@@ -188,11 +187,10 @@ namespace Packet
 		{
 			mSize = sizeof(AttackResult);
 			mType = PKT_SC_ATTACK_RESULT;
-			x = y = -1;
 			mAttackResult = AR_NONE;
 			mIsMine = false;
 		}
-		int x, y;
+		Coord mCoord;
 		short mAttackResult;
 		bool mIsMine;
 	};
