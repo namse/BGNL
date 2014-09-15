@@ -81,7 +81,7 @@ enum MapInfo
 	MI_DESTORYER_2 = 5,
 };
 
-enum AttackResult
+enum AttackResultTypes
 {
 	AR_NONE = 0,
 	AR_MISS = 1,

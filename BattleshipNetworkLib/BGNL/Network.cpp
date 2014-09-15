@@ -164,12 +164,12 @@ void Network::WaitForStart()
 	WaitSpecPacket(PKT_SC_GAME_START);
 }
 
-Network::AttackResult Network::GetAttackResult()
+Network::AttackResultData Network::GetAttackResult()
 {
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::AttackResult packet;
-	AttackResult data;
+	AttackResultData data;
 
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
 	data.attackResult = packet.mAttackResult;
@@ -179,12 +179,12 @@ Network::AttackResult Network::GetAttackResult()
 	return data;
 }
 
-Network::GameResult Network::GetGameResult()
+Network::GameResultData Network::GetGameResult()
 {
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::GameOverResult packet;
-	GameResult data;
+	GameResultData data;
 
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
 	data.isWinner = packet.mIsWinner;
@@ -193,12 +193,12 @@ Network::GameResult Network::GetGameResult()
 	return data;
 }
 
-Network::FinalResult Network::GetFinalResult()
+Network::FinalResultData Network::GetFinalResult()
 {
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::AllOverResult packet;
-	FinalResult data;
+	FinalResultData data;
 
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
 	data.winCount = packet.mWinCount;
