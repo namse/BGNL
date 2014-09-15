@@ -108,14 +108,12 @@ ErrorType Network::SubmitMap(const void* const mapData)
 	return WaitSpecPacket(PKT_SC_OK);
 }
 
-ErrorType Network::SubmitAttack(const int x, const int y)
+ErrorType Network::SubmitAttack(const Coord pos)
 {
 	if (!m_Connected) throw NETWORK_ERROR;
-	int pos[2] = { x, y };
 
 	Packet::SubmitAttackRequest packet;
-	packet.x = x;
-	packet.y = y;
+	packet.mCoord = pos;
 
 	Send(&packet, sizeof(packet));
 
@@ -161,42 +159,52 @@ ErrorType Network::WaitSpecPacket(const PacketType type)
 	}
 }
 
-void Network::GetAttackResult(AttackResult* const data)
+void Network::WaitForStart()
 {
-	_ASSERT(data);
-	if (!data) throw PARAMETER_ERROR;
+	WaitSpecPacket(PKT_SC_GAME_START);
+}
+
+Network::AttackResult Network::GetAttackResult()
+{
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::AttackResult packet;
+	AttackResult data;
+
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
-	data->attackResult = packet.mAttackResult;
-	data->x = packet.x;
-	data->y = packet.y;
-	data->isMine = packet.mIsMine;
+	data.attackResult = packet.mAttackResult;
+	data.pos = packet.mCoord;
+	data.isMine = packet.mIsMine;
+
+	return data;
 }
 
-void Network::GetGameResult(GameResult* const data)
+Network::GameResult Network::GetGameResult()
 {
-	_ASSERT(data);
-	if (!data) throw PARAMETER_ERROR;
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::GameOverResult packet;
+	GameResult data;
+
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
-	data->isWinner = packet.mIsWinner;
-	data->turns = packet.mTurns;
+	data.isWinner = packet.mIsWinner;
+	data.turns = packet.mTurns;
+
+	return data;
 }
 
-void Network::GetFinalResult(FinalResult* const data)
+Network::FinalResult Network::GetFinalResult()
 {
-	_ASSERT(data);
-	if (!data) throw PARAMETER_ERROR;
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::AllOverResult packet;
+	FinalResult data;
+
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
-	data->winCount = packet.mWinCount;
-	data->avgTurns = packet.mAverageTruns;
+	data.winCount = packet.mWinCount;
+	data.avgTurns = packet.mAverageTruns;
+
+	return data;
 }
 
 

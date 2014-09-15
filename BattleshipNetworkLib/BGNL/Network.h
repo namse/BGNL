@@ -22,8 +22,7 @@ public:
 public:
 	struct AttackResult
 	{
-		int x;
-		int y;
+		Coord pos;
 		short attackResult;
 		bool isMine;
 	};
@@ -54,25 +53,28 @@ public:
 	Network();
 	~Network();
 
-	static void Initialize();
-	void	Connect(const char* const ip, const unsigned short port);
-	void	Disconnect();
+	static void		Initialize();
+
+	void			Connect(const char* const ip, const unsigned short port);
+	void			Disconnect();
 
 	// Send 계열
-	ErrorType	SubmitName(const wchar_t* const name);
-	ErrorType	SubmitMap(const void* const mapData);
-	ErrorType	SubmitAttack(const int x, const int y);
+	ErrorType		SubmitName(const wchar_t* const name);
+	ErrorType		SubmitMap(const void* const mapData);
+	ErrorType		SubmitAttack(const Coord pos);
 
 	// Recive 계열
-	ErrorType	GetPacketType(PacketType* const type);
-	ErrorType	WaitSpecPacket(const PacketType type);
-	void	GetAttackResult(AttackResult* const data);
-	void	GetGameResult(GameResult* const data);
-	void	GetFinalResult(FinalResult* const data);
+	ErrorType		GetPacketType(PacketType* const type);
+	ErrorType		WaitSpecPacket(const PacketType type);
+
+	void			WaitForStart();
+	AttackResult	GetAttackResult();
+	GameResult		GetGameResult();
+	FinalResult		GetFinalResult();
 
 	// 범용
-	void	Send(const void* const data, const unsigned int size);
-	void	Recive(void* const out_data, const unsigned int size);
+	void			Send(const void* const data, const unsigned int size);
+	void			Recive(void* const out_data, const unsigned int size);
 
 private:
 	struct WinSockIntializer
