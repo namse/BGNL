@@ -145,8 +145,6 @@ void main()
 			*/
 			char mapData[MAP_SIZE];
 
-			// 공격한 정보를 저장하는 Map을 초기화 해줍니다.(적의 맵이죠)
-			memset(gEnemyMap, 0, sizeof(gEnemyMap));
 			while (true)
 			{
 				MakeMapData(mapData);
@@ -203,10 +201,7 @@ void main()
 				{
 					Network::AttackResultData attackResult = network.GetAttackResult();
 					if (attackResult.isMine)
-					{
 						puts("공격 결과:");
-						HandleMyAttackResult(attackResult.attackResult, attackResult.pos.mX, attackResult.pos.mY);
-					}
 					else
 					{
 						puts("피격 결과:");
@@ -439,4 +434,5 @@ void HandleMyAttackResult(const int attackResult, const int x, const int y)
 
 void HandleOpositionAttackResult(const int attackResult, const int x, const int y)
 {
+	// 아무 것도 하지 않는다...
 }
