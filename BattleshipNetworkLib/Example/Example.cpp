@@ -22,7 +22,7 @@
 // ※ Windows.h는 여기에 넣어야 됨! Network.h위에 Windows.h가 들어가면 링크 에러 발생함!
 
 // Server IP & Port
-const char*				IP		= "127.0.0.1";
+const char*				IP		= "10.73.42.117";	// 자기 컴퓨터에서 돌릴 때는 127.0.0.1
 const unsigned short	PORT	= 9001;
 
 // Game Data
