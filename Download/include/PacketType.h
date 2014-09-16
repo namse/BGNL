@@ -12,6 +12,12 @@
 #define MAP_HEIGHT 8
 #define MAP_SIZE (MAP_WIDTH * MAP_HEIGHT)
 
+
+#define AIRCRAFT_LENGTH 5
+#define BATTLESHIP_LENGTH 4
+#define CRUISER_LENGTH 3
+#define DESTROYER_LENGTH 2
+
 struct Coord
 {
 	Coord()
@@ -32,7 +38,7 @@ struct Coord
 		{
 			x -= 'a';
 		}
-		if (y >= '0' && y <= '9')
+		if (y >= '1' && y <= '9')
 		{
 			y -= '1';
 		}
@@ -153,6 +159,7 @@ namespace Packet
 			memcpy(mName, name, sizeof(wchar_t) * min(MAX_NAME_LEN, length));
 		}
 		wchar_t mName[MAX_NAME_LEN];
+		int mStudentID;
 	};
 
 	struct GameStartResult : public PacketHeader
@@ -162,6 +169,8 @@ namespace Packet
 			mSize = sizeof(GameStartResult);
 			mType = PKT_SC_GAME_START;
 		}
+		wchar_t mOppositionName[MAX_NAME_LEN];
+		int mOppositionStudentID;
 	};
 
 	struct SubmitMapRequest : public PacketHeader
