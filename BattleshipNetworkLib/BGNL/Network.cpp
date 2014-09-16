@@ -159,9 +159,15 @@ ErrorType Network::WaitSpecPacket(const PacketType type)
 	}
 }
 
-void Network::WaitForStart()
+void Network::WaitForStart(wchar_t* const oppositionName)
 {
 	WaitSpecPacket(PKT_SC_GAME_START);
+
+	Packet::GameStartResult packet;
+
+	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
+	if (oppositionName)
+		wcscpy_s(oppositionName, MAX_NAME_LEN, packet.mOppositionName);
 }
 
 Network::AttackResultData Network::GetAttackResult()

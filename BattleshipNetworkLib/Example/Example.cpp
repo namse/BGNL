@@ -117,8 +117,10 @@ void main()
 		/*
 			** 게임 시작 대기
 		*/
+		wchar_t oppositionName[MAX_NAME_LEN] = { 0, };
 		puts("게임 시작 대기중");
-		network.WaitForStart();
+		network.WaitForStart(oppositionName);
+		wprintf_s(L"매칭되었습니다. 상대방 이름: %s\n", oppositionName);
 
 		/*
 			** 게임 시작

@@ -168,6 +168,7 @@ namespace Packet
 			mSize = sizeof(GameStartResult);
 			mType = PKT_SC_GAME_START;
 		}
+		wchar_t mOppositionName[MAX_NAME_LEN];
 	};
 
 	struct SubmitMapRequest : public PacketHeader

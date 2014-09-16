@@ -58,7 +58,7 @@ public:
 	ErrorType			GetPacketType(PacketType* const type);
 	ErrorType			WaitSpecPacket(const PacketType type);
 
-	void				WaitForStart();
+	void				WaitForStart(wchar_t* const oppositionName = NULL);
 	AttackResultData	GetAttackResult();
 	GameResultData		GetGameResult();
 	FinalResultData		GetFinalResult();
