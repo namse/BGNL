@@ -4,23 +4,19 @@
 #define MAX_SHIP_NUM 5
 #define MAX_SHIP_LEN 5
 
-#define AIRCRAFT_LEN 5
-#define BATTLESHIP_LEN 4
-#define CRUISER_LEN 3
-#define DESTROYER_LEN 2
-
-
-typedef MapDataTypes ShipType;
-
-enum Direction
-{
-	DIR_HORIZONTAL,
-	DIR_VERTICAL,
-};
 
 
 class ShipData
 {
+public:
+	typedef MapDataTypes ShipType;
+
+	enum Direction
+	{
+		DIR_HORIZONTAL,
+		DIR_VERTICAL,
+	};
+
 public:
 	ShipData();
 

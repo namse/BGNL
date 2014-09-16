@@ -384,7 +384,7 @@ void MakeMapData2(char* const mapData)
 		}
 
 		// 1.2 배의 좌표 배열을 가져와서...
-		// Coord* shipPosArr = shipData.GetShipCoordArray((ShipType)type);
+		// Coord* shipPosArr = shipData.GetShipCoordArray((ShipData::ShipType)type);
 
 		for (int i = 0; i < size && placeable; ++i)
 		{
@@ -397,7 +397,7 @@ void MakeMapData2(char* const mapData)
 			coord = Coord(x, y);
 			// 1. 배의 좌표를 하나씩 넣는 방법
 			// 1.1. 함수 사용
-			shipData.SetShipCoord((ShipType)type, i, coord);
+			shipData.SetShipCoord((ShipData::ShipType)type, i, coord);
 			// 1.2. 배열을 가져와서 넣기
 			// shipPosArr[i] = coord;
 
@@ -406,10 +406,10 @@ void MakeMapData2(char* const mapData)
 		}
 
 		// 2. 배의 좌표를 배열로 한 번에 넣는 방법
-		// shipData.SetShip((ShipType)type, posArr);
+		// shipData.SetShip((ShipData::ShipType)type, posArr);
 
 		// 3. 배의 시작지점과 방향만 넣는 방법
-		// shipData.SetShip((ShipType)type, Coord(sx, sy), dir==0 ? DIR_HORIZONTAL:DIR_VERTICAL);
+		// shipData.SetShip((ShipData::ShipType)type, Coord(sx, sy), dir == 0 ? ShipData::DIR_HORIZONTAL : ShipData::DIR_VERTICAL);
 	}
 
 	// 배의 배치를 맵 데이터로 변환

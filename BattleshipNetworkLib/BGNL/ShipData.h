@@ -6,17 +6,17 @@
 
 
 
-typedef MapDataTypes ShipType;
-
-enum Direction
-{
-	DIR_HORIZONTAL,
-	DIR_VERTICAL,
-};
-
-
 class ShipData
 {
+public:
+	typedef MapDataTypes ShipType;
+
+	enum Direction
+	{
+		DIR_HORIZONTAL,
+		DIR_VERTICAL,
+	};
+
 public:
 	ShipData();
 
