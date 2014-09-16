@@ -167,7 +167,7 @@ void Network::WaitForStart(GameStartData* const data)
 	Packet::GameStartResult packet;
 
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
-	wcscpy_s(data->oppositionName, MAX_NAME_LEN, packet.mOppositionName);
+	memcpy(data->oppositionName, packet.mOppositionName, sizeof(data->oppositionName));
 	data->oppositionStudentID = packet.mOppositionStudentID;
 }
 
