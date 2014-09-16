@@ -9,6 +9,7 @@ PlayerManager::PlayerManager()
 {
 	playerList_.clear();
 	EventManager::GetInstance()->AddEventListener(EVT_SUBMIT_NAME, this);
+	EventManager::GetInstance()->AddEventListener(EVT_DISCONNECT, this);
 }
 
 
@@ -32,7 +33,18 @@ void PlayerManager::Notify(EventHeader* event)
 		Event::OKEvent sendEvent;
 		sendEvent.player_number_ = recvEvent->player_number_;
 		EventManager::GetInstance()->Notify(&sendEvent);
-	}
+	}break;
+	case EVT_DISCONNECT:
+	{
+		Event::DisconnectEvent *recvEvent = (Event::DisconnectEvent*)event;
+
+		auto player = playerList_.find(recvEvent->player_number_);
+		if (player != playerList_.end())
+		{
+			delete player->second;
+			playerList_.erase(player);
+		}
+	}break;
 	default:
 		break;
 	}
@@ -49,4 +61,14 @@ std::list<PlayerNumber> PlayerManager::GetWaitingPlayers()
 		}
 	}
 	return ret;
+}
+
+
+PlayerNumber PlayerManager::GetNonUsedPlayerNumber()
+{
+	for (int i = 0; i < INT_MAX; i++)
+	{
+		if (playerList_.find(i) == playerList_.end())
+			return i;
+	}
 }

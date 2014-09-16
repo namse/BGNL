@@ -56,6 +56,8 @@ public:
 
 	int GetTurns() { return turns_; }
 	int GetWinCount() { return win_count_; }
+
+	std::wstring GetName(){ return name_; }
 private:
 	bool IsShipDestoryed(MapInfo shipType);
 private:

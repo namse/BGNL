@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "../../PacketType.h"
 enum EventTypes
 {
 	EVT_ERROR,
@@ -18,6 +19,8 @@ enum EventTypes
 	EVT_GAME_OVER,
 	EVT_NEXT_GAME,
 	EVT_ALL_OVER,
+
+	EVT_DISCONNECT,
 } ;
 
 struct EventHeader
@@ -33,9 +36,9 @@ namespace Event
 		ErrorEvent()
 		{
 			event_type_ = EVT_ERROR;
-			error_type_ = EVT_NONE;
+			error_type_ = ET_UNKNOWN;
 		}
-		int error_type_;
+		ErrorTypes error_type_;
 		PlayerNumber player_number_;
 	};
 
@@ -184,4 +187,13 @@ namespace Event
 		PlayerNumber player_number_;
 	};
 	
+	struct DisconnectEvent : public EventHeader
+	{
+		DisconnectEvent()
+		{
+			event_type_ = EVT_DISCONNECT;
+			player_number_ = -1;
+		}
+		PlayerNumber player_number_;
+	};
 }

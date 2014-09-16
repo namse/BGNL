@@ -14,6 +14,7 @@ Game::Game(GameNumber game_number)
 	EventManager::GetInstance()->AddEventListener(EVT_GAME_OVER, this);
 	EventManager::GetInstance()->AddEventListener(EVT_NEXT_GAME, this);
 	EventManager::GetInstance()->AddEventListener(EVT_GAME_START, this);
+	EventManager::GetInstance()->AddEventListener(EVT_DISCONNECT, this);
 }
 
 
@@ -56,54 +57,60 @@ void Game::Notify(EventHeader* event)
 	case EVT_ADD_PLAYER_1_IN_GAME:
 	{
 		Event::AddPlayer1InGameEvent* recvEvent = (Event::AddPlayer1InGameEvent*) event;
-		if (isGameStart == true)
+		if (recvEvent->game_number_ == game_number_)
 		{
-			std::cout << "Already Start Game\n";
+			if (isGameStart == true)
+			{
+				std::cout << "Already Start Game\n";
 
-			//TODO
+				//TODO
 
-			break;
-		}
-		if (player1_ != -1)
-		{
+				break;
+			}
+			if (player1_ != -1)
+			{
+				auto player = PlayerManager::GetInstance()->GetPlayer(player1_);
+				if (player != nullptr)
+				{
+					player->SetState(PS_WAIT);
+				}
+			}
+			player1_ = recvEvent->player_number_;
 			auto player = PlayerManager::GetInstance()->GetPlayer(player1_);
 			if (player != nullptr)
 			{
-				player->SetState(PS_WAIT);
+				player->SetState(PS_READY);
 			}
-		}
-		player1_ = recvEvent->player_number_;
-		auto player = PlayerManager::GetInstance()->GetPlayer(player1_);
-		if (player != nullptr)
-		{
-			player->SetState(PS_READY);
 		}
 	}break;
 
 	case EVT_ADD_PLAYER_2_IN_GAME:
 	{
 		Event::AddPlayer2InGameEvent* recvEvent = (Event::AddPlayer2InGameEvent*) event;
-		if (isGameStart == true)
+		if (recvEvent->game_number_ == game_number_)
 		{
-			std::cout << "Already Start Game\n";
+			if (isGameStart == true)
+			{
+				std::cout << "Already Start Game\n";
 
-			//TODO
+				//TODO
 
-			break;
-		}
-		if (player2_ != -1)
-		{
+				break;
+			}
+			if (player2_ != -1)
+			{
+				auto player = PlayerManager::GetInstance()->GetPlayer(player2_);
+				if (player != nullptr)
+				{
+					player->SetState(PS_WAIT);
+				}
+			}
+			player2_ = recvEvent->player_number_;
 			auto player = PlayerManager::GetInstance()->GetPlayer(player2_);
 			if (player != nullptr)
 			{
-				player->SetState(PS_WAIT);
+				player->SetState(PS_READY);
 			}
-		}
-		player2_ = recvEvent->player_number_;
-		auto player = PlayerManager::GetInstance()->GetPlayer(player2_);
-		if (player != nullptr)
-		{
-			player->SetState(PS_READY);
 		}
 	}break;
 
@@ -216,6 +223,8 @@ void Game::Notify(EventHeader* event)
 		Event::GameOverEvent* recvEvent = (Event::GameOverEvent*)event;
 		if (recvEvent->game_number_ == game_number_)
 		{
+			auto winner = PlayerManager::GetInstance()->GetPlayer(recvEvent->winner_);
+			wprintf(L"Winner : %s - %d Turn\n", winner->GetName().c_str(), recvEvent->turns_);
 
 			if (try_count_ >= MAX_GAME_COUNT)
 			{
@@ -283,6 +292,22 @@ void Game::Notify(EventHeader* event)
 			player2->SetState(PlayerState::PS_WAIT_MAP);
 		}
 	}break;
+
+	case EVT_DISCONNECT:
+	{
+		Event::DisconnectEvent * recvEvent = (Event::DisconnectEvent *)event;
+		if (recvEvent->player_number_ == player1_
+			|| recvEvent->player_number_ == player2_)
+		{
+			isGameAllOver_ = true;
+
+			Event::ErrorEvent outEvent;
+			outEvent.error_type_ = ET_OPPOSITION_DISCONNECTED;
+			outEvent.player_number_ = GetOpponent(recvEvent->player_number_);
+			EventManager::GetInstance()->Notify(&outEvent);
+		}
+	}break;
+
 	default:
 		break;
 	}

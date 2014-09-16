@@ -167,6 +167,7 @@ namespace Packet
 		{
 			mSize = sizeof(GameStartResult);
 			mType = PKT_SC_GAME_START;
+			memset(mOppositionName, 0, sizeof(mOppositionName)); 
 		}
 		wchar_t mOppositionName[MAX_NAME_LEN];
 		int mOppositionStudentID;
