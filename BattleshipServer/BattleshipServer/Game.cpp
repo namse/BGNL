@@ -57,54 +57,60 @@ void Game::Notify(EventHeader* event)
 	case EVT_ADD_PLAYER_1_IN_GAME:
 	{
 		Event::AddPlayer1InGameEvent* recvEvent = (Event::AddPlayer1InGameEvent*) event;
-		if (isGameStart == true && recvEvent->game_number_ == game_number_)
+		if (recvEvent->game_number_ == game_number_)
 		{
-			std::cout << "Already Start Game\n";
+			if (isGameStart == true)
+			{
+				std::cout << "Already Start Game\n";
 
-			//TODO
+				//TODO
 
-			break;
-		}
-		if (player1_ != -1)
-		{
+				break;
+			}
+			if (player1_ != -1)
+			{
+				auto player = PlayerManager::GetInstance()->GetPlayer(player1_);
+				if (player != nullptr)
+				{
+					player->SetState(PS_WAIT);
+				}
+			}
+			player1_ = recvEvent->player_number_;
 			auto player = PlayerManager::GetInstance()->GetPlayer(player1_);
 			if (player != nullptr)
 			{
-				player->SetState(PS_WAIT);
+				player->SetState(PS_READY);
 			}
-		}
-		player1_ = recvEvent->player_number_;
-		auto player = PlayerManager::GetInstance()->GetPlayer(player1_);
-		if (player != nullptr)
-		{
-			player->SetState(PS_READY);
 		}
 	}break;
 
 	case EVT_ADD_PLAYER_2_IN_GAME:
 	{
 		Event::AddPlayer2InGameEvent* recvEvent = (Event::AddPlayer2InGameEvent*) event;
-		if (isGameStart == true && recvEvent->game_number_ == game_number_)
+		if (recvEvent->game_number_ == game_number_)
 		{
-			std::cout << "Already Start Game\n";
+			if (isGameStart == true)
+			{
+				std::cout << "Already Start Game\n";
 
-			//TODO
+				//TODO
 
-			break;
-		}
-		if (player2_ != -1)
-		{
+				break;
+			}
+			if (player2_ != -1)
+			{
+				auto player = PlayerManager::GetInstance()->GetPlayer(player2_);
+				if (player != nullptr)
+				{
+					player->SetState(PS_WAIT);
+				}
+			}
+			player2_ = recvEvent->player_number_;
 			auto player = PlayerManager::GetInstance()->GetPlayer(player2_);
 			if (player != nullptr)
 			{
-				player->SetState(PS_WAIT);
+				player->SetState(PS_READY);
 			}
-		}
-		player2_ = recvEvent->player_number_;
-		auto player = PlayerManager::GetInstance()->GetPlayer(player2_);
-		if (player != nullptr)
-		{
-			player->SetState(PS_READY);
 		}
 	}break;
 
