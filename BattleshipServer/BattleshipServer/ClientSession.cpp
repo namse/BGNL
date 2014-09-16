@@ -442,8 +442,8 @@ void ClientSession::HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket)
 		{
 		for (int l = 0; l < MAP_HEIGHT; l++)
 		{
-			event.mMap[i][l] = inPacket.mMap[i * MAP_WIDTH + l];
-			CheckCount[event.mMap[i][l]]++;
+			event.mMap[l][i] = inPacket.mMap[i * MAP_WIDTH + l];
+			CheckCount[event.mMap[l][i]]++;
 		}
 		}
 	if (CheckCount[MI_EMPTY] != MAP_HEIGHT * MAP_WIDTH - SHNIPS_TOTAL_LENGTH ||

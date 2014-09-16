@@ -33,6 +33,8 @@ public:
 			return playerList_[playerNumber];
 		return nullptr;
 	}
+
+	PlayerNumber GetNonUsedPlayerNumber();
 private:
 	PlayerManager();
 	~PlayerManager();
