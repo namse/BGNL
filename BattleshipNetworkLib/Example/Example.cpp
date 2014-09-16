@@ -59,21 +59,6 @@ void main()
 
 	srand((unsigned int)time(NULL));
 
-	char mapData[MAP_SIZE];
-	while (true)
-	{
-		MakeMapData(mapData);
-		for (int y = 0; y < MAP_HEIGHT; ++y)
-		{
-			for (int x = 0; x < MAP_WIDTH; ++x)
-			{
-				printf("%d ", mapData[x + y * 8]);
-			}
-			puts("");
-		}
-		_getch();
-	}
-
 	/*
 		** 네트워크 초기화
 	*/
