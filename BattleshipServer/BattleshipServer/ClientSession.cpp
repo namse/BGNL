@@ -43,9 +43,10 @@ struct RegisterHandler
 //@}
 
 ClientSession::ClientSession(SOCKET sock)
-	: mConnected(false), mLogon(false), mSocket(sock), mPlayerId(sock), mOverlappedRequested(0)
+	: mConnected(false), mLogon(false), mSocket(sock), mPlayerId(-1), mOverlappedRequested(0)
 	, mPosX(0), mPosY(0), mPosZ(0), mDbUpdateCount(0), mSendBuffer(BUFSIZE), mRecvBuffer(BUFSIZE)
 {
+	mPlayerId = PlayerManager::GetInstance()->GetNonUsedPlayerNumber();
 	memset(&mClientAddr, 0, sizeof(SOCKADDR_IN));
 	memset(mPlayerName, 0, sizeof(mPlayerName));
 	EventManager::GetInstance()->AddEventListener(EVT_ERROR, this);
@@ -132,6 +133,10 @@ void ClientSession::Disconnect()
 	closesocket(mSocket);
 
 	mConnected = false;
+
+	Event::DisconnectEvent outEvent;
+	outEvent.player_number_ = mPlayerId;
+	EventManager::GetInstance()->Notify(&outEvent);
 }
 
 void ClientSession::OnRead(size_t len)
@@ -337,6 +342,11 @@ void ClientSession::Notify(EventHeader* event)
 			SendRequest(&outPacket);
 		}
 	}break;
+	case EVT_DISCONNECT:
+	{
+		Event::DisconnectEvent* recvEvent = (Event::DisconnectEvent*)event;
+		
+	}
 	default:
 		break;
 	}
@@ -407,6 +417,8 @@ void ClientSession::HandleSubmitNameRequest(Packet::SubmitNameRequest& inPacket)
 
 	Event::SubmitNameEvent event;
 	event.player_number_ = mPlayerId;
+	memcpy(event.name_, inPacket.mName, sizeof(event.name_));
+
 	EventManager::GetInstance()->Notify(&event);
 }
 
@@ -424,14 +436,31 @@ void ClientSession::HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket)
 
 	int count = 0;
 	MapInfo shipType = MI_AIRCRAFT;
-	for (int i = 0; i < MAP_WIDTH; i++)
-	{
+
+	int CheckCount[8] = { 0, };
+		for (int i = 0; i < MAP_WIDTH; i++)
+		{
 		for (int l = 0; l < MAP_HEIGHT; l++)
 		{
 			event.mMap[i][l] = inPacket.mMap[i * MAP_WIDTH + l];
+			CheckCount[event.mMap[i][l]]++;
 		}
+		}
+	if (CheckCount[MI_EMPTY] != MAP_HEIGHT * MAP_WIDTH - SHNIPS_TOTAL_LENGTH ||
+		CheckCount[MI_AIRCRAFT] != AIRCRAFT_LENGTH
+		|| CheckCount[MI_BATTLESHIP] != BATTLESHIP_LENGTH
+		|| CheckCount[MI_CRUISER] != CRUISER_LENGTH
+		|| CheckCount[MI_DESTROYER_1] != DESTROYER_LENGTH
+		|| CheckCount[MI_DESTROYER_2] != DESTROYER_LENGTH
+		)
+	{
+		//TODO ERROR
+		Packet::ErrorResult outPacket;
+		outPacket.mErrorType = ET_INVALID_MAP;
+		SendRequest(&outPacket);
 	}
-	EventManager::GetInstance()->Notify(&event);
+	else
+		EventManager::GetInstance()->Notify(&event);
 }
 
 REGISTER_HANDLER(PKT_CS_SUBMIT_ATTACK)
