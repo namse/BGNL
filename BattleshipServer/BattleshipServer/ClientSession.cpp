@@ -290,7 +290,8 @@ void ClientSession::Notify(EventHeader* event)
 		if (recvEvent->player_number_ == mPlayerId)
 		{
 			Packet::AttackResult outPacket;
-			outPacket.mCoord = recvEvent->coord_;
+			outPacket.x = recvEvent->x;
+			outPacket.y = recvEvent->y;
 			outPacket.mIsMine = recvEvent->isMine;
 			outPacket.mAttackResult = recvEvent->AttackResult_;
 			SendRequest(&outPacket);
@@ -424,11 +425,56 @@ void ClientSession::HandleSubmitMapRequest(Packet::SubmitMapRequest& inPacket)
 
 	int count = 0;
 	MapInfo shipType = MI_AIRCRAFT;
-	for (int i = 0; i < MAP_WIDTH; i++)
+	for (Coord coord : inPacket.mCoords)
 	{
-		for (int l = 0; l < MAP_HEIGHT; l++)
+
+		if (coord.mX >= 'A' && coord.mX <= 'z')
 		{
-			event.mMap[i][l] = inPacket.mMap[i * MAP_WIDTH + l];
+			coord.mX = toupper(coord.mX);
+			coord.mX -= 'A';
+		}
+		if (coord.mY >= '1' && coord.mY <= '9')
+		{
+			coord.mY -= '1';
+		}
+
+
+		event.mMap[coord.mX][coord.mY] = shipType;
+		count++;
+		switch (shipType)
+		{
+		case MI_AIRCRAFT:
+			if (count >= AIRCRAFT_LENGTH)
+			{
+				shipType = MI_BATTLESHIP;
+				count = 0;
+			}break;
+		case MI_BATTLESHIP:
+			if (count >= BATTLESHIP_LENGTH)
+			{
+				shipType = MI_CRUISER;
+				count = 0;
+			}break;
+		case MI_CRUISER:
+			if (count >= CRUISER_LENGTH)
+			{
+				shipType = MI_DESTORYER_1;
+				count = 0;
+			}break;
+		case MI_DESTORYER_1:
+			if (count >= DESTROYER_LENGTH)
+			{
+				shipType = MI_DESTORYER_2;
+				count = 0;
+			}break;
+		case MI_DESTORYER_2:
+			if (count >= DESTROYER_LENGTH)
+			{
+				shipType = MI_EMPTY;
+				count = 0;
+			}break;
+		default:
+			break;
 		}
 	}
 	EventManager::GetInstance()->Notify(&event);
@@ -445,6 +491,16 @@ void ClientSession::HandleSubmitAttackRequest(Packet::SubmitAttackRequest& inPac
 
 	Event::SubmitAttackEvent event;
 	event.player_number_ = mPlayerId;
-	event.coord_ = Coord(inPacket.mCoord.mX, inPacket.mCoord.mY);
+	event.x = inPacket.x;
+	event.y = inPacket.y;
+	if(event.x >= 'A' && event.x <= 'z')
+	{
+		event.x = toupper(event.x);
+		event.x -= 'A';
+	}
+	if (event.y >= '1' && event.y <= '9')
+	{
+		event.y -= '1';
+	}
 	EventManager::GetInstance()->Notify(&event);
 }

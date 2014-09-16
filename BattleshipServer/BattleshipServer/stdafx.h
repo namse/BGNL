@@ -202,7 +202,7 @@ extern IWICImagingFactory* g_pWICFactory;
 // for logic
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
-#define MAX_GAME_COUNT 3
+#define MAX_GAME_COUNT 10
 
 // if you waana edit this const value, you should touch the Game class's player numbers.
 #define NUMBER_OF_PLAYER_ON_GAME 2

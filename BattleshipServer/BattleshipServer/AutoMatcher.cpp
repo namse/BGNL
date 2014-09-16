@@ -23,10 +23,9 @@ void AutoMatcher::Update(float dTime)
 	Component::Update(dTime);
 
 	auto waitingPlayers = PlayerManager::GetInstance()->GetWaitingPlayers();
-
 	while (waitingPlayers.size() >= NUMBER_OF_PLAYER_ON_GAME)
 	{
-			auto player1 = waitingPlayers.front();
+		auto player1 = waitingPlayers.front();
 		waitingPlayers.pop_front();
 		auto player2 = waitingPlayers.front();
 		waitingPlayers.pop_front();
