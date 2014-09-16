@@ -15,6 +15,7 @@
 #endif
 
 #include <stdio.h>
+#include <conio.h>
 #include <time.h>
 #include <Network.h>
 #include <ShipData.h>
@@ -277,6 +278,8 @@ void main()
 		참고로 소멸시에도 자동으로 Disconnect를 호출한다.
 	*/
 	network.Disconnect();
+
+	_getch();
 }
 
 

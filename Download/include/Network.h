@@ -23,10 +23,8 @@ public:
 public:
 	struct GameStartData
 	{
-		wchar_t* oppositionName;
+		wchar_t oppositionName[MAX_NAME_LEN];
 		int oppositionStudentID;
-		GameStartData() :oppositionName(nullptr) {};
-		~GameStartData() { delete oppositionName; }
 	};
 
 	struct AttackResultData
@@ -66,7 +64,7 @@ public:
 	ErrorType			GetPacketType(PacketType* const type);
 	ErrorType			WaitSpecPacket(const PacketType type);
 
-	GameStartData		WaitForStart();
+	void				WaitForStart(GameStartData* const data);
 	AttackResultData	GetAttackResult();
 	GameResultData		GetGameResult();
 	FinalResultData		GetFinalResult();
