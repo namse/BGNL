@@ -53,6 +53,7 @@ void ShipData::ToMapData(char* const mapData)
 		for (int j = 0; j < SHIP_LEN[type]; ++j)
 		{
 			Coord pos = arr[j];
+			pos.Intigerize();
 			mapData[pos.mX + pos.mY * MAP_WIDTH] = type;
 		}
 	}

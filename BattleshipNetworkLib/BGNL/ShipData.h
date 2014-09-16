@@ -4,8 +4,6 @@
 #define MAX_SHIP_NUM 5
 #define MAX_SHIP_LEN 5
 
-
-
 class ShipData
 {
 public:

@@ -28,21 +28,20 @@ struct Coord
 	{
 		mX = x, mY = y;
 	}
-	Coord(char x, char y)
+	void Intigerize()
 	{
-		if (x >= 'A' && x <= 'Z')
-		{
-			x -= 'A';
-		}
-		if (x >= 'a' && x <= 'z')
-		{
-			x -= 'a';
-		}
-		if (y >= '1' && y <= '9')
-		{
-			y -= '1';
-		}
-		mX = x, mY = y;
+		if (mX >= 'A' && mX <= 'Z')
+			mX -= 'A';
+		if (mX >= 'a' && mX <= 'z')
+			mX -= 'a';
+		if (mX >= '1' && mX <= '9')
+			mX -= '1';
+		if (mY >= 'A' && mY <= 'Z')
+			mY -= 'A';
+		if (mY >= 'a' && mY <= 'z')
+			mY -= 'a';
+		if (mY >= '1' && mY <= '9')
+			mY -= '1';
 	}
 	char mX, mY;
 };

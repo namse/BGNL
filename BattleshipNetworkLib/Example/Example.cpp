@@ -29,16 +29,14 @@ const unsigned short	PORT	= 9001;
 // Game Data
 char gEnemyMap[MAP_WIDTH][MAP_HEIGHT];
 
-void Initialize();
 
-// Data Making
+// 이 함수들은 이후에 자신의 함수들로 대체해야 합니다.
+void	Initialize();
 void	MakeMapData(char* const mapData);	// 맵 데이터를 직접 만드는 방식
 void	MakeMapData2(char* const mapData);	// ShipData를 쓰는 방식
 Coord	MakeAttackPos();
-
-// Result Handling
-void HandleMyAttackResult(const int attackResult, const int x, const int y);
-void HandleOpositionAttackResult(const int attackResult, const int x, const int y);
+void	HandleMyAttackResult(const int attackResult, const int x, const int y);
+void	HandleOpositionAttackResult(const int attackResult, const int x, const int y);
 
 
 // Attack result string
@@ -60,6 +58,21 @@ void main()
 	ErrorType error;
 
 	srand((unsigned int)time(NULL));
+
+	char mapData[MAP_SIZE];
+	while (true)
+	{
+		MakeMapData(mapData);
+		for (int y = 0; y < MAP_HEIGHT; ++y)
+		{
+			for (int x = 0; x < MAP_WIDTH; ++x)
+			{
+				printf("%d ", mapData[x + y * 8]);
+			}
+			puts("");
+		}
+		_getch();
+	}
 
 	/*
 		** 네트워크 초기화
@@ -135,7 +148,9 @@ void main()
 		bool allOver = false;
 		while (!allOver)
 		{
+			// 자신의 초기화 함수를 호출한다.
 			Initialize();
+
 			/*
 				** 맵 제출
 				자신이 배치한 맵 데이터를 서버로 전송한다.
@@ -147,7 +162,10 @@ void main()
 
 			while (true)
 			{
+				// 직접 맵을 만드는 방법
 				MakeMapData(mapData);
+				// ShipData 클래스로 맵을 만드는 방법
+				// MakeMapData2(mapData);
 
 				error = network.SubmitMap(mapData);
 				if (error == ET_INVALID_MAP)
@@ -186,6 +204,7 @@ void main()
 					*/
 					while (true)
 					{
+						// 자신의 공격 위치 제작 함수를 사용한다.
 						Coord pos = MakeAttackPos();
 						error = network.SubmitAttack(pos);
 						if (error == ET_INVALID_ATTACK)
@@ -203,11 +222,13 @@ void main()
 					if (attackResult.isMine)
 					{
 						puts("공격 결과:");
+						// 자신의 공격 결과 처리 함수를 사용한다.
 						HandleMyAttackResult(attackResult.attackResult, attackResult.pos.mX, attackResult.pos.mY);
 					}
 					else
 					{
 						puts("피격 결과:");
+						// 자신의 공격 결과 처리 함수를 사용한다.
 						HandleOpositionAttackResult(attackResult.attackResult, attackResult.pos.mX, attackResult.pos.mY);
 					}
 					printf_s("X: %d, Y: %d, RESULT: %s\n", attackResult.pos.mX, attackResult.pos.mY, ATTACK_RESULT_STR[attackResult.attackResult]);
