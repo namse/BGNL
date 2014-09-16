@@ -21,6 +21,14 @@ public:
 	};
 
 public:
+	struct GameStartData
+	{
+		wchar_t* oppositionName;
+		int oppositionStudentID;
+		GameStartData() :oppositionName(nullptr) {};
+		~GameStartData() { delete oppositionName; }
+	};
+
 	struct AttackResultData
 	{
 		Coord pos;
@@ -50,7 +58,7 @@ public:
 	void				Disconnect();
 
 	// Send °è¿­
-	ErrorType			SubmitName(const wchar_t* const name);
+	ErrorType			SubmitName(const wchar_t* const name, const int studentID);
 	ErrorType			SubmitMap(const char* const mapData);
 	ErrorType			SubmitAttack(const Coord pos);
 
@@ -58,7 +66,7 @@ public:
 	ErrorType			GetPacketType(PacketType* const type);
 	ErrorType			WaitSpecPacket(const PacketType type);
 
-	void				WaitForStart(wchar_t* const oppositionName = NULL);
+	GameStartData		WaitForStart();
 	AttackResultData	GetAttackResult();
 	GameResultData		GetGameResult();
 	FinalResultData		GetFinalResult();

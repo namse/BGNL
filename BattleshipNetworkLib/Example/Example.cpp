@@ -106,8 +106,9 @@ void main()
 			이미 있는 이름을 쓰면 ET_DUPLICATED_NAME이 온다.
 		*/
 		const wchar_t name[MAX_NAME_LEN] = L"와츄고나두";
+		const int studentID = 140001;
 	
-		error = network.SubmitName(name);
+		error = network.SubmitName(name, studentID);
 		if (error == ET_DUPLICATED_NAME)
 		{
 			puts("이미 존재하는 이름입니다.");
@@ -117,10 +118,10 @@ void main()
 		/*
 			** 게임 시작 대기
 		*/
-		wchar_t oppositionName[MAX_NAME_LEN] = { 0, };
+		Network::GameStartData gameStartData;
 		puts("게임 시작 대기중");
-		network.WaitForStart(oppositionName);
-		wprintf_s(L"매칭되었습니다. 상대방 이름: %s\n", oppositionName);
+		gameStartData = network.WaitForStart();
+		wprintf_s(L"매칭되었습니다. 상대방 이름: %s, 학번: %d\n", gameStartData.oppositionName, gameStartData.oppositionStudentID);
 
 		/*
 			** 게임 시작
@@ -374,8 +375,8 @@ void MakeMapData2(char* const mapData)
 				break;
 		}
 
-		// 배의 좌표 배열을 가져오기
-		Coord* shipPosArr = shipData.GetShipCoordArray((ShipType)type);
+		// 1.2 배의 좌표 배열을 가져와서...
+		// Coord* shipPosArr = shipData.GetShipCoordArray((ShipType)type);
 
 		for (int i = 0; i < size && placeable; ++i)
 		{
@@ -385,10 +386,12 @@ void MakeMapData2(char* const mapData)
 			else  { x = sx; y = sy + i; }
 			map[x + y * MAP_WIDTH] = type;
 
-			// 1. 배의 좌표를 하나씩 넣는 방법
 			coord = Coord(x, y);
-			shipData.SetShipCoord((ShipType)type, i, coord); // 1.1. 함수사용
-			// shipPosArr[i] = coord; // 1.2. 배열을 가져와서 넣기
+			// 1. 배의 좌표를 하나씩 넣는 방법
+			// 1.1. 함수 사용
+			shipData.SetShipCoord((ShipType)type, i, coord);
+			// 1.2. 배열을 가져와서 넣기
+			// shipPosArr[i] = coord;
 
 			// 2. Coord 배열을 만들어서...
 			// posArr[i] = coord;

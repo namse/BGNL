@@ -80,7 +80,7 @@ void Network::Disconnect()
 
 
 // Send °è¿­
-ErrorType Network::SubmitName(const wchar_t* const name)
+ErrorType Network::SubmitName(const wchar_t* const name, const int studentID)
 {
 	_ASSERT(name);
 	if (!name) throw PARAMETER_ERROR;
@@ -88,6 +88,7 @@ ErrorType Network::SubmitName(const wchar_t* const name)
 
 	Packet::SubmitNameRequest packet;
 	wcscpy_s(packet.mName, name);
+	packet.mStudentID = studentID;
 
 	Send(&packet, sizeof(packet));
 
@@ -159,15 +160,19 @@ ErrorType Network::WaitSpecPacket(const PacketType type)
 	}
 }
 
-void Network::WaitForStart(wchar_t* const oppositionName)
+Network::GameStartData Network::WaitForStart()
 {
 	WaitSpecPacket(PKT_SC_GAME_START);
 
 	Packet::GameStartResult packet;
+	GameStartData data;
+	data.oppositionName = new wchar_t[MAX_NAME_LEN];
 
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
-	if (oppositionName)
-		wcscpy_s(oppositionName, MAX_NAME_LEN, packet.mOppositionName);
+	wcscpy_s(data.oppositionName, MAX_NAME_LEN, packet.mOppositionName);
+	data.oppositionStudentID = packet.mOppositionStudentID;
+
+	return data;
 }
 
 Network::AttackResultData Network::GetAttackResult()

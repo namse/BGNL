@@ -159,6 +159,7 @@ namespace Packet
 			memcpy(mName, name, sizeof(wchar_t) * min(MAX_NAME_LEN, length));
 		}
 		wchar_t mName[MAX_NAME_LEN];
+		int mStudentID;
 	};
 
 	struct GameStartResult : public PacketHeader
@@ -169,6 +170,7 @@ namespace Packet
 			mType = PKT_SC_GAME_START;
 		}
 		wchar_t mOppositionName[MAX_NAME_LEN];
+		int mOppositionStudentID;
 	};
 
 	struct SubmitMapRequest : public PacketHeader
