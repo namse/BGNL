@@ -201,7 +201,10 @@ void main()
 				{
 					Network::AttackResultData attackResult = network.GetAttackResult();
 					if (attackResult.isMine)
+					{
 						puts("공격 결과:");
+						HandleMyAttackResult(attackResult.attackResult, attackResult.pos.mX, attackResult.pos.mY);
+					}
 					else
 					{
 						puts("피격 결과:");
