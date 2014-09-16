@@ -100,7 +100,7 @@ void main()
 	try	// 예외 처리를 위해 try문으로 모두 감싼다.
 	{
 		/*
-			** 이름 전송
+			** 이름&학번 전송
 			최대 길이는 MAX_NAME_LEN-1 == 15글자.
 			성공시 ET_OK가 리턴된다.
 			이미 있는 이름을 쓰면 ET_DUPLICATED_NAME이 온다.
@@ -117,6 +117,8 @@ void main()
 
 		/*
 			** 게임 시작 대기
+			게임이 시작되면 상대방의 정보가 들어온다.
+			Network::GameStartData 구조체로 상대방 정보를 가져온다.
 		*/
 		Network::GameStartData gameStartData;
 		puts("게임 시작 대기중");
