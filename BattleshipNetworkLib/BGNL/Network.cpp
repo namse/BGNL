@@ -80,7 +80,7 @@ void Network::Disconnect()
 
 
 // Send °è¿­
-ErrorType Network::SubmitName(const wchar_t* const name)
+ErrorType Network::SubmitName(const wchar_t* const name, const int studentID)
 {
 	_ASSERT(name);
 	if (!name) throw PARAMETER_ERROR;
@@ -88,34 +88,33 @@ ErrorType Network::SubmitName(const wchar_t* const name)
 
 	Packet::SubmitNameRequest packet;
 	wcscpy_s(packet.mName, name);
+	packet.mStudentID = studentID;
 
 	Send(&packet, sizeof(packet));
 
 	return WaitSpecPacket(PKT_SC_OK);
 }
 
-ErrorType Network::SubmitMap(const void* const mapData)
+ErrorType Network::SubmitMap(const char* const mapData)
 {
 	_ASSERT(mapData);
 	if (!mapData) throw PARAMETER_ERROR;
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::SubmitMapRequest packet;
-	memcpy_s(packet.mCoords, SHNIPS_TOTAL_LENGTH * sizeof(Coord), mapData, SHNIPS_TOTAL_LENGTH * sizeof(Coord));
+	memcpy_s(packet.mMap, MAP_SIZE, mapData, MAP_SIZE);
 
 	Send(&packet, sizeof(packet));
 
 	return WaitSpecPacket(PKT_SC_OK);
 }
 
-ErrorType Network::SubmitAttack(const int x, const int y)
+ErrorType Network::SubmitAttack(const Coord pos)
 {
 	if (!m_Connected) throw NETWORK_ERROR;
-	int pos[2] = { x, y };
 
 	Packet::SubmitAttackRequest packet;
-	packet.x = x;
-	packet.y = y;
+	packet.mCoord = pos;
 
 	Send(&packet, sizeof(packet));
 
@@ -161,42 +160,62 @@ ErrorType Network::WaitSpecPacket(const PacketType type)
 	}
 }
 
-void Network::GetAttackResult(AttackResult* const data)
+Network::GameStartData Network::WaitForStart()
 {
-	_ASSERT(data);
-	if (!data) throw PARAMETER_ERROR;
+	WaitSpecPacket(PKT_SC_GAME_START);
+
+	Packet::GameStartResult packet;
+	GameStartData data;
+	data.oppositionName = new wchar_t[MAX_NAME_LEN];
+
+	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
+	wcscpy_s(data.oppositionName, MAX_NAME_LEN, packet.mOppositionName);
+	data.oppositionStudentID = packet.mOppositionStudentID;
+
+	return data;
+}
+
+Network::AttackResultData Network::GetAttackResult()
+{
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::AttackResult packet;
+	AttackResultData data;
+
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
-	data->attackResult = packet.mAttackResult;
-	data->x = packet.x;
-	data->y = packet.y;
-	data->isMine = packet.mIsMine;
+	data.attackResult = packet.mAttackResult;
+	data.pos = packet.mCoord;
+	data.isMine = packet.mIsMine;
+
+	return data;
 }
 
-void Network::GetGameResult(GameResult* const data)
+Network::GameResultData Network::GetGameResult()
 {
-	_ASSERT(data);
-	if (!data) throw PARAMETER_ERROR;
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::GameOverResult packet;
+	GameResultData data;
+
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
-	data->isWinner = packet.mIsWinner;
-	data->turns = packet.mTurns;
+	data.isWinner = packet.mIsWinner;
+	data.turns = packet.mTurns;
+
+	return data;
 }
 
-void Network::GetFinalResult(FinalResult* const data)
+Network::FinalResultData Network::GetFinalResult()
 {
-	_ASSERT(data);
-	if (!data) throw PARAMETER_ERROR;
 	if (!m_Connected) throw NETWORK_ERROR;
 
 	Packet::AllOverResult packet;
+	FinalResultData data;
+
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet)-sizeof(PacketHeader));
-	data->winCount = packet.mWinCount;
-	data->avgTurns = packet.mAverageTruns;
+	data.winCount = packet.mWinCount;
+	data.avgTurns = packet.mAverageTruns;
+
+	return data;
 }
 
 

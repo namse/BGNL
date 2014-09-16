@@ -98,10 +98,9 @@ namespace Event
 		SubmitAttackEvent()
 		{
 			event_type_ = EVT_SUBMIT_ATTACK;
-			x = y = -1;
 		}
 		PlayerNumber player_number_;
-		int x, y;
+		Coord coord_;
 	};
 
 	struct AttackEvent : public EventHeader
@@ -109,14 +108,13 @@ namespace Event
 		AttackEvent()
 		{
 			event_type_ = EVT_AttackResult;
-			x = y = -1;
 			AttackResult_ = AR_NONE;
 			isMine = false;
 		}
 		PlayerNumber player_number_;
-		int x, y;
-		bool isMine;
-		AttackResult AttackResult_;
+		Coord coord_;
+		bool isMine;    
+		AttackResultTypes AttackResult_;
 	};
 	struct GameOverEvent : public EventHeader
 	{

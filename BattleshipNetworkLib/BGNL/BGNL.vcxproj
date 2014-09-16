@@ -71,9 +71,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Network.cpp" />
+    <ClCompile Include="ShipData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network.h" />
+    <ClInclude Include="ShipData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

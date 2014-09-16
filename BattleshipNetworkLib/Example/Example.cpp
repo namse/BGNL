@@ -1,29 +1,44 @@
 /*
-	Name: ExampleWithErrorCheck
-	Desc: BGNL 사용 예시 코드입니다. 실제로 동작하지는 않습니다.
-		로직의 흐름만 보시기 바랍니다.
+	Name: BGNL Example
+	Desc: BGNL 사용 예시 코드입니다. 빌드하면 실제로 동작합니다.
+		AI는 랜덤 배치, 랜덤 공격입니다.
 */
 
-#ifdef _DEBUG
-
 // Debug로 빌드하는 경우
+#ifdef _DEBUG
 #pragma comment(lib, "BGNL_debug.lib")
 
-#else
-
 // Release로 빌드하는 경우
+#else
 #pragma comment(lib, "BGNL.lib")
 
 #endif
 
 #include <stdio.h>
+#include <time.h>
 #include <Network.h>
+#include <ShipData.h>
 
-// Dummy Functions
-void MakeMapData(void* const mapData){}
-void MakeAttackPos(int* const x, int* const y){}
-void HandleMyAttackResult(const int attackResult, const int x, const int y){}
-void HandleOpositionAttackResult(const int attackResult, const int x, const int y){}
+// ※ Windows.h는 여기에 넣어야 됨! Network.h위에 Windows.h가 들어가면 링크 에러 발생함!
+
+// Server IP & Port
+const char*				IP		= "10.73.42.117";	// 자기 컴퓨터에서 돌릴 때는 127.0.0.1
+const unsigned short	PORT	= 9001;
+
+// Game Data
+char gEnemyMap[MAP_WIDTH][MAP_HEIGHT];
+
+void Initialize();
+
+// Data Making
+void	MakeMapData(char* const mapData);	// 맵 데이터를 직접 만드는 방식
+void	MakeMapData2(char* const mapData);	// ShipData를 쓰는 방식
+Coord	MakeAttackPos();
+
+// Result Handling
+void HandleMyAttackResult(const int attackResult, const int x, const int y);
+void HandleOpositionAttackResult(const int attackResult, const int x, const int y);
+
 
 // Attack result string
 const char* const ATTACK_RESULT_STR[] = {
@@ -36,11 +51,14 @@ const char* const ATTACK_RESULT_STR[] = {
 	"Destroyer Destroyed",
 };
 
+
 void main()
 {
 	Network network;
 	PacketType type;
 	ErrorType error;
+
+	srand((unsigned int)time(NULL));
 
 	/*
 		** 네트워크 초기화
@@ -59,12 +77,10 @@ void main()
 		** 서버에 연결
 		서버의 IP와 포트는 당일날 공지된다.
 	*/
-	const char* ip = "127.0.0.1";
-	const unsigned short port = 10000;
 
 	try
 	{
-		network.Connect(ip, port);
+		network.Connect(IP, PORT);
 	}
 	catch (Network::Exception ex)
 	{
@@ -90,8 +106,9 @@ void main()
 			이미 있는 이름을 쓰면 ET_DUPLICATED_NAME이 온다.
 		*/
 		const wchar_t name[MAX_NAME_LEN] = L"와츄고나두";
+		const int studentID = 140001;
 	
-		error = network.SubmitName(name);
+		error = network.SubmitName(name, studentID);
 		if (error == ET_DUPLICATED_NAME)
 		{
 			puts("이미 존재하는 이름입니다.");
@@ -100,10 +117,11 @@ void main()
 
 		/*
 			** 게임 시작 대기
-			PKT_SC_START_GAME 패킷을 기다린다.
 		*/
+		Network::GameStartData gameStartData;
 		puts("게임 시작 대기중");
-		network.WaitSpecPacket(PKT_SC_GAME_START);
+		gameStartData = network.WaitForStart();
+		wprintf_s(L"매칭되었습니다. 상대방 이름: %s, 학번: %d\n", gameStartData.oppositionName, gameStartData.oppositionStudentID);
 
 		/*
 			** 게임 시작
@@ -114,19 +132,21 @@ void main()
 		bool allOver = false;
 		while (!allOver)
 		{
+			Initialize();
 			/*
 				** 맵 제출
 				자신이 배치한 맵 데이터를 서버로 전송한다.
-				맵 데이터는 char형 32크기 배열이다.
-				Aircraft부터 순서대로 배의 좌표들을 넣는다.
+				맵 데이터를 만드는 방법에는 두 가지가 있다.
+				하나는 직접 MAP_WIDHT * MAP_HEIGHT 크기의 맵을 만드는 것이고,
+				하나는 ShipData 구조체를 이용해서 만드는 것이다.
 			*/
-			Network::MapData mapData;
+			char mapData[MAP_SIZE];
 
 			while (true)
 			{
-				MakeMapData(&mapData);
+				MakeMapData(mapData);
 
-				error = network.SubmitMap(&mapData);
+				error = network.SubmitMap(mapData);
 				if (error == ET_INVALID_MAP)
 					puts("유효하지 않은 맵 데이터입니다.");
 				else
@@ -163,9 +183,8 @@ void main()
 					*/
 					while (true)
 					{
-						int x, y;
-						MakeAttackPos(&x, &y);
-						error = network.SubmitAttack(x, y);
+						Coord pos = MakeAttackPos();
+						error = network.SubmitAttack(pos);
 						if (error == ET_INVALID_ATTACK)
 							puts("유효하지 않은 공격 위치입니다.");
 						else
@@ -177,24 +196,22 @@ void main()
 					// 공격 결과
 				case PKT_SC_ATTACK_RESULT:
 				{
-					Network::AttackResult attackResult;
-					network.GetAttackResult(&attackResult);
+					Network::AttackResultData attackResult = network.GetAttackResult();
 					if (attackResult.isMine)
 						puts("공격 결과:");
 					else
 					{
 						puts("피격 결과:");
-						HandleOpositionAttackResult(attackResult.attackResult, attackResult.x, attackResult.y);
+						HandleOpositionAttackResult(attackResult.attackResult, attackResult.pos.mX, attackResult.pos.mY);
 					}
-					printf_s("X: %d , Y: %d , RESULT: %s\n", attackResult.x, attackResult.y, ATTACK_RESULT_STR[attackResult.attackResult]);
+					printf_s("X: %d, Y: %d, RESULT: %s\n", attackResult.pos.mX, attackResult.pos.mY, ATTACK_RESULT_STR[attackResult.attackResult]);
 					break;
 				}
 
 					// 게임 종료
 				case PKT_SC_GAME_OVER:
 				{
-					Network::GameResult gameResult;
-					network.GetGameResult(&gameResult);
+					Network::GameResultData gameResult = network.GetGameResult();
 					if (gameResult.isWinner)
 						puts("승리!!!");
 					else
@@ -221,8 +238,7 @@ void main()
 			}
 			else if (type == PKT_SC_ALL_OVER)
 			{
-				Network::FinalResult finalResult;
-				network.GetFinalResult(&finalResult);
+				Network::FinalResultData finalResult = network.GetFinalResult();
 				puts("모두 종료");
 				printf_s("승리 횟수: %d, 평균 턴 수: %.1f", finalResult.winCount, finalResult.avgTurns);
 
@@ -259,4 +275,159 @@ void main()
 		참고로 소멸시에도 자동으로 Disconnect를 호출한다.
 	*/
 	network.Disconnect();
+}
+
+
+void Initialize()
+{
+	ZeroMemory(gEnemyMap, sizeof(gEnemyMap));
+}
+
+
+// 직접 맵 데이터를 생성하는 방법
+void MakeMapData(char* const mapData)
+{
+	ZeroMemory(mapData, MAP_SIZE);
+
+	int size, sx, sy, dir, listIdx = 0;
+	bool placeable;
+
+	// 배 랜덤배치로 지도를 직접 만드는 방식
+	for (int type = MD_NONE + 1; type < MD_END; ++type)
+	{
+		while (true)
+		{
+			size = ShipData::SHIP_LEN[type];
+			placeable = true;
+			dir = rand() % 2;
+			if (dir == 0) // hori
+			{
+				sx = rand() % (MAP_WIDTH - size);
+				sy = rand() % MAP_HEIGHT;
+			}
+			else // vert
+			{
+				sx = rand() % MAP_WIDTH;
+				sy = rand() % (MAP_HEIGHT - size);
+			}
+
+			for (int i = 0; i < size && placeable; ++i)
+			{
+				if (dir == 0 && mapData[sx + i + sy * MAP_WIDTH])
+					placeable = false;
+				else if (dir == 1 && mapData[sx + (sy + i) * MAP_WIDTH])
+					placeable = false;
+			}
+
+			if (placeable)
+				break;
+		}
+
+		for (int i = 0; i < size && placeable; ++i)
+		{
+			int x, y;
+			if (dir == 0) { x = sx + i; y = sy; }
+			else  { x = sx; y = sy + i; }
+			mapData[x + y * MAP_WIDTH] = type;
+		}
+	}
+}
+
+
+// ShipData 구조체를 사용해서 맵 데이터 생성하는 방법
+void MakeMapData2(char* const mapData)
+{
+	ShipData shipData;
+
+	char map[MAP_SIZE] = { 0, };
+
+	int size, sx, sy, dir, listIdx = 0;
+	bool placeable;
+	Coord posArr[MAX_SHIP_LEN];	// ShipData에 넣을 배의 위치 배열
+
+	for (int type = MD_NONE + 1; type < MD_END; ++type)
+	{
+		while (true)
+		{
+			size = ShipData::SHIP_LEN[type];
+			placeable = true;
+			dir = rand() % 2;
+			if (dir == 0) // hori
+			{
+				sx = rand() % (MAP_WIDTH - size);
+				sy = rand() % MAP_HEIGHT;
+			}
+			else // vert
+			{
+				sx = rand() % MAP_WIDTH;
+				sy = rand() % (MAP_HEIGHT - size);
+			}
+
+			for (int i = 0; i < size && placeable; ++i)
+			{
+				if (dir == 0 && map[sx + i + sy * MAP_WIDTH])
+					placeable = false;
+				else if (dir == 1 && map[sx + (sy + i) * MAP_WIDTH])
+					placeable = false;
+			}
+
+			if (placeable)
+				break;
+		}
+
+		// 1.2 배의 좌표 배열을 가져와서...
+		// Coord* shipPosArr = shipData.GetShipCoordArray((ShipType)type);
+
+		for (int i = 0; i < size && placeable; ++i)
+		{
+			int x, y;
+			Coord coord;
+			if (dir == 0) { x = sx + i; y = sy; }
+			else  { x = sx; y = sy + i; }
+			map[x + y * MAP_WIDTH] = type;
+
+			coord = Coord(x, y);
+			// 1. 배의 좌표를 하나씩 넣는 방법
+			// 1.1. 함수 사용
+			shipData.SetShipCoord((ShipType)type, i, coord);
+			// 1.2. 배열을 가져와서 넣기
+			// shipPosArr[i] = coord;
+
+			// 2. Coord 배열을 만들어서...
+			// posArr[i] = coord;
+		}
+
+		// 2. 배의 좌표를 배열로 한 번에 넣는 방법
+		// shipData.SetShip((ShipType)type, posArr);
+
+		// 3. 배의 시작지점과 방향만 넣는 방법
+		// shipData.SetShip((ShipType)type, Coord(sx, sy), dir==0 ? DIR_HORIZONTAL:DIR_VERTICAL);
+	}
+
+	// 배의 배치를 맵 데이터로 변환
+	shipData.ToMapData(mapData);
+}
+
+
+Coord MakeAttackPos()
+{
+	Coord pos;
+	do
+	{
+		pos.mX = rand() % MAP_WIDTH;
+		pos.mY = rand() % MAP_HEIGHT;
+	} while (gEnemyMap[pos.mX][pos.mY]);
+
+	return pos;
+}
+
+
+void HandleMyAttackResult(const int attackResult, const int x, const int y)
+{
+	gEnemyMap[x][y] = 1;
+}
+
+void HandleOpositionAttackResult(const int attackResult, const int x, const int y)
+{
+	// 아무 것도 하지 않는다...
 }
