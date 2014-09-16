@@ -160,19 +160,15 @@ ErrorType Network::WaitSpecPacket(const PacketType type)
 	}
 }
 
-Network::GameStartData Network::WaitForStart()
+void Network::WaitForStart(GameStartData* const data)
 {
 	WaitSpecPacket(PKT_SC_GAME_START);
 
 	Packet::GameStartResult packet;
-	GameStartData data;
-	data.oppositionName = new wchar_t[MAX_NAME_LEN];
 
 	Recive((char*)&packet + sizeof(PacketHeader), sizeof(packet) - sizeof(PacketHeader));
-	wcscpy_s(data.oppositionName, MAX_NAME_LEN, packet.mOppositionName);
-	data.oppositionStudentID = packet.mOppositionStudentID;
-
-	return data;
+	wcscpy_s(data->oppositionName, MAX_NAME_LEN, packet.mOppositionName);
+	data->oppositionStudentID = packet.mOppositionStudentID;
 }
 
 Network::AttackResultData Network::GetAttackResult()

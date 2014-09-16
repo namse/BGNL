@@ -105,8 +105,8 @@ void main()
 			성공시 ET_OK가 리턴된다.
 			이미 있는 이름을 쓰면 ET_DUPLICATED_NAME이 온다.
 		*/
-		const wchar_t name[MAX_NAME_LEN] = L"와츄고나두";
-		const int studentID = 140001;
+		const wchar_t name[MAX_NAME_LEN] = L"さよ&NoShel";
+		const int studentID = 141031;
 	
 		error = network.SubmitName(name, studentID);
 		if (error == ET_DUPLICATED_NAME)
@@ -122,7 +122,7 @@ void main()
 		*/
 		Network::GameStartData gameStartData;
 		puts("게임 시작 대기중");
-		gameStartData = network.WaitForStart();
+		network.WaitForStart(&gameStartData);
 		wprintf_s(L"매칭되었습니다. 상대방 이름: %s, 학번: %d\n", gameStartData.oppositionName, gameStartData.oppositionStudentID);
 
 		/*
