@@ -34,7 +34,7 @@ struct Coord
 		{
 			x -= 'A';
 		}
-		if (x >= 'a' && x <= 'a')
+		if (x >= 'a' && x <= 'z')
 		{
 			x -= 'a';
 		}
