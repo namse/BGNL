@@ -57,6 +57,7 @@ public:
 	int GetTurns() { return turns_; }
 	int GetWinCount() { return win_count_; }
 
+	PlayerNumber GetEnemy() { return enemy_number_; }
 	std::wstring GetName(){ return name_; }
 private:
 	bool IsShipDestoryed(MapInfo shipType);

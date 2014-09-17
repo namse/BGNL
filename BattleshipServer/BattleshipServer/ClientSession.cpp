@@ -277,6 +277,8 @@ void ClientSession::Notify(EventHeader* event)
 		if (game != nullptr && game->IsPlayerInHere(mPlayerId))
 		{
 			Packet::GameStartResult outPacket;
+			PlayerNumber oppnentId = PlayerManager::GetInstance()->GetPlayer(mPlayerId)->GetEnemy();
+			wcscpy_s(outPacket.mOppositionName, PlayerManager::GetInstance()->GetPlayer(mPlayerId)->GetName().c_str());
 			SendRequest(&outPacket);
 		}
 	}break;
