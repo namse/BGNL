@@ -66,7 +66,6 @@ void DevConsoleCreate(){
 	AllocConsole();
 	std::wstring strW = L"Dev Console";
 	SetConsoleTitle(strW.c_str());
-
 	EnableMenuItem(GetSystemMenu(GetConsoleWindow(), FALSE), SC_CLOSE, MF_GRAYED);
 	DrawMenuBar(GetConsoleWindow());
 
@@ -75,6 +74,7 @@ void DevConsoleCreate(){
 	freopen("conin$", "r", stdin);
 	freopen("conout$", "w", stdout);
 	freopen("conout$", "w", stderr);
+	setlocale(LC_ALL,NULL);
 
 
 }

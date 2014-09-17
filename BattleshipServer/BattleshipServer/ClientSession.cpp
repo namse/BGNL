@@ -420,6 +420,8 @@ void ClientSession::HandleSubmitNameRequest(Packet::SubmitNameRequest& inPacket)
 	memcpy(event.name_, inPacket.mName, sizeof(event.name_));
 
 	EventManager::GetInstance()->Notify(&event);
+
+	wprintf(L"[%s] : %s\n", inet_ntoa(mClientAddr.sin_addr), inPacket.mName);
 }
 
 REGISTER_HANDLER(PKT_CS_SUBMIT_MAP)

@@ -21,7 +21,12 @@ AttackResultTypes Player::AttackAndGetResult(Coord coord)
 		|| coord.mY < 0 || coord.mY > MAP_HEIGHT)
 	{
 		//OH;;
-		std::cout << "ERROR : Attack Range is over, X = " << coord.mX << ", Y = " << coord.mY << std::endl;
+		printf("ERROR : Attack Range is over, X = %d, Y = %d\n", coord.mX, coord.mY);
+		return AR_NONE;
+	}
+	if (didAttacked_[coord.mX][coord.mY] == true)
+	{
+		printf("ERROR : Attack Dupplicated, X = %d, Y = %d\n", coord.mX, coord.mY);
 		return AR_NONE;
 	}
 	didAttacked_[coord.mX][coord.mY] = true;
