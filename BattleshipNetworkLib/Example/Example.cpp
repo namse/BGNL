@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
+#include <locale.h>
 #include <Network.h>
 #include <ShipData.h>
 
@@ -104,7 +105,7 @@ void main()
 			성공시 ET_OK가 리턴된다.
 			이미 있는 이름을 쓰면 ET_DUPLICATED_NAME이 온다.
 		*/
-		const wchar_t name[MAX_NAME_LEN] = L"さよ&NoShel";
+		const wchar_t name[MAX_NAME_LEN] = L"와츄고나두";
 		const int studentID = 141031;
 	
 		error = network.SubmitName(name, studentID);
@@ -122,8 +123,9 @@ void main()
 		Network::GameStartData gameStartData;
 		puts("게임 시작 대기중");
 		network.WaitForStart(&gameStartData);
-		wprintf_s(L"매칭되었습니다. 상대방 이름: %s, 학번: %d\n", gameStartData.oppositionName, gameStartData.oppositionStudentID);
-
+		setlocale(LC_ALL, "korean");	// 출력 문제 때문에 추가.
+		wprintf_s(L"매칭되었습니다. 상대방 이름: %s\n", gameStartData.oppositionName);
+		Sleep(1000);
 		/*
 			** 게임 시작
 			맵 제출부터 게임 종료까지 n회 반복한다.
@@ -309,9 +311,9 @@ void MakeMapData(char* const mapData)
 	// 배 랜덤배치로 지도를 직접 만드는 방식
 	for (int type = MD_NONE + 1; type < MD_END; ++type)
 	{
+		size = ShipData::SHIP_LEN[type];
 		while (true)
 		{
-			size = ShipData::SHIP_LEN[type];
 			placeable = true;
 			dir = rand() % 2;
 			if (dir == 0) // hori
@@ -361,9 +363,9 @@ void MakeMapData2(char* const mapData)
 
 	for (int type = MD_NONE + 1; type < MD_END; ++type)
 	{
+		size = ShipData::SHIP_LEN[type];
 		while (true)
 		{
-			size = ShipData::SHIP_LEN[type];
 			placeable = true;
 			dir = rand() % 2;
 			if (dir == 0) // hori
