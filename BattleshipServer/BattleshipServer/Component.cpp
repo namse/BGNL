@@ -53,6 +53,7 @@ void Component::Render()
 			child->Render();
 		}
 	}
+	
 }
 
 void Component::AddChild(Component* child)

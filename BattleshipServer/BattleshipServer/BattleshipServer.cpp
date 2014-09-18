@@ -74,7 +74,7 @@ void DevConsoleCreate(){
 	freopen("conin$", "r", stdin);
 	freopen("conout$", "w", stdout);
 	freopen("conout$", "w", stderr);
-	setlocale(LC_ALL,NULL);
+	setlocale(LC_ALL, "korean");
 
 
 }

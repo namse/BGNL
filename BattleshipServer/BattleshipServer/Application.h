@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Component.h"
 #include "AutoMatcher.h"
+#include "Screen.h"
 /******************************************************************
 *                                                                 *
 *  Application                                                  *
@@ -86,6 +87,7 @@ private:
 
 	bool ShowText;
 
-	AutoMatcher autoMatcher_;
+
+	Screen screen_;
 };
 

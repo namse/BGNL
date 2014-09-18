@@ -21,6 +21,14 @@ enum EventTypes
 	EVT_ALL_OVER,
 
 	EVT_DISCONNECT,
+
+	EVT_GAME_START_BUTTON,
+	EVT_ADD_PLAYER_TO_BATTLEBOARD,
+	EVT_BATTLEBOARD_INIT,
+
+	EVT_CURSOR_UP,
+	EVT_CURSOR_DOWN,
+	EVT_SELECT_STUDENT,
 } ;
 
 struct EventHeader
@@ -195,5 +203,51 @@ namespace Event
 			player_number_ = -1;
 		}
 		PlayerNumber player_number_;
+	};
+
+	struct GameStartButtonEvent : public EventHeader
+	{
+		GameStartButtonEvent()
+		{
+			event_type_ = EVT_GAME_START_BUTTON;
+		}
+	};
+
+	struct AddPlayerToBattleBaordEvent : public EventHeader
+	{
+		AddPlayerToBattleBaordEvent()
+		{
+			event_type_ = EVT_ADD_PLAYER_TO_BATTLEBOARD;
+			player_number_ = -1;
+		}
+		PlayerNumber player_number_;
+	};
+	struct BattleBoardInitEvent : public EventHeader
+	{
+		BattleBoardInitEvent()
+		{
+			event_type_ = EVT_BATTLEBOARD_INIT;
+		}
+	};
+	struct CursorUpEvent : public EventHeader
+	{
+		CursorUpEvent()
+		{
+			event_type_ = EVT_CURSOR_UP;
+		}
+	};	
+	struct CursorDownEvent : public EventHeader
+	{
+		CursorDownEvent()
+		{
+			event_type_ = EVT_CURSOR_DOWN;
+		}
+	};	
+	struct SelectStudentEvent : public EventHeader
+	{
+		SelectStudentEvent()
+		{
+			event_type_ = EVT_SELECT_STUDENT;
+		}
 	};
 }

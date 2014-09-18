@@ -59,6 +59,9 @@ public:
 
 	PlayerNumber GetEnemy() { return enemy_number_; }
 	std::wstring GetName(){ return name_; }
+
+	MapInfo GetMapInfo(int x, int y){ return info_[x][y]; }
+	bool GetisAttacked(int x, int y){ return didAttacked_[x][y]; }
 private:
 	bool IsShipDestoryed(MapInfo shipType);
 private:

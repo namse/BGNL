@@ -55,6 +55,27 @@
     <ClCompile Include="AutoMatcher.cpp">
       <Filter>Interface\AutoMatcher</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerSelectList.cpp">
+      <Filter>DisplayPart\PlayerSelectList</Filter>
+    </ClCompile>
+    <ClCompile Include="Word.cpp">
+      <Filter>DisplayPart\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="Student.cpp">
+      <Filter>DisplayPart\Student</Filter>
+    </ClCompile>
+    <ClCompile Include="WinBoard.cpp">
+      <Filter>DisplayPart\WinBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>DisplayPart\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleBoard.cpp">
+      <Filter>DisplayPart\BattleBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>DisplayPart\Screen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -135,6 +156,27 @@
     <ClInclude Include="AutoMatcher.h">
       <Filter>Interface\AutoMatcher</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerSelectList.h">
+      <Filter>DisplayPart\PlayerSelectList</Filter>
+    </ClInclude>
+    <ClInclude Include="Word.h">
+      <Filter>DisplayPart\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="Student.h">
+      <Filter>DisplayPart\Student</Filter>
+    </ClInclude>
+    <ClInclude Include="WinBoard.h">
+      <Filter>DisplayPart\WinBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>DisplayPart\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleBoard.h">
+      <Filter>DisplayPart\BattleBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen.h">
+      <Filter>DisplayPart\Screen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -187,6 +229,27 @@
     </Filter>
     <Filter Include="Interface\AutoMatcher">
       <UniqueIdentifier>{390277a4-d84c-4e14-acf7-e0472607c0bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\PlayerSelectList">
+      <UniqueIdentifier>{418ec28c-e9bf-4580-80b8-75854cd50591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\Word">
+      <UniqueIdentifier>{adf5711b-a221-4401-88b1-d56d878a33ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\Student">
+      <UniqueIdentifier>{ead2c962-fd3d-4482-89dd-d589d3489ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\BattleBoard">
+      <UniqueIdentifier>{5a4fa5da-ae8a-4de8-9d0a-953b38b3b0dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\Map">
+      <UniqueIdentifier>{0cf92afb-f122-421d-bf10-054ab031bb27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\WinBoard">
+      <UniqueIdentifier>{6a1a8b36-c1a8-4f40-9bef-0cf40d9abd1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DisplayPart\Screen">
+      <UniqueIdentifier>{1912731d-0a29-4f84-bc22-3a111069b1c2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
