@@ -2,4 +2,4 @@
 
 
 /// DB 연결 스트링 
-#define LISTEN_PORT	9001
+#define LISTEN_PORT	9000

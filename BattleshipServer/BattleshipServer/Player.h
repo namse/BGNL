@@ -57,7 +57,11 @@ public:
 	int GetTurns() { return turns_; }
 	int GetWinCount() { return win_count_; }
 
+	PlayerNumber GetEnemy() { return enemy_number_; }
 	std::wstring GetName(){ return name_; }
+
+	MapInfo GetMapInfo(int x, int y){ return info_[x][y]; }
+	bool GetisAttacked(int x, int y){ return didAttacked_[x][y]; }
 private:
 	bool IsShipDestoryed(MapInfo shipType);
 private:

@@ -202,7 +202,7 @@ extern IWICImagingFactory* g_pWICFactory;
 // for logic
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
-#define MAX_GAME_COUNT 10
+#define MAX_GAME_COUNT 9
 
 // if you waana edit this const value, you should touch the Game class's player numbers.
 #define NUMBER_OF_PLAYER_ON_GAME 2
@@ -218,6 +218,22 @@ enum PlayerState
 	PS_ON_GAME,
 };
 
+#define STUDENT_TOTAL_COUNT 15
+
+#define NAME_FONT_SIZE 30
+#define NUMBER_FONT_SIZE 0
+
+#define MAP_TILE_SIZE 64
+
+#define LIST_SPACE (NAME_FONT_SIZE + NUMBER_FONT_SIZE + 5)
+
+#define BATTLE_BOARD_RIGHT_START_X (MAP_TILE_SIZE * MAP_WIDTH + 50)
+#define BATTLE_BOARD_SPACE_BETWEEN_NAME_MAP 40
+#define BATTLE_BOARD_SPACE_BETWEEN_MAP_WINBOARD 40
+
+#define STUDNET_SIZE (NAME_FONT_SIZE + NUMBER_FONT_SIZE)
+
+#define CURSOR_RADIUS ((float)LIST_SPACE/2.f)
 
 //for server
 /// accepting list

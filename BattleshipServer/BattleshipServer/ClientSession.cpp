@@ -277,6 +277,8 @@ void ClientSession::Notify(EventHeader* event)
 		if (game != nullptr && game->IsPlayerInHere(mPlayerId))
 		{
 			Packet::GameStartResult outPacket;
+			PlayerNumber oppnentId = PlayerManager::GetInstance()->GetPlayer(mPlayerId)->GetEnemy();
+			wcscpy_s(outPacket.mOppositionName, PlayerManager::GetInstance()->GetPlayer(mPlayerId)->GetName().c_str());
 			SendRequest(&outPacket);
 		}
 	}break;
@@ -420,6 +422,8 @@ void ClientSession::HandleSubmitNameRequest(Packet::SubmitNameRequest& inPacket)
 	memcpy(event.name_, inPacket.mName, sizeof(event.name_));
 
 	EventManager::GetInstance()->Notify(&event);
+
+	wprintf(L"[%s] : %s\n", inet_ntoa(mClientAddr.sin_addr), inPacket.mName);
 }
 
 REGISTER_HANDLER(PKT_CS_SUBMIT_MAP)

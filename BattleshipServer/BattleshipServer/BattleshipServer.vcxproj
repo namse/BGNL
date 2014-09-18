@@ -85,6 +85,7 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="AutoMatcher.h" />
+    <ClInclude Include="BattleBoard.h" />
     <ClInclude Include="CircularBuffer.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="ClientSession.h" />
@@ -99,18 +100,25 @@
     <ClInclude Include="EventParameter.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerManager.h" />
+    <ClInclude Include="PlayerSelectList.h" />
     <ClInclude Include="ProducerConsumerQueue.h" />
     <ClInclude Include="pugiconfig.hpp" />
     <ClInclude Include="pugixml.hpp" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="BattleshipServer.h" />
+    <ClInclude Include="Student.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="WinBoard.h" />
+    <ClInclude Include="Word.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AutoMatcher.cpp" />
+    <ClCompile Include="BattleBoard.cpp" />
     <ClCompile Include="CircularBuffer.cpp" />
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="ClientSession.cpp" />
@@ -122,14 +130,20 @@
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
+    <ClCompile Include="PlayerSelectList.cpp" />
     <ClCompile Include="pugixml.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BattleshipServer.cpp" />
+    <ClCompile Include="Student.cpp" />
+    <ClCompile Include="WinBoard.cpp" />
+    <ClCompile Include="Word.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

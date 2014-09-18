@@ -70,7 +70,7 @@ m_logZoom(sc_loupeDefaultLogZoom*WHEEL_DELTA)
 	m_pDWriteFactory = NULL;
 	m_pTextFormat = NULL;
 
-	AddChild(&autoMatcher_);
+	AddChild(&screen_);
 }
 
 /******************************************************************
@@ -143,8 +143,8 @@ HRESULT Application::Initialize()
 		m_hwnd = CreateWindow(
 			L"D2DApplication",
 			L"D2D Demo App",
-			//WS_EX_TOPMOST | WS_POPUP,
-			WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_SIZEBOX),
+			WS_EX_TOPMOST | WS_POPUP,
+			//WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_SIZEBOX),
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
 			static_cast<UINT>(ceil(1024.f * dpiX / 96.f)),
@@ -161,8 +161,8 @@ HRESULT Application::Initialize()
 			hr = CreateDeviceIndependentResources();
 			if (SUCCEEDED(hr))
 			{
-				//ShowWindow(m_hwnd, SW_MAXIMIZE);
-				ShowWindow(m_hwnd, SW_SHOW);
+				ShowWindow(m_hwnd, SW_MAXIMIZE);
+				//ShowWindow(m_hwnd, SW_SHOW);
 
 				UpdateWindow(m_hwnd);
 			}
@@ -1008,14 +1008,41 @@ void Application::OnKeyDown(SHORT vkey)
 {
 	switch (vkey)
 	{
-	case VK_RIGHT:
+	case VK_UP:
 	{
-		
+		{
+			Event::CursorUpEvent outEvent;
+			EventManager::GetInstance()->Notify(&outEvent);
+		}
 	}break;
-		
+	case VK_DOWN:
+	{
+		{
+			Event::CursorDownEvent outEvent;
+			EventManager::GetInstance()->Notify(&outEvent);
+		}
+	}break;
 	case 'A':
 	{
+		{
+			Event::SelectStudentEvent outEvent;
+			EventManager::GetInstance()->Notify(&outEvent);
+		}
+	}break;
+	case VK_SPACE:
+	{
+		{
+			Event::GameStartButtonEvent outEvent;
+			EventManager::GetInstance()->Notify(&outEvent);
+		}
+	}break;
 
+	case 'Q':
+	{
+		{
+			Event::BattleBoardInitEvent outEvent;
+			EventManager::GetInstance()->Notify(&outEvent);
+		}
 	}break;
 	
 
