@@ -30,19 +30,33 @@ struct Coord
 	}
 	void Intigerize()
 	{
-		if (x >= 'A' && x <= 'Z')
+		if (mX >= 'A' && mX <= 'Z')
 		{
 			x -= 'A';
 		}
-		if (x >= 'a' && x <= 'z')
+		if (mX >= 'a' && mX <= 'z')
 		{
 			x -= 'a';
 		}
-		if (y >= '1' && y <= '9')
+		if (mX >= '1' && mX <= '9')
+		{
+			x -= '1';
+		}
+		if (mY >= 'A' && mY <= 'Z')
+		{
+			y -= 'A';
+		}
+		if (mY >= 'a' && mY <= 'z')
+		{
+			y -= 'a';
+		}
+		if (mY >= '1' && mY <= '9')
 		{
 			y -= '1';
 		}
 		mX = x, mY = y;
+
+		Intigerize()
 	}
 	Coord(char x, char y)
 	{
